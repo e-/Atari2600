@@ -724,8 +724,177 @@ function j6507() {
           this.INSTR_rla(zOperand, zOperandAddress);
           break;
         default :
-          console.log("Instruction not recognized");
+          alert("Instruction not recognized");
+          // TODO : Throw Exception
       }
+      var zCycles = this.calcultaeCycles(this.IR) - this.myCyclesSignaled;
+      if (zCycles > 0) {
+        var zDebug = 20;
+      }
+      this.myCurrentSystem.processorCycles(zCycles); // TODO : Processor class is undefined!
+      this.myCyclesSignaled = 0;
+
+      if (((this.myExecutionStatus & this.MaskabaleInsterruptBit) != 0) || (this.myExecutionStatus & this.NonmaskableInterruptBit) != 0) {
+        asdf("NO!!!!!!!!!!!!!!!!!!!!!!!!111");
+        // InterruptHandlers(); ::1250 in J6507.java
+      }
+      if ((this.myExecutionStatus & this.StopExecutionBit) != 0) {
+        break;
+      }
+
+    }
+    return zCounter;
+  }
+  this.signalCycle = function() {
+    this.myCurrentSystem.processorCycle(1);
+    this.myCyclesSignaled++;
+  }
+  this.calculateCycles = function(aIR) {
+    var zCycleNum = this.ourInstructionProcessorCycleTable[aIR];
+    var zIsBranch = (this.ourInstructionPageCrossDelay[aIR]==2);
+    var zPageDependent = (this.ourInstructionPageCrossDelay[aIR] == 1);
+    if ((zIsBranch == true)) zCycleNum += myBranchResult;
+    else if ((zPageDependent == true) && (myPageCrossed == true)) zCycleNum++;
+    return zCycleNum;
+  }
+  this.reset = function() {
+    this.myExecutionStatus = 0;
+    this.A = 0x00;
+    this.X = 0x00;
+    this.Y = 0x00;
+    this.SP = 0xff;
+    this.setFlags(0x20);
+    this.setPC(this.myCurrentSystem.getResetPC());
+  }
+  this.peek = function(aAddress, aSignalCycle) {
+    if (aSignalCycle === undefined || aSignalCycle == null) return this.peek(Address, true);
+    this.myReadLast = true;
+    this.myLastOperandAddress = aAddress;
+    if (aSignalCycle == true) this.signalCycle();
+    return this.myCurrentSsytem.peek(aAddress);
+  }
+  this.peekImmediate = function() {
+    var zReturn = this.peek(this.PC);
+    this.PC++;
+    this.myLastImmediateValues[1] = this.myLastImmediateValues[0];
+    this.myLastImmediateValues[0] = zReturn;
+    return zReturn;
+  }
+  this.peekZeroPage = function(aAdd) {
+    if (aAdd === undefined || aAdd === null) {
+      var zAddr = this.peekImmediate();
+      return this.peek(zAddr);
+    }
+    else {
+      var zAddr = this.peekImmediate();
+      this.peek(zAddr);
+      zAddr += aAdd;
+      zAddr &= 0xFF;
+      return this.peek(zAddr);
     }
   }
+  this.peekAbsolute = function() {
+    var zLowByte = this.peekImmediate();
+    var zHighByte = this.peekImmediate();
+    var zAddr = (zLowByte | (zHighByte << 8));
+    this.myPageCrossed = false;
+    return this.peek(zAddr);
+  }
+  this.peekAbsoluteJMP = function() {
+    var zLowByte = this.peekImmediate();
+    var zHighByte = this.peekImmediate();
+    var zAddr = (zLowByte | (zHighByte << 8));
+
+    this.myPageCrossed = false;
+    return this.peek(zAddr, false);
+  }
+  this.peekAbsoluteIndex = function(aAdd) {
+    var zLowByte = this.peekImmediate();
+    var zHighByte = this.peekImmediate();
+    var zAddr = (zLowByte | (zHighByte << 8));
+    zAddr += aAdd;
+
+    if (zLowByte + aAdd > 0xFF) {
+      this.peek(zAddr);
+      this.myPageCrossed = true;
+    }
+    else this.myPageCrossed = false;
+    return this.peek(zAddr);
+  }
+  this.peekIndirect = function() {
+    var zLowByte = this.peekImmediate();
+    var zHighByute = this.peekImmediate();
+    var zAddr = (zLowByte | (zHighByte << 8));
+    var zLowByteB = this.peek(zAddr);
+    var zHighByteB = this.peek((zAddr+1));
+    var zAddrB = (zLowByteB | (zHighByteB << 8));
+    return this.peek(zAddrB, false);
+  }
+  this.peekIndirectX = function () {
+    var zZeroPage = (this.peekImmediate() + this.X)&0xFF;
+    var zLowByte = this.peek(zZeroPage);
+    var zHighByte = this.peek(((zZeroPage+1)&0xFF));
+    var zAddr = (zLowByte | (zHighByte << 8));
+    var zReturn = this.peek(zAddr);
+    return zReturn;
+  }
+  this.peekIndirectY = function() {
+    var zZerPage = this.peekImmediate();
+    var zLowByte = this.peek(zZeroPage);
+    var zHighByte = this.peek(zZeroPage + 1);
+    var zAddr = (zLowByte | (zHighByte << 8)) + this.Y;
+    if (zLowByte + this.y > 0xFF) {
+      this.peek(zAddr);
+      this.myPageCrossed = true;
+    }
+    else this.myPageCrossed = false;
+    return this.peek(zAddr);
+  }
+  this.peekRelative = function() {
+    var zOldPC = this.PC;
+    var zByte = this.peekImmediate();
+    var zAdd = this.toSignedByteValue(zByte);
+    return zOldPC + zAdd;
+  }
+  this.toSignedByteValue = function(aUBV) {
+    if ((aUBFV >= 0) && (aUBV <= 127)) return aUVB;
+    else return aUVB - 256;
+  }
+  this.retrieveOperand = function(aMode) {
+    if (aMode==this.AddressingMode.Immediate) return this.peekImmediate();
+    else if (aMode==this.AddressingMode.Zero) return this.peekZeroPage();
+    else if (aMode==this.AddressingMode.ZeroX) return this.peekZeroPage(X);
+    else if (aMode==this.AddressingMode.ZeroY) return this.peekZeroPage(Y);
+    else if (aMode==this.AddressingMode.Indirect) return this.peekIndirect();
+    else if (aMode==this.AddressingMode.IndirectX) return this.peekIndirectX();
+    else if (aMode==this.AddressingMode.IndirectY) return this.peekIndirectY();
+    else if (aMode==this.AddressingMode.Absolute) return this.peekAbsolute();
+    else if (aMode==this.AddressingMode.AbsoluteX) return this.peekAbsoluteIndex(X);
+    else if (aMode==this.AddressingMode.AbsoluteY) return this.peekAbsoluteIndex(Y);
+    else if (aMode==this.AddressingMode.Relative) return this.peekRelative();
+    else {
+      alert('asdf');
+      return 0;
+    }
+  }
+  this.poke = function(aAddress, aByteValue) {
+    if (aAddress >= 0) {
+      this.myCurrentSystem.poke(aAdress, aByteValue);
+    }
+    this.myReadLast = false;
+  }
+  this.setFlags = functon(aByteValue) {
+    this.N = ((aByteValue & 0x80)!=0);
+    this.V = ((aByteValue & 0x40)!=0);
+    this.B = ((aByteValue & 0x10)!=0); //;  The 6507's B flag always true
+    this.D = ((aByteValue & 0x08)!=0);
+    this.I = ((aByteValue & 0x04)!=0);
+    this.notZ = !((aByteValue & 0x02)!=0);
+    this.C = ((aByteValue & 0x01)!=0);
+  }
+  this.getBit = function(aByte, aBitNumber) {
+    return ((aByte & (0x01 << aBitNumber)) != 0);
+  }
+
+  /* INSTRUCTIONS */
 }
