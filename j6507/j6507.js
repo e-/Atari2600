@@ -883,7 +883,7 @@ function j6507() {
     }
     this.myReadLast = false;
   }
-  this.setFlags = functon(aByteValue) {
+  this.setFlags = function(aByteValue) {
     this.N = ((aByteValue & 0x80)!=0);
     this.V = ((aByteValue & 0x40)!=0);
     this.B = ((aByteValue & 0x10)!=0); //;  The 6507's B flag always true
@@ -897,4 +897,402 @@ function j6507() {
   }
 
   /* INSTRUCTIONS */
+  this.INSTR_ADC = function (operand) {
+    var oldA = this.A;
+    if(!this.D) {
+      var zSignedSum=(this.A + operand);
+      if (this.C==true) zSignedSum++;
+      this.V = ((zSignedSum > 127) || (zSignedSum < -128)); //overflow
+      var zUSum = A +operand;
+      if (this.C==true) zUSum++;
+      this.setC(zUSum > 0xff);
+      this.setA(zUSum & 0xFF);
+      this.setNotZ((zUSum & 0xff)!=0);
+      this.setN(this.getBit(A, 7));
+    } 
+    else {
+      var sum = this.BCDTable[0][A] + this.BCDTable[0][operand] + (this.C ? 1 : 0);
+      this.setC(sum > 99);
+      this.setA(this.BCDTable[1][sum & 0xff]);
+      this.setNotZ(A!=0);
+      this.setN(this.getBit(A, 7));
+      this.V=(((oldA ^ this.A) & 0x80)!=0) && (((this.A ^ operand) & 0x80)!=0);
+    }
+  }
+  this.INSTR_SBC = function (operand) { 
+    var oldA = this.A & 0xFF;
+    if(!this.D) {
+      var zRevOperand = (~operand) & 0xFF; 
+      var zAmountToAdd = this.toSignedByteValue(zRevOperand) + (this.C ? 1 : 0); //if carry is on, amountToAdd= -1 * amountToSubtract, else it's one less (i.e. more negative)
+      var zSignedResult = this.toSignedByteValue(this.A) + zAmountToAdd ;       
+      this.setV(((zSignedResult > 127) || (zSignedResult < -128)));
+      var zNewA = this.A + zAmountToAdd;
+      var zAmountToSubtract=operand + (this.C ? 0 : 1);  
+      this.setC(zAmountToSubtract<= oldA);
+      this.setA(zNewA & 0xFF);
+      this.setNotZ(this.A!=0);
+      this.setN((this.A & 0x80)!=0);
+    } 
+    else {
+      var difference = this.BCDTable[0][A] - this.BCDTable[0][operand] - (this.C ? 0 : 1);
+      if(difference < 0)
+        difference += 100;
+        this.setA(this.BCDTable[1][difference]);
+        this.setNotZ(A!=0);
+        this.setN((this.A & 0x80)!=0);
+        this.setC((oldA >= (operand + (C ? 0 : 1))));
+        this.setV((((oldA ^ this.A) & 0x80)!=0) && (((this.A ^ operand) & 0x80)!=0));
+    }
+  }
+  this.INSTR_LDA = function (aValue) {
+    this.setA(aValue);
+    this.notZ = (this.A!=0);
+    this.N = ((this.A & 0x80)!=0);
+  }
+  this.INSTR_LDX = function (operand) {
+    this.setX(operand);
+    this.notZ = (this.X!=0);
+    this.N = ((this.X & 0x80)!=0);
+  }    
+  this.INSTR_LDY = function (operand) {
+    this.Y = operand;
+    this.notZ = (this.Y!=0);
+    this.N = ((this.Y & 0x80)!=0);
+  }
+  this.INSTR_AND = function (aValue) { 
+    var zNewA= this.getA() & aValue;
+    this.setA(zNewA);
+    this.setNotZ(zNewA!=0);
+    this.setN((zNewA & 0x80)!=0);
+  }
+  this.INSTR_EOR = function (aValue) {
+    var zNewA = this.getA() ^ aValue;
+    this.setA(zNewA);
+    this.setNotZ(zNewA!=0);
+    this.setN((zNewA & 0x80)!=0);
+  }
+  this.INSTR_ORA = function(aValue) { 
+    var zNewA= this.getA() | aValue;
+    this.setA(zNewA);
+    this.setNotZ(zNewA!=0);
+    this.setN((zNewA & 0x80)!=0);
+  }
+  this.INSTR_ASL = function (aValue, operandAddress) {
+    this.setC(aValue & 0x80);
+    aValue <<= 1;
+    aValue &= 0xFF;
+    this.poke(operandAddress, aValue);
+    this.setNotZ(aValue!=0);
+    this.setN(aValue & 0x80);
+  }
+  this.INSTR_ASLA = function() {
+    this.setC(A & 0x80);
+    var zNewA= this.getA()  << 1;
+    zNewA&=0xFF;
+    this.setA(zNewA);
+    this.setNotZ(this.A!=0);
+    this,setN((this.A & 0x80)!=0);
+  }
+  this.branch = function (aDoBranch, aDelta) {
+    if(aDoBranch==true) {
+      this.peek(PC);
+      var address = this.PC + this.toSignedByteValue(aDelta);
+      if(this.notSamePage(PC, address)) this.myBranchResult=2;
+      else this.myBranchResult=1;
+      this.setPC(address);
+    } 
+    else this.myBranchResult=0;
+  }
+  this.INSTR_BCC = function (operand) { this.branch(!this.C, operand); }    
+  this.INSTR_BCS = function (operand) { this.branch(this.C, operand);  }    
+  this.INSTR_BEQ = function (operand) { this.branch(!this.notZ, operand);  }   
+  this.INSTR_BMI = function (operand) { this.branch(this.N, operand);  }    
+  this.INSTR_BNE = function (operand) { this.branch(this.notZ, operand);  }    
+  this.INSTR_BPL = function (operand) { this.branch(!this.N, operand);   }    
+  this.INSTR_BVC = function (operand) { this.branch(!this.V, operand);   }    
+  this.INSTR_BVS = function (operand) { this.branch(this.V, operand);   }
+  this.INSTR_BIT = function (operand) {
+    this.setNotZ(this.A & operand);
+    this.setN(operand & 0x80);
+    this.setV(operand & 0x40);
+  }
+  this.INSTR_BRK = function () { 
+    this.peek(this.PC++);
+    this.B = true;
+    this.poke(0x0100 + this.SPdec(), this.PC >> 8);
+    this.poke(0x0100 + this.SPdec(), this.PC & 0x00ff);
+    this.poke(0x0100 + this.SPdec(), this.getFlags());
+    this.I = true;
+    this.PC=this.peek(0xfffe);
+    this.PC |= (this.peek(0xffff) << 8);
+  }
+  this.INSTR_CLC = function () {this.setC(false); }
+  this.INSTR_CLD = function () {this.setD(false);   }    
+  this.INSTR_CLI = function () {this.setI(false);   }    
+  this.INSTR_CLV = function () {this.setV(false); }
+  this.INSTR_SEC = function () { this.setC(true); }    
+  this.INSTR_SED = function () { this.setD(true); }    
+  this.INSTR_SEI = function () { this.setI(true); }
+  this.INSTR_CMP = function (operand) { 
+    var value = this.A - operand;
+    this.setNotZ(value);
+    this.setN(value & 0x0080);
+    this.setC(((value & 0x0100)==0));
+  }
+  this.INSTR_CPX = function (operand) {
+    var value = this.X - operand;
+    this.setNotZ(value);
+    this.setN(value & 0x0080);
+    this.setC((value & 0x0100)==0);
+  }
+  this.INSTR_CPY = function (operand) {
+    var value = this.Y - operand;
+    this.setNotZ(value);
+    this.setN(value & 0x0080);
+    this.setC((value & 0x0100)==0);
+  }
+  this.INSTR_DEC = function (operand, operandAddress) { 
+    value &= 0xFF;
+    this.poke(operandAddress, value);
+    this.setNotZ(value);
+    this.setN(value & 0x80);
+  }
+  this.INSTR_DEX = function () { 
+    this.X--;
+    this.X&=0xFF; //masking, in case it went below zero
+    this.notZ = (this.X!=0);
+    this.N = ((this.X & 0x80)!=0);
+  }
+  this.INSTR_DEY = function() { //OK
+    this.Y--;
+    this.Y&=0xFF; //masking, in case it went below zero
+    this.notZ = (this.Y!=0);
+    this.N = ((this.Y & 0x80)!=0);
+  }
+  this.INSTR_INC = function (operand, operandAddress) { //ok
+    var value = operand + 1;
+    value &=0xFF;
+    this.poke(operandAddress, value);
+    this.setNotZ(value);
+    this.setN(value & 0x80);
+  }
+  this.INSTR_INX = function () { //OK
+    this.X++;
+    this.X &=0xFF;
+    this.notZ = (this.X!=0);
+    this.N = ((this.X & 0x80)!=0);
+  }
+  this.INSTR_INY = function () { //OK
+    this.Y++;
+    this.Y &=0xFF;
+    this.notZ = (this.Y!=0);
+    this.N = ((this.Y & 0x80)!=0);
+  }
+  this.INSTR_JMP = function (operand, operandAddress) { //OK
+    this.PC=operandAddress;
+  }
+  this.INSTR_JSR = function() { //OK
+    var low = this.peekImmediate();//PC++);
+    this.peek(0x0100 + this.SP);
+    this.poke(0x0100 + this.SPdec(), this.PC >>> 8);
+      this.poke(0x0100 + this.SPdec(), this.PC & 0xff);
+      var high= this.peekImmediate();
+      this.PC=(low | (high << 8));
+    }
+  this.INSTR_RTS = function() { //OK
+    this.peek(0x0100 + this.SPinc());
+    var zAddr=0;
+    zAddr=this.peek(0x100 + this.SPinc());
+    var zNewPC= (zAddr | (this.peek(0x0100 + this.SP) << 8));
+    this.setPC(zNewPC);
+    this.peek(PC++);
+  }
+  this.INSTR_LSR = function (operand, operandAddress) { //OK
+    this.setC(operand & 0x01);
+    operand = (operand >> 1) & 0x7f;
+    this.poke(operandAddress, operand);
+    this.notZ = (operand!=0);
+    this.setN(operand & 0x80);
+  }
+  this.INSTR_LSRA = function() { //OK
+    this.setC(this.A & 0x01);
+    this.setA( (this.getA() >> 1) & 0x7f);
+    this.setNotZ(this/A!=0);
+    this.setN((this.A & 0x80)!=0);
+  }
+  this.INSTR_NOP = function() {  //OK
+  } 
+  this.INSTR_PHA = function() { //OK
+    this.poke(0x0100 + this.SPdec(), this.A);
+  }
+  this.INSTR_PHP = function() { //OK
+    this.poke(0x0100 + this.SPdec(), this.getFlags());
+  }
+  this.INSTR_PLA = function() { //OK
+    this.peek(0x0100 + this.SPinc());
+    this.setA(peek(0x0100 + this.SP));
+    this.setNotZ(this.A!=0);
+    this.setN((this.A & 0x80)!=0);
+  }
+  this.INSTR_PLP = function() { //OK
+    this.peek(0x0100 + this.SPinc());
+    this.setFlags(this.peek(0x0100 + this.SP));
+  }
+  this.INSTR_ROL = function(operand, operandAddress) { //OK
+    var oldC=C;
+    this.setC(operand & 0x80);
+    operand = ((operand << 1) | (oldC ? 1 : 0))& 0xFF;
+    this.poke(operandAddress, operand);
+    this.notZ = (operand!=0);
+    this.setN(operand & 0x80);
+  }
+  this.INSTR_ROLA = function() { //OK
+    var oldC=C;
+    this.setC(this.A & 0x80);
+    var zNewA=(this.getA() << 1) | (oldC ? 1 : 0);
+    this.setA(zNewA & 0xFF);
+    this.setNotZ(A!=0);
+    this.N = ((this.A & 0x80)!=0);
+  }
+  this.INSTR_ROR = function (operand, operandAddress) { 
+    var oldC=C;
+    this.setC(operand & 0x01);
+    operand = ((operand >> 1) & 0x7f) | (oldC ? 0x80 : 0x00);
+    this.poke(operandAddress, operand);
+    this.notZ = (operand!=0);
+    this.setN(operand & 0x80);
+  }
+  this.INSTR_RORA = function() {
+    var oldC=C;
+    this.setC(this.A & 0x01);
+    var zOldA=this.getA();
+    var zNewA=((this.getA() >> 1) & 0x7f) | (oldC ? 0x80 : 0x00);
+    this.setA(zNewA);
+    this.notZ = (zNewA!=0);
+    this.N = ((zNewA & 0x80)!=0);
+  }
+  this.INSTR_RTI = function() { 
+    this.peek(0x0100 + this.SPinc());
+    this.setFlags(this.peek(0x0100 + this.SPinc()));
+    this.PC=this.peek(0x0100 + this.SPinc());
+    this.PC |= (this.peek(0x0100 + this.SP) << 8);
+  }
+  this.INSTR_STA = function (operand, operandAddress) { //OK
+    this.poke(operandAddress, this.getA());
+  }
+  this.INSTR_STX = function (operand, operandAddress) { //ok
+    this.poke(operandAddress, this.X);
+  }
+  this.INSTR_STY = function (operand, operandAddress) { //ok
+    this.poke(operandAddress, this.Y);
+  }
+  this.INSTR_TAX = function() { //OK
+    this.X = this.A;
+    this.notZ = (this.X!=0);
+    this.N = ((this.X & 0x80)!=0);
+  }
+  this.INSTR_TAY = function() { //OK
+    this.Y = this.A;
+    this.notZ = (this.Y!=0);
+    this.N = ((this.Y & 0x80)!=0);
+  }
+  this.INSTR_TSX = function() { //OK
+    this.X = this.SP;
+    this.notZ = (this.X!=0);
+    this.N = ((this.X & 0x80)!=0);
+  }
+  this.INSTR_TXA = function() { //OK
+    this.setA(this.X);
+    this.notZ = (this.A!=0);
+    this.N = ((this.A & 0x80)!=0);
+  }
+  this.INSTR_TXS = function() { //OK
+    this.setSP(this.X);
+  }
+  this.INSTR_TYA = function() { //OK
+    this.setA(this.Y);
+    this.notZ = (this.A!=0);
+    this.N = ((this.A & 0x80)!=0);
+  }
+  // ************** UNOFFICIAL INSTRUCTIONS ****************************  
+  this.INSTR_sax = function (operand, operandAddress) { 
+    this.poke(operandAddress, this.A & this.X);
+  }
+  this.INSTR_lax = function (aValue) { 
+    this.setA(aValue);
+    this.setX(aValue);
+    this.notZ = (this.A!=0);
+    this.N = ((this.A & 0x80)!=0);
+  }
+  this.INSTR_sbx = function (operand) { 
+    var difference = ((this.A&this.X)&0xff)-operand;
+    this.setC((difference & 0x100)==0);
+    difference &= 0xff;
+    this.setX(difference);
+    this.setNotZ(difference!=0);
+    this.setN((difference & 0x80)!=0);
+  }
+  this.INSTR_asr = function (operand) { 
+    var myA = this.A&operand;
+    this.setC(myA & 0x01);
+ 	  myA = (myA >> 1) & 0x7f;
+    this.setA(myA);
+    this.setNotZ(myA!=0);
+    this.setN((myA & 0x80)!=0);
+  }
+  this.INSTR_rla = function (operand, operandAddress) { //TODO: Double check code--it is untested
+    var zValue = (operand << 1) | (this.C ? 1 : 0);
+    this.poke(operandAddress, zValue);
+    var zNewA = this.A & zValue; 
+    this.setA(zNewA & 0xFF);
+    this.setC(operand & 0x80);
+    this.setNotZ(zNewA);
+    this.setN(zNewA & 0x80);
+  }
+  this.INSTR_nop = function (operand) {  //do nothing (??)
+  }
+  this.INSTR_dcp = function (operand, operandAddress) { //OK
+    var value = operand - 1;
+    value &= 0xFF;
+    this.poke(operandAddress, value);
+    value = this.A - value;
+    this.setNotZ(value);
+    this.setN(value & 0x0080);
+    this.setC(((value & 0x0100)==0));
+  }
+  this.INSTR_isb =function (operand, operandAddress) { 
+    var value = operand + 1;
+    value &=0xFF;
+    this.poke(operandAddress, value);
+    var oldA = A;
+    if(!this.D) {
+      var zRevOperand = (~value) & 0xFF; 
+      var Sdifference = this.toSignedByteValue(A) + this.toSignedByteValue(zRevOperand) + (this.C ? 1 : 0);
+      this.setV(((Sdifference > 127) || (Sdifference < -128)));
+      var zSBV= this.toSignedByteValue(zRevOperand);
+      var difference = this.A + zSBV + (this.C ? 1 : 0);
+      var zSubAmount=value + (this.C ? 0 : 1);
+      this.setC(zSubAmount<= oldA);
+      this.setA(difference & 0xFF);
+      this.setNotZ(this.A!=0);
+      this.setN((this.A & 0x80)!=0);
+    } else {
+      var difference = this.BCDTable[0][A&0xff] - this.BCDTable[0][value&0xff] - (this.C ? 0 : 1);
+      if(difference < 0)
+        difference += 100;
+      this.setA(this.BCDTable[1][difference&0xff]);
+      this.setNotZ(this.A!=0);
+      this.setN((this.A & 0x80)!=0);
+      this.setC((oldA >= (value + (this.C ? 0 : 1))));
+      this.setV((((oldA ^ this.A) & 0x80)!=0) && (((this.A ^ value) & 0x80)!=0));
+    }
+  }
+  this.INSTR_slo = function (operand, operandAddress) { 
+    this.setC(operand & 0x80);
+    operand <<= 1;
+    operand &= 0xFF;
+    this.poke(operandAddress, operand);
+    this.INSTR_ORA(operand);
+  }
+
 }
