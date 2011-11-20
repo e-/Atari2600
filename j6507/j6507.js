@@ -14,7 +14,7 @@ function j6507() {
     ZeroX: "ZeroX",
     ZeroY: "ZeroY"
   };
-  var AddressingModeTable = [
+  var ourAddressingModeTable = [
     AddressingMode.Implied,    AddressingMode.IndirectX, AddressingMode.Invalid,   AddressingMode.IndirectX,    // 0x0?
     AddressingMode.Zero,   AddressingMode.Zero,      AddressingMode.Zero,      AddressingMode.Zero,
     AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
@@ -292,7 +292,7 @@ function j6507() {
   this.setC = function(inputC) {
     if (typeof inputC == "boolean") this.C = inputC;
     if (typeof inputC == "number") this.C = (inputC!=0);
-    return this.C:
+    return this.C;
   }
   this.getA = function() {
     return this.A; 
@@ -334,6 +334,398 @@ function j6507() {
   this.setPC = function(aPC) {
     this.PC = aPC;
   }
+  
 
+  /* Genereal Methods */
+  this.lastAccessWasRead = function() {
+    return this.myReadLast;
+  }
+  this.notSamePage = function(aAddrA, aAddrB) {
+    return ((((aAddrA)^(aAddrB)) & 0xFF00)!=0);
+  }
+  this.execute = function(aRepeats) {
+    var Repeats = aRepeats;
+    if (aRepeats === undefined || aRepeats === null) Repeats = aRepeats;
+    
+    var zContinue = true;
+    this.myExecutionStatus &= FatalErrorBit;
+    var zCounter = 0;
 
+    while (zContinue) {
+      if ((Repeats >= 0) && (zCounter == Repeats)) {
+        zContinue = false;
+        break;
+      }
+      else zCounter++;
+      if (zContinue==false) {
+        break;
+      }
+      var zPreSnapShot = null;
+      if (DEBUG_MODE_ON) zPreSnapShot = this.getRegisterSnapshot();
+      var zOpPC = this.getPC();
+      this.IR = this.peekImmediate();
+      var zOperand = 0;
+      var zOperandAddress = 0;
+
+      switch (this.IR) {
+        case 0x00 :   
+          this.INSTR_BRK();
+          break;
+        case 0x69 :
+        case 0x65 :
+        case 0x75 :
+        case 0x6d :
+        case 0x7d :
+        case 0x79 :
+        case 0x61 :
+        case 0x71 :
+          zOperand= this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_ADC(zOperand);
+          break;
+        case 0xA9 :
+        case 0xA5 :
+        case 0xB5 :
+        case 0xAD :
+        case 0xBD :
+        case 0xB9 :
+        case 0xA1 :
+        case 0xB1 :
+          zOperand= this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_LDA(zOperand);
+          break;
+        case 0xA2 :
+        case 0xA6 :
+        case 0xB6 :
+        case 0xAE :
+        case 0xBE :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_LDX(zOperand);
+          break;
+        case 0xA0 :
+        case 0xA4 :
+        case 0xB4 :
+        case 0xAC :
+        case 0xBC :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_LDY(zOperand);
+          break;
+        case 0x29 :
+        case 0x25 :
+        case 0x35 :
+        case 0x2D :
+        case 0x3D :
+        case 0x39 :
+        case 0x21 :
+        case 0x31 :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_AND(zOperand);
+          break;
+        case 0x0A : this.INSTR_ASLA(); break;
+        case 0x06 :
+        case 0x16 :
+        case 0x0E :
+        case 0x1E :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_ASL(zOperand, zOperandAddress);
+          break;
+        case 0x24 :
+        case 0x2C :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_BIT(zOperand);
+          break;
+        case 0x18 : this.INSTR_CLC(); break;
+        case 0x38 : this.INSTR_SEC(); break;
+        case 0x58 : this.INSTR_CLI(); break;
+        case 0x78 : this.INSTR_SEI(); break;
+        case 0xB8 : this.INSTR_CLV(); break;
+        case 0xD8 : this.INSTR_CLD(); break;
+        case 0xF8 : this.INSTR_SED(); break;
+        case 0xC9 :
+        case 0xC5 :
+        case 0xD5 :
+        case 0xCD :
+        case 0xDD :
+        case 0xD9 :
+        case 0xC1 :
+        case 0xD1 :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_CMP(zOperand);
+          break;
+        case 0xE0 :
+        case 0xE4 :
+        case 0xEC :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_CPX(zOperand);
+          break;
+        case 0xC0 :
+        case 0xC4 :
+        case 0xCC :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_CPY(zOperand);
+          break;
+        case 0xC6 :
+        case 0xD6 :
+        case 0xCE :
+        case 0xDE :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_DEC(zOperand, zOperandAddress);
+          break;
+        case 0x49 :
+        case 0x45 :
+        case 0x55 :
+        case 0x4D :
+        case 0x5D :
+        case 0x59 :
+        case 0x41 :
+        case 0x51 :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_EOR(zOperand);
+          break;
+        case 0xE6 :
+        case 0xF6 :
+        case 0xEE :
+        case 0xFE :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_INC(zOperand, zOperandAddress);
+          break;
+        case 0xAA : this.INSTR_TAX(); break;
+        case 0x8A : this.INSTR_TXA(); break;
+        case 0xCA : this.INSTR_DEX(); break;
+        case 0xE8 : this.INSTR_INX(); break;
+        case 0xA8 : this.INSTR_TAY(); break;
+        case 0x98 : this.INSTR_TYA(); break;
+        case 0x88 : this.INSTR_DEY(); break;
+        case 0xC8 : this.INSTR_INY(); break;
+        case 0x4C :
+          peekAbsoluteJMP();
+          this.INSTR_JMP(zOperand, this.myLastOperandAddress);
+          break;
+        case 0x6C :
+          peekIndirect();
+          this.INSTR_JMP(zOperand, this.myLastOperandAddress);
+          break;
+        case 0x20 :  this.INSTR_JSR(); break;
+        case 0x4A : this.INSTR_LSRA(); break;
+        case 0x46 :
+        case 0x56 :
+        case 0x4E :
+        case 0x5E :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_LSR(zOperand, zOperandAddress);
+          break;
+        case 0xEA : 
+          this.INSTR_NOP(); break;
+        case 0x09 :
+        case 0x05 :
+        case 0x15 :
+        case 0x0D :
+        case 0x1D :
+        case 0x19 :
+        case 0x01 :
+        case 0x11 :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_ORA(zOperand);
+          break;
+        case 0x9A : this.INSTR_TXS(); break;
+        case 0xBA : this.INSTR_TSX(); break;
+        case 0x48 : this.INSTR_PHA(); break;
+        case 0x68 : this.INSTR_PLA(); break;
+        case 0x08 : this.INSTR_PHP(); break;
+        case 0x28 : this.INSTR_PLP(); break;
+        case 0x2A : this.INSTR_ROLA(); break;
+        case 0x26 :
+        case 0x36 :
+        case 0x2E :
+        case 0x3E :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_ROL(zOperand, zOperandAddress);
+          break;
+        case 0x6A : this.INSTR_RORA(); break;
+        case 0x66 :
+        case 0x76 :
+        case 0x6E :
+        case 0x7E :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_ROR(zOperand, zOperandAddress);
+          break;
+        case 0x40 : this.INSTR_RTI(); break;
+        case 0x60 : this.INSTR_RTS(); break;
+        case 0xE9 :
+        case 0xE5 :
+        case 0xF5 :
+        case 0xED :
+        case 0xFD :
+        case 0xF9 :
+        case 0xE1 :
+        case 0xF1 :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_SBC(zOperand);
+          break;
+        case 0x85 :
+        case 0x95 :
+        case 0x8D :
+        case 0x9D :
+        case 0x99 :
+        case 0x81 :
+        case 0x91 :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_STA(zOperand, zOperandAddress);
+          break;
+        case 0x86 :
+        case 0x96 :
+        case 0x8E :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_STX(zOperand, zOperandAddress);
+          break;
+        case 0x84 :
+        case 0x94 :
+        case 0x8C :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_STY(zOperand, zOperandAddress);
+          break;
+        case 0x10 :
+          zOperand=peekImmediate();
+          this.INSTR_BPL(zOperand);
+          break;
+        case 0x30 :
+          zOperand=peekImmediate();
+          this.INSTR_BMI(zOperand);
+          break;
+        case 0x50 :
+          zOperand=peekImmediate();
+          this.INSTR_BVC(zOperand);
+          break;
+        case 0x70 :
+          zOperand=peekImmediate();
+          this.INSTR_BVS(zOperand);
+          break;
+        case 0x90 :
+          zOperand=peekImmediate();
+          this.INSTR_BCC(zOperand);
+          break;
+        case 0xB0 :
+          zOperand=peekImmediate();
+          this.INSTR_BCS(zOperand);
+          break;
+        case 0xD0 :
+          zOperand=peekImmediate();
+          this.INSTR_BNE(zOperand);
+          break;
+        case 0xF0 :
+          zOperand=peekImmediate();
+          this.INSTR_BEQ(zOperand);
+          break;
+        case 0x87 :
+        case 0x97 :
+        case 0x83 :
+        case 0x8F :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_sax(zOperand, zOperandAddress);
+          break;
+        case 0xA3 :
+        case 0xA7 :
+        case 0xB3 :
+        case 0xAF :
+        case 0xB7 :
+        case 0xBF :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_lax(zOperand);
+          break;
+        case 0xCB :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_sbx(zOperand);
+          break;
+        case 0x04 : 
+        case 0x0C : 
+        case 0x14 :
+        case 0x1C :
+        case 0x1A :
+        case 0x34 :
+        case 0x3C : 
+        case 0x3A :
+        case 0x44 :
+        case 0x54 :
+        case 0x5C :
+        case 0x5A :
+        case 0x64 :
+        case 0x74 :
+        case 0x7C :
+        case 0x7A :
+        case 0x80 :
+        case 0x82 :
+        case 0x89 : 
+        case 0xC2 :
+        case 0xD4 :
+        case 0xDC :
+        case 0xDA :
+        case 0xE2 :
+        case 0xF4 :
+        case 0xFC :
+        case 0xFA :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_nop(zOperand);
+          break;
+        case 0xC3 :
+        case 0xC7 :
+        case 0xCF :
+        case 0xD3 :
+        case 0xD7 :
+        case 0xDB :
+        case 0xDF :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_dcp(zOperand, zOperandAddress);
+          break;
+        case 0xE3 :
+        case 0xE7 :
+        case 0xEF :
+        case 0xF3 :
+        case 0xF7 :
+        case 0xFB :
+        case 0xFF :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_isb(zOperand, zOperandAddress);
+          break;
+        case 0x03 :
+        case 0x07 :
+        case 0x0F :
+        case 0x13 :
+        case 0x17 :
+        case 0x1B :
+        case 0x1F :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_slo(zOperand, zOperandAddress);
+          break;
+        case 0x4B :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          this.INSTR_asr(zOperand);
+          break;    
+        case 0x27 :
+        case 0x37 :
+        case 0x2F :
+        case 0x3F :
+        case 0x3B :
+        case 0x23 :
+        case 0x33 :
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperandAddress=this.myLastOperandAddress;
+          this.INSTR_rla(zOperand, zOperandAddress);
+          break;
+        default :
+          console.log("Instruction not recognized");
+      }
+    }
+  }
 }
