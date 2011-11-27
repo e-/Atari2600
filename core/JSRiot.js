@@ -56,6 +56,7 @@ function JSRiot(console) {
         var shift = PAGE_SHIFT;
         var mask = PAGE_MASK;
         
+        assert((0x1080 & mask) == 0);
         // We're installing in a 2600 system
         for(var address = 0; address < 8192; address += (1 << shift)) {
             if((address & 0x1080) == 0x0080) {
@@ -172,6 +173,7 @@ function JSRiot(console) {
                 zReturn=0; break;
             }
         }
+        assert((zReturn>=0)&&(zReturn<0x100));
         return zReturn;
     }
     
