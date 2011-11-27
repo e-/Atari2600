@@ -1554,7 +1554,7 @@ function JSTIA(aConsole) {
       {
        
         var zPreviousValue=this.myTIAPokeRegister[addr]; //remember what the previous value was, just in case someone below wants to know
-        
+       //ASDF 
         this.myTIAPokeRegister[addr]=aByteValue;  //SETS THE NEW VALUE!
              
         switch(addr) {
@@ -1592,6 +1592,7 @@ function JSTIA(aConsole) {
             {
                 // Is the dump to ground path being set for I0, I1, I2, and I3?
               	console.log(aByteValue, zPreviousValue); 
+                 
                 if (((aByteValue & BIT1) != 0) &&((zPreviousValue & BIT1)==0)) //AUTO DETECT FRAME HEIGHT
                 {
                     //TODO : have this done only when in detection mode
@@ -1610,7 +1611,6 @@ function JSTIA(aConsole) {
                 }//end : turned VBlank ON
                 else if (((aByteValue & BIT1) == 0) && ((zPreviousValue & BIT1)!=0)) 
                 {
-                    
                     this.myVBlankOff=this.scanlines();
                     
     //              console.log("Debug : VBLANK OFF, value=" + aByteValue + ", scanlines()==" + this.scanlines()); 
@@ -1679,7 +1679,7 @@ function JSTIA(aConsole) {
             case COLUPF:    // COLUM PF
             case COLUBK:    // COLUM BK
             {
-                var zColor = (aByteValue & 0xfe);
+                var zColor = Math.floor(aByteValue & 0xfe);
                 if(this.myColorLossEnabled && this.bool(this.myScanlineCountForLastFrame & BIT0))  zColor |= BIT0;
                 this.myTIAPokeRegister[addr]=zColor;
                 break;
