@@ -1,94 +1,93 @@
-function PageAccess() {
-  var serialVersionUID;
-  var myDirectPeekBaseIndex = 0;
-  var myDirectPokeBaseIndex = 0;
-  var myDirectPeekMemory = null;
-  var myDirectPokeMemory = null;
-  var myDevice = null;l
+function PageAccess(aDevice) {
+  this.serialVersionUID = -6487146100140974640;
+  this.myDirectPeekBaseIndex = 0;
+  this.myDirectPokeBaseIndex = 0;
+  this.myDirectPeekMemory = null;
+  this.myDirectPokeMemory = null;
+  this.myDevice = null;
 
-  var PageAccess = function (aDevice) {
-    this.setDevice(aDevice);
-  }
-  var writeObject = function (out) {
+  this.writeObject = function (out) {
     out.defaultWriteObject();
   }
-  var readObject = function (inn) {
+  this.readObject = function (inn) {
     inn.defaultReadObject();
   }
-  var createDirectPeekAccess = function (aDevice, aDirectPeekMemory, aDirectPeekBaseIndex) {
+  this.createDirectPeekAccess = function (aDevice, aDirectPeekMemory, aDirectPeekBaseIndex) {
     var zReturn = new PageAccess(aDevice);
     zReturn.setDirectPeekMemory(aDirectPeekMemory, aDirectPeekBaseIndeX);
     return zReturn;
   }
-  var createDirectPokeAccess = function (aDevice, aDirectPokeMemory, aDirectPokeBaseIndex) {
+  this.createDirectPokeAccess = function (aDevice, aDirectPokeMemory, aDirectPokeBaseIndex) {
     var zReturn = new PageAccess(aDevice);
     zReturn.setDirectPokeMemory(aDirectPokeMemory, aDirectPokeBaseIndex);
     return zReturn;
   }
-  var createIndirectAccess = function (aDevice) {
+  this.createIndirectAccess = function (aDevice) {
     var zReturn = new PageAccess(aDevice);
     zReturn.setIndirectMode();
     return zReturn;
   }
-  var copyDataForm = function (aPA) {
+  this.copyDataFrom = function (aPA) {
     this.myDevice = aPA.myDevice;
     this.myDirectPeekMemory = aPA.myDirectPeekMemory;
     this.myDirectPokeMemory = aPA.myDirectPokeMemory;
     this.myDirectPeekBaseIndex = aPA.myDirectPeekBaseIndex;
     this.myDirectPokeBaseIndex = aPA.myDirectPokeBaseIndex;
   }
-  var usesDirectPeek = function () {
+  this.usesDirectPeek = function () {
     return (this.myDirectPeekMemory != null);
   }
-  var usesDirectPoke = function() {
+  this.usesDirectPoke = function() {
     return (this.myDirectPokeMemory != null);
   }
-  var directPoke = function(aPageOffset, aByteValue) {
+  this.directPoke = function(aPageOffset, aByteValue) {
     this.myDirectPokeMemory[this.myDirectPokeBaseIndex + aPageOffset] = aByteValue;
   }
-  var directPeek = function (aPageOffset) {
+  this.directPeek = function (aPageOffset) {
     var zReturn = 0;
     zReturn = this.myDirectPeekMemory[this.myDirectPeekBaseIndex + aPageOffset];
     return zReturn;
   }
-  var setDevice = function (aDevice){
+  this.setDevice = function (aDevice){
     this.myDevice = aDevice;
   }
-  var getDevice = function () {
+  this.getDevice = function () {
     return this.myDevice;
   }
 
-  var pagePoke = function(aAddress, aValue) {
+  this.pagePoke = function(aAddress, aValue) {
     this.directPoke(aAddress, aValue);
   }
-  var pagePeek = function(aAddress) {
+  this.pagePeek = function(aAddress) {
     return this.directPoke(aAddress);
   }
-  var peek = function(aAddress) {
+  this.peek = function(aAddress) {
     if (this.usesDirectPeek() == true) return this.directPeek(aAddress & PAGE_MASK);
     else return this.getDevice().peek(aAddress);
   }
-  var poke = function (aAddress, aByteValue) {
+  this.poke = function (aAddress, aByteValue) {
     if (this.usesDirectPoke() == true) return this.directPoke((aAddress & PAGE_MAGE), aByteValue);
     else this.getDevice().poke(aAddress, aByteValue);
   }
-  var setIndirectMode = function () {
+  this.setIndirectMode = function () {
     this.setDirectPeekMemory(null, 0);
     this.setDirectPokeMemory(null, 0);
   }
-  var getDirectPeekMemory = function () {
+  this.getDirectPeekMemory = function () {
     return this.myDirectPeekMemory;
   }
 
-  var setDirectPeekMemory = function (aDirectPeekMemory, aDirectPeekBaseIndex) {
+  this.setDirectPeekMemory = function (aDirectPeekMemory, aDirectPeekBaseIndex) {
     this.myDirectPeekMemory = aDirectPeekMemory;
     this.myDirectPeekBaseIndex = aDirectPeekBaseIndex;
   }
-  var getDirectPokeMemory = function () {
+  this.getDirectPokeMemory = function () {
     return this.myDirectPokeMemory;
   }
-  var setDirectPokeMemory = function (aDirectPokeMemory, aDirectPokeBaseIndex) {
+  this.setDirectPokeMemory = function (aDirectPokeMemory, aDirectPokeBaseIndex) {
     this.myDirectPockMemory = aDirectPokeMemory;
     this.myDirectPokeBaseIndex = aDirectPokeBaseIndex;
   }
+
+   this.setDevice(aDevice);
 }
