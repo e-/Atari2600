@@ -363,15 +363,14 @@ function J6507(aSystem) {
     return ((((aAddrA)^(aAddrB)) & 0xFF00)!=0);
   }
   this.execute = function(aRepeats) {
-    var Repeats = aRepeats;
-    if (aRepeats === undefined || aRepeats === null) Repeats = -1;
+    if (aRepeats === undefined || aRepeats === null) aRepeats = -1;
     
     var zContinue = true;
     this.myExecutionStatus &= this.FatalErrorBit;
     var zCounter = 0;
 
     while (zContinue) {
-      if ((Repeats >= 0) && (zCounter == Repeats)) {
+      if ((aRepeats >= 0) && (zCounter == aRepeats)) {
         zContinue = false;
         break;
       }
@@ -749,7 +748,7 @@ function J6507(aSystem) {
 //					return;
       }
       var zCycles = this.calculateCycles(this.IR) - this.myCyclesSignaled;
-      if (zCycles > 0) {
+      if (zCycles < 0) {
         var zDebug = 20;
       }
       assert(zCycles>=0);
@@ -866,7 +865,7 @@ function J6507(aSystem) {
     var zLowByte = this.peek(zZeroPage);
     var zHighByte = this.peek(zZeroPage + 1);
     var zAddr = (zLowByte | (zHighByte << 8)) + this.Y;
-    if (zLowByte + this.y > 0xFF) {
+    if (zLowByte + this.Y > 0xFF) {
       this.peek(zAddr);
       this.myPageCrossed = true;
     }
