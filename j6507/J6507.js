@@ -15,85 +15,85 @@ function J6507() {
     ZeroY: "ZeroY"
   };
   this.ourAddressingModeTable = [
-    AddressingMode.Implied,    AddressingMode.IndirectX, AddressingMode.Invalid,   AddressingMode.IndirectX,    // 0x0?
-    AddressingMode.Zero,   AddressingMode.Zero,      AddressingMode.Zero,      AddressingMode.Zero,
-    AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
-    AddressingMode.Absolute,   AddressingMode.Absolute,  AddressingMode.Absolute,  AddressingMode.Absolute,
+    this.AddressingMode.Implied,    this.AddressingMode.IndirectX, this.AddressingMode.Invalid,   this.AddressingMode.IndirectX,    // 0x0?
+    this.AddressingMode.Zero,   this.AddressingMode.Zero,      this.AddressingMode.Zero,      this.AddressingMode.Zero,
+    this.AddressingMode.Implied,    this.AddressingMode.Immediate, this.AddressingMode.Implied,   this.AddressingMode.Immediate,
+    this.AddressingMode.Absolute,   this.AddressingMode.Absolute,  this.AddressingMode.Absolute,  this.AddressingMode.Absolute,
     
-    AddressingMode.Relative,   AddressingMode.IndirectY, AddressingMode.Invalid,   AddressingMode.IndirectY,    // 0x1?
-    AddressingMode.ZeroX,  AddressingMode.ZeroX,     AddressingMode.ZeroX,     AddressingMode.ZeroX,
-    AddressingMode.Implied,    AddressingMode.AbsoluteY, AddressingMode.Implied,   AddressingMode.AbsoluteY,
-    AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteX, AddressingMode.AbsoluteX,
+    this.AddressingMode.Relative,   this.AddressingMode.IndirectY, this.AddressingMode.Invalid,   this.AddressingMode.IndirectY,    // 0x1?
+    this.AddressingMode.ZeroX,  this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,
+    this.AddressingMode.Implied,    this.AddressingMode.AbsoluteY, this.AddressingMode.Implied,   this.AddressingMode.AbsoluteY,
+    this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX,
     
-    AddressingMode.Absolute,   AddressingMode.IndirectX, AddressingMode.Invalid,   AddressingMode.IndirectX,    // 0x2?
-    AddressingMode.Zero,   AddressingMode.Zero,  AddressingMode.Zero,  AddressingMode.Zero,
-    AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
-    AddressingMode.Absolute,   AddressingMode.Absolute,  AddressingMode.Absolute,  AddressingMode.Absolute,
+    this.AddressingMode.Absolute,   this.AddressingMode.IndirectX, this.AddressingMode.Invalid,   this.AddressingMode.IndirectX,    // 0x2?
+    this.AddressingMode.Zero,   this.AddressingMode.Zero,  this.AddressingMode.Zero,  this.AddressingMode.Zero,
+    this.AddressingMode.Implied,    this.AddressingMode.Immediate, this.AddressingMode.Implied,   this.AddressingMode.Immediate,
+    this.AddressingMode.Absolute,   this.AddressingMode.Absolute,  this.AddressingMode.Absolute,  this.AddressingMode.Absolute,
     
-    AddressingMode.Relative,   AddressingMode.IndirectY, AddressingMode.Invalid,   AddressingMode.IndirectY,    // 0x3?
-    AddressingMode.ZeroX,  AddressingMode.ZeroX,     AddressingMode.ZeroX,     AddressingMode.ZeroX,
-    AddressingMode.Implied,    AddressingMode.AbsoluteY, AddressingMode.Implied,   AddressingMode.AbsoluteY,
-    AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteX, AddressingMode.AbsoluteX,
+    this.AddressingMode.Relative,   this.AddressingMode.IndirectY, this.AddressingMode.Invalid,   this.AddressingMode.IndirectY,    // 0x3?
+    this.AddressingMode.ZeroX,  this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,
+    this.AddressingMode.Implied,    this.AddressingMode.AbsoluteY, this.AddressingMode.Implied,   this.AddressingMode.AbsoluteY,
+    this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX,
     
-    AddressingMode.Implied,    AddressingMode.IndirectX, AddressingMode.Invalid,   AddressingMode.IndirectX,    // 0x4?
-    AddressingMode.Zero,   AddressingMode.Zero,  AddressingMode.Zero,  AddressingMode.Zero,
-    AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
-    AddressingMode.Absolute,   AddressingMode.Absolute,  AddressingMode.Absolute,  AddressingMode.Absolute,
+    this.AddressingMode.Implied,    this.AddressingMode.IndirectX, this.AddressingMode.Invalid,   this.AddressingMode.IndirectX,    // 0x4?
+    this.AddressingMode.Zero,   this.AddressingMode.Zero,  this.AddressingMode.Zero,  this.AddressingMode.Zero,
+    this.AddressingMode.Implied,    this.AddressingMode.Immediate, this.AddressingMode.Implied,   this.AddressingMode.Immediate,
+    this.AddressingMode.Absolute,   this.AddressingMode.Absolute,  this.AddressingMode.Absolute,  this.AddressingMode.Absolute,
     
-    AddressingMode.Relative,   AddressingMode.IndirectY, AddressingMode.Invalid,   AddressingMode.IndirectY,    // 0x5?
-    AddressingMode.ZeroX,  AddressingMode.ZeroX,     AddressingMode.ZeroX,     AddressingMode.ZeroX,
-    AddressingMode.Implied,    AddressingMode.AbsoluteY, AddressingMode.Implied,   AddressingMode.AbsoluteY,
-    AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteX, AddressingMode.AbsoluteX,
+    this.AddressingMode.Relative,   this.AddressingMode.IndirectY, this.AddressingMode.Invalid,   this.AddressingMode.IndirectY,    // 0x5?
+    this.AddressingMode.ZeroX,  this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,
+    this.AddressingMode.Implied,    this.AddressingMode.AbsoluteY, this.AddressingMode.Implied,   this.AddressingMode.AbsoluteY,
+    this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX,
     
-    AddressingMode.Implied,    AddressingMode.IndirectX, AddressingMode.Invalid,   AddressingMode.IndirectX,    // 0x6?
-    AddressingMode.Zero,   AddressingMode.Zero,  AddressingMode.Zero,  AddressingMode.Zero,
-    AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
-    AddressingMode.Indirect,   AddressingMode.Absolute,  AddressingMode.Absolute,  AddressingMode.Absolute,
+    this.AddressingMode.Implied,    this.AddressingMode.IndirectX, this.AddressingMode.Invalid,   this.AddressingMode.IndirectX,    // 0x6?
+    this.AddressingMode.Zero,   this.AddressingMode.Zero,  this.AddressingMode.Zero,  this.AddressingMode.Zero,
+    this.AddressingMode.Implied,    this.AddressingMode.Immediate, this.AddressingMode.Implied,   this.AddressingMode.Immediate,
+    this.AddressingMode.Indirect,   this.AddressingMode.Absolute,  this.AddressingMode.Absolute,  this.AddressingMode.Absolute,
     
-    AddressingMode.Relative,   AddressingMode.IndirectY, AddressingMode.Invalid,   AddressingMode.IndirectY,    // 0x7?
-    AddressingMode.ZeroX,  AddressingMode.ZeroX,     AddressingMode.ZeroX,     AddressingMode.ZeroX,
-    AddressingMode.Implied,    AddressingMode.AbsoluteY, AddressingMode.Implied,   AddressingMode.AbsoluteY,
-    AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteX, AddressingMode.AbsoluteX,
+    this.AddressingMode.Relative,   this.AddressingMode.IndirectY, this.AddressingMode.Invalid,   this.AddressingMode.IndirectY,    // 0x7?
+    this.AddressingMode.ZeroX,  this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,
+    this.AddressingMode.Implied,    this.AddressingMode.AbsoluteY, this.AddressingMode.Implied,   this.AddressingMode.AbsoluteY,
+    this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX,
     
-    AddressingMode.Immediate,  AddressingMode.IndirectX, AddressingMode.Immediate, AddressingMode.IndirectX,    // 0x8?
-    AddressingMode.Zero,   AddressingMode.Zero,  AddressingMode.Zero,  AddressingMode.Zero,
-    AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
-    AddressingMode.Absolute,   AddressingMode.Absolute,  AddressingMode.Absolute,  AddressingMode.Absolute,
+    this.AddressingMode.Immediate,  this.AddressingMode.IndirectX, this.AddressingMode.Immediate, this.AddressingMode.IndirectX,    // 0x8?
+    this.AddressingMode.Zero,   this.AddressingMode.Zero,  this.AddressingMode.Zero,  this.AddressingMode.Zero,
+    this.AddressingMode.Implied,    this.AddressingMode.Immediate, this.AddressingMode.Implied,   this.AddressingMode.Immediate,
+    this.AddressingMode.Absolute,   this.AddressingMode.Absolute,  this.AddressingMode.Absolute,  this.AddressingMode.Absolute,
     
-    AddressingMode.Relative,   AddressingMode.IndirectY, AddressingMode.Invalid,   AddressingMode.IndirectY,    // 0x9?
-    AddressingMode.ZeroX,  AddressingMode.ZeroX,     AddressingMode.ZeroY,     AddressingMode.ZeroY,
-    AddressingMode.Implied,    AddressingMode.AbsoluteY, AddressingMode.Implied,   AddressingMode.AbsoluteY,
-    AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteY, AddressingMode.AbsoluteY,
+    this.AddressingMode.Relative,   this.AddressingMode.IndirectY, this.AddressingMode.Invalid,   this.AddressingMode.IndirectY,    // 0x9?
+    this.AddressingMode.ZeroX,  this.AddressingMode.ZeroX,     this.AddressingMode.ZeroY,     this.AddressingMode.ZeroY,
+    this.AddressingMode.Implied,    this.AddressingMode.AbsoluteY, this.AddressingMode.Implied,   this.AddressingMode.AbsoluteY,
+    this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteY, this.AddressingMode.AbsoluteY,
     
-    AddressingMode.Immediate,  AddressingMode.IndirectX, AddressingMode.Immediate, AddressingMode.IndirectX,    // 0xA?
-    AddressingMode.Zero,   AddressingMode.Zero,  AddressingMode.Zero,  AddressingMode.Zero,
-    AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
-    AddressingMode.Absolute,   AddressingMode.Absolute,  AddressingMode.Absolute,  AddressingMode.Absolute,
+    this.AddressingMode.Immediate,  this.AddressingMode.IndirectX, this.AddressingMode.Immediate, this.AddressingMode.IndirectX,    // 0xA?
+    this.AddressingMode.Zero,   this.AddressingMode.Zero,  this.AddressingMode.Zero,  this.AddressingMode.Zero,
+    this.AddressingMode.Implied,    this.AddressingMode.Immediate, this.AddressingMode.Implied,   this.AddressingMode.Immediate,
+    this.AddressingMode.Absolute,   this.AddressingMode.Absolute,  this.AddressingMode.Absolute,  this.AddressingMode.Absolute,
     
-    AddressingMode.Relative,   AddressingMode.IndirectY, AddressingMode.Invalid,   AddressingMode.IndirectY,    // 0xB?
-    AddressingMode.ZeroX,  AddressingMode.ZeroX,     AddressingMode.ZeroY,     AddressingMode.ZeroY,
-    AddressingMode.Implied,    AddressingMode.AbsoluteY, AddressingMode.Implied,   AddressingMode.AbsoluteY,
-    AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteY, AddressingMode.AbsoluteY,
+    this.AddressingMode.Relative,   this.AddressingMode.IndirectY, this.AddressingMode.Invalid,   this.AddressingMode.IndirectY,    // 0xB?
+    this.AddressingMode.ZeroX,  this.AddressingMode.ZeroX,     this.AddressingMode.ZeroY,     this.AddressingMode.ZeroY,
+    this.AddressingMode.Implied,    this.AddressingMode.AbsoluteY, this.AddressingMode.Implied,   this.AddressingMode.AbsoluteY,
+    this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteY, this.AddressingMode.AbsoluteY,
     
-    AddressingMode.Immediate,  AddressingMode.IndirectX, AddressingMode.Immediate, AddressingMode.IndirectX,    // 0xC?
-    AddressingMode.Zero,   AddressingMode.Zero,  AddressingMode.Zero,  AddressingMode.Zero,
-    AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
-    AddressingMode.Absolute,   AddressingMode.Absolute,  AddressingMode.Absolute,  AddressingMode.Absolute,
+    this.AddressingMode.Immediate,  this.AddressingMode.IndirectX, this.AddressingMode.Immediate, this.AddressingMode.IndirectX,    // 0xC?
+    this.AddressingMode.Zero,   this.AddressingMode.Zero,  this.AddressingMode.Zero,  this.AddressingMode.Zero,
+    this.AddressingMode.Implied,    this.AddressingMode.Immediate, this.AddressingMode.Implied,   this.AddressingMode.Immediate,
+    this.AddressingMode.Absolute,   this.AddressingMode.Absolute,  this.AddressingMode.Absolute,  this.AddressingMode.Absolute,
     
-    AddressingMode.Relative,   AddressingMode.IndirectY, AddressingMode.Invalid,   AddressingMode.IndirectY,    // 0xD?
-    AddressingMode.ZeroX,  AddressingMode.ZeroX,     AddressingMode.ZeroX,     AddressingMode.ZeroX,
-    AddressingMode.Implied,    AddressingMode.AbsoluteY, AddressingMode.Implied,   AddressingMode.AbsoluteY,
-    AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteX, AddressingMode.AbsoluteX,
+    this.AddressingMode.Relative,   this.AddressingMode.IndirectY, this.AddressingMode.Invalid,   this.AddressingMode.IndirectY,    // 0xD?
+    this.AddressingMode.ZeroX,  this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,
+    this.AddressingMode.Implied,    this.AddressingMode.AbsoluteY, this.AddressingMode.Implied,   this.AddressingMode.AbsoluteY,
+    this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX,
     
-    AddressingMode.Immediate,  AddressingMode.IndirectX, AddressingMode.Immediate, AddressingMode.IndirectX,    // 0xE?
-    AddressingMode.Zero,   AddressingMode.Zero,  AddressingMode.Zero,  AddressingMode.Zero,
-    AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
-    AddressingMode.Absolute,   AddressingMode.Absolute,  AddressingMode.Absolute,  AddressingMode.Absolute,
+    this.AddressingMode.Immediate,  this.AddressingMode.IndirectX, this.AddressingMode.Immediate, this.AddressingMode.IndirectX,    // 0xE?
+    this.AddressingMode.Zero,   this.AddressingMode.Zero,  this.AddressingMode.Zero,  this.AddressingMode.Zero,
+    this.AddressingMode.Implied,    this.AddressingMode.Immediate, this.AddressingMode.Implied,   this.AddressingMode.Immediate,
+    this.AddressingMode.Absolute,   this.AddressingMode.Absolute,  this.AddressingMode.Absolute,  this.AddressingMode.Absolute,
     
-    AddressingMode.Relative,   AddressingMode.IndirectY, AddressingMode.Invalid,   AddressingMode.IndirectY,    // 0xF?
-    AddressingMode.ZeroX,  AddressingMode.ZeroX,     AddressingMode.ZeroX,     AddressingMode.ZeroX,
-    AddressingMode.Implied,    AddressingMode.AbsoluteY, AddressingMode.Implied,   AddressingMode.AbsoluteY,
-    AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteX, AddressingMode.AbsoluteX
+    this.AddressingMode.Relative,   this.AddressingMode.IndirectY, this.AddressingMode.Invalid,   this.AddressingMode.IndirectY,    // 0xF?
+    this.AddressingMode.ZeroX,  this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,     this.AddressingMode.ZeroX,
+    this.AddressingMode.Implied,    this.AddressingMode.AbsoluteY, this.AddressingMode.Implied,   this.AddressingMode.AbsoluteY,
+    this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX
   ];
   
   this.InstructionProcessorCycleTable = [
@@ -890,7 +890,7 @@ function J6507() {
     }
   }
   this.poke = function(aAddress, aByteValue) {
-    assert((aByteValue<0x100)&&(aByteValue)>=0x00));
+    assert((aByteValue<0x100)&&(aByteValue)>=0x00);
     if (aAddress >= 0) {
       this.myCurrentSystem.poke(aAdress, aByteValue);
     }

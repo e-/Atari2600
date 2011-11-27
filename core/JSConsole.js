@@ -254,15 +254,15 @@ function JSConsole (aConsoleClient) {
 //    
 //    
 //    
-//    public void setTelevisionMode(int aTelevisionMode)
-//    {
-//        myTelevisionMode=aTelevisionMode;
-//    }
-//    
-//    public int getTelevisionMode()
-//    {
-//        return myTelevisionMode;
-//    }
+    this.setTelevisionMode = function(aTelevisionMode)
+    {
+			this.myTelevisionMode=aTelevisionMode;
+    }
+    
+    this.getTelevisionMode = function()
+    {
+        return this.myTelevisionMode;
+    }
 //    
 //    // ===================== Cartridge related methods ============================
 //    
@@ -296,8 +296,6 @@ function JSConsole (aConsoleClient) {
   //      mySystem.reset();
        	console.log("JStella display: YStart=" + this.myYStart + ", DisplayHeight=" + this.myDisplayHeight);
     }
-    
-    
     
     
 		this.insertCartridge = function (aCart)
@@ -373,53 +371,40 @@ function JSConsole (aConsoleClient) {
 //     * what the designated frame rate is.
 //     * @throws jstella.core.JSException
 //     */
-//    public synchronized void doFrame() throws JSException {
-//        //profiling note - Sep 3 2007 - it seems that a lot of times, whenever doFrame() lasts long (e.g. 59 milliseconds), that 
-//        //  the processFrame is taking up most of the time
-//        
-//        if (myVideo!=null)
-//        {   
-//         
-//        if (getTelevisionMode()==TELEVISION_MODE_GAME)
-//        {
-//            if (myCart!=null) 
-//            {
-//          //   long zTimeA=System.nanoTime();
-//            myTIA.processFrame();    
-//         //   long zTimeC=System.nanoTime();
+    this.doFrame = function(){
+        //profiling note - Sep 3 2007 - it seems that a lot of times, whenever doFrame() lasts long (e.g. 59 milliseconds), that 
+        //  the processFrame is taking up most of the time
+        
+        if (this.myVideo!=null)
+        {   
+         
+        if (this.getTelevisionMode()==TELEVISION_MODE_GAME)
+        {
+            if (this.myCart!=null) 
+            {
+            myTIA.processFrame();    
 //            myVideo.doFrameVideo();
 //            myAudio.doFrameAudio(mySystem.getCycles(), getNominalFrameRate());
-//          //    long zTimeB=System.nanoTime();
-//   /*            //if (JSConsole.DEBUG_MODE_ON==true)
-//         {
-//            int zDeltaBA=(int)(zTimeB - zTimeA) / 1000;
-//              int zDeltaCA=(int)(zTimeC - zTimeA) / 1000;
-//            System.out.println("debug JSConsole : doFrame=" + zDeltaBA + " microseconds, processFrame=" + zDeltaCA + " microsec");
-//        }//end : debug mode on
-//    */
-//       
-//       
-//        
-//       
-//            }//end : cartridge loaded
-//           
-//        }
-//        else if (getTelevisionMode()==TELEVISION_MODE_SNOW)
-//        {
-//            myVideo.doSnow();
-//        }//end : not snow
-//        else if (getTelevisionMode()==TELEVISION_MODE_TEST_PATTERN)
-//        {
-//           myVideo.doTestPattern();  
-//        }//end : test pattern
-//        
-//        }//end : video not null
-//        else  {
-//            System.out.println("JStella Error : cannot animate");
-//            System.exit(1);
-//        }//end : myVideo is null
-//        
-//    }
+            }//end : cartridge loaded
+						else
+							console.log("no cartridege in doFrame JSConsole")
+           
+        }
+        else if (this.getTelevisionMode()==TELEVISION_MODE_SNOW)
+        {
+            myVideo.doSnow();
+        }//end : not snow
+        else if (this.getTelevisionMode()==TELEVISION_MODE_TEST_PATTERN)
+        {
+           myVideo.doTestPattern();  
+        }//end : test pattern
+        
+        }//end : video not null
+        else  {
+            console.log("JStella Error : cannot animate");
+        }//end : myVideo is null
+        
+    }
 //    
 //    public synchronized void updateVideoFrame()
 //    {

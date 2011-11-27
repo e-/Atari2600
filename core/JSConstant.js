@@ -44,10 +44,10 @@
 //    public enum DigitalPin  { One, Two, Three, Four, Six };
 //    public enum AnalogPin   { Five, Nine  };
 //   
-//    public final static int TELEVISION_MODE_OFF=0;
-//    public final static int TELEVISION_MODE_GAME=1;
-//    public final static int TELEVISION_MODE_TEST_PATTERN=2;
-//    public final static int TELEVISION_MODE_SNOW=3;
+    var TELEVISION_MODE_OFF=0;
+    var TELEVISION_MODE_GAME=1;
+    var TELEVISION_MODE_TEST_PATTERN=2;
+		var TELEVISION_MODE_SNOW=3;
 //    
 //    
 //  protected final static int CLOCKS_PER_CPU_CYCLE=3;
