@@ -1,4 +1,4 @@
-function J6507() {
+function J6507(aSystem) {
   this.AddressingMode = {
     Absolute: "Absolute",
     AbsoluteX: "AbsoluteX",
@@ -203,6 +203,7 @@ function J6507() {
   this.notZ = false;
   this.A = 0;
   this.X = 0;
+  this.Y = 0;
   this.SP = 0; 
   this.IR = 0; 
   this.PC = 0;
@@ -216,11 +217,8 @@ function J6507() {
   this.myReadLast = false;
   this.debugStartDump = false;
 
-  this.j6507 = function(aSystem) {
-    // constructor
-  }
   this.getRegisterSnapshot = function() {
-    this.zReturn = [this.A, this.X, this.Y, this.PC, this.SP, this.getFlags()];
+    var zReturn = [this.A, this.X, this.Y, this.PC, this.SP, this.getFlags()];
     return zReturn;
   }
   this.getFlags = function() {
@@ -247,13 +245,16 @@ function J6507() {
   this.getBCDTable = function() {
     return this.BCDTable;
   }
+  this.isN = function() {
+    return this.N;
+  }
   this.setN = function(inputN) {
     if (typeof inputN == "boolean") this.N = inputN;
     if (typeof inputN == "number") this.N = (inputN!=0);
     return this.N;
   }
   this.isV = function() {
-    return V;
+    return this.V;
   }
   this.setV = function(inputV) {
     if(typeof inputV == "boolean") this.V = inputV;
@@ -323,6 +324,7 @@ function J6507() {
   }
   this.getSP = function(aValue) {
     assert((aValue>=0)&&(aValue<0x100));
+    return this.SP;
   }
 	this.setSP = function(aValue) {
         assert((aValue>=0)&&(aValue<0x100));
@@ -1323,5 +1325,6 @@ function J6507() {
     this.poke(operandAddress, operand);
     this.INSTR_ORA(operand);
   }
-
+  //constructor
+  this.install(aSystem);
 }
