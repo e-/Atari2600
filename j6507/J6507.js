@@ -387,7 +387,7 @@ function J6507() {
         case 0x79 :
         case 0x61 :
         case 0x71 :
-          zOperand= this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand= this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_ADC(zOperand);
           break;
         case 0xA9 :
@@ -398,7 +398,7 @@ function J6507() {
         case 0xB9 :
         case 0xA1 :
         case 0xB1 :
-          zOperand= this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand= this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_LDA(zOperand);
           break;
         case 0xA2 :
@@ -406,7 +406,7 @@ function J6507() {
         case 0xB6 :
         case 0xAE :
         case 0xBE :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_LDX(zOperand);
           break;
         case 0xA0 :
@@ -414,7 +414,7 @@ function J6507() {
         case 0xB4 :
         case 0xAC :
         case 0xBC :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_LDY(zOperand);
           break;
         case 0x29 :
@@ -425,7 +425,7 @@ function J6507() {
         case 0x39 :
         case 0x21 :
         case 0x31 :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_AND(zOperand);
           break;
         case 0x0A : this.INSTR_ASLA(); break;
@@ -433,13 +433,13 @@ function J6507() {
         case 0x16 :
         case 0x0E :
         case 0x1E :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_ASL(zOperand, zOperandAddress);
           break;
         case 0x24 :
         case 0x2C :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_BIT(zOperand);
           break;
         case 0x18 : this.INSTR_CLC(); break;
@@ -457,26 +457,26 @@ function J6507() {
         case 0xD9 :
         case 0xC1 :
         case 0xD1 :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_CMP(zOperand);
           break;
         case 0xE0 :
         case 0xE4 :
         case 0xEC :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_CPX(zOperand);
           break;
         case 0xC0 :
         case 0xC4 :
         case 0xCC :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_CPY(zOperand);
           break;
         case 0xC6 :
         case 0xD6 :
         case 0xCE :
         case 0xDE :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_DEC(zOperand, zOperandAddress);
           break;
@@ -488,14 +488,14 @@ function J6507() {
         case 0x59 :
         case 0x41 :
         case 0x51 :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_EOR(zOperand);
           break;
         case 0xE6 :
         case 0xF6 :
         case 0xEE :
         case 0xFE :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_INC(zOperand, zOperandAddress);
           break;
@@ -521,7 +521,7 @@ function J6507() {
         case 0x56 :
         case 0x4E :
         case 0x5E :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_LSR(zOperand, zOperandAddress);
           break;
@@ -535,7 +535,7 @@ function J6507() {
         case 0x19 :
         case 0x01 :
         case 0x11 :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_ORA(zOperand);
           break;
         case 0x9A : this.INSTR_TXS(); break;
@@ -549,7 +549,7 @@ function J6507() {
         case 0x36 :
         case 0x2E :
         case 0x3E :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_ROL(zOperand, zOperandAddress);
           break;
@@ -558,7 +558,7 @@ function J6507() {
         case 0x76 :
         case 0x6E :
         case 0x7E :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_ROR(zOperand, zOperandAddress);
           break;
@@ -572,7 +572,7 @@ function J6507() {
         case 0xF9 :
         case 0xE1 :
         case 0xF1 :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_SBC(zOperand);
           break;
         case 0x85 :
@@ -582,61 +582,61 @@ function J6507() {
         case 0x99 :
         case 0x81 :
         case 0x91 :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_STA(zOperand, zOperandAddress);
           break;
         case 0x86 :
         case 0x96 :
         case 0x8E :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_STX(zOperand, zOperandAddress);
           break;
         case 0x84 :
         case 0x94 :
         case 0x8C :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_STY(zOperand, zOperandAddress);
           break;
         case 0x10 :
-          zOperand=peekImmediate();
+          zOperand=this.peekImmediate();
           this.INSTR_BPL(zOperand);
           break;
         case 0x30 :
-          zOperand=peekImmediate();
+          zOperand=this.peekImmediate();
           this.INSTR_BMI(zOperand);
           break;
         case 0x50 :
-          zOperand=peekImmediate();
+          zOperand=this.peekImmediate();
           this.INSTR_BVC(zOperand);
           break;
         case 0x70 :
-          zOperand=peekImmediate();
+          zOperand=this.peekImmediate();
           this.INSTR_BVS(zOperand);
           break;
         case 0x90 :
-          zOperand=peekImmediate();
+          zOperand=this.peekImmediate();
           this.INSTR_BCC(zOperand);
           break;
         case 0xB0 :
-          zOperand=peekImmediate();
+          zOperand=this.peekImmediate();
           this.INSTR_BCS(zOperand);
           break;
         case 0xD0 :
-          zOperand=peekImmediate();
+          zOperand=this.peekImmediate();
           this.INSTR_BNE(zOperand);
           break;
         case 0xF0 :
-          zOperand=peekImmediate();
+          zOperand=this.peekImmediate();
           this.INSTR_BEQ(zOperand);
           break;
         case 0x87 :
         case 0x97 :
         case 0x83 :
         case 0x8F :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_sax(zOperand, zOperandAddress);
           break;
@@ -646,11 +646,11 @@ function J6507() {
         case 0xAF :
         case 0xB7 :
         case 0xBF :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_lax(zOperand);
           break;
         case 0xCB :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_sbx(zOperand);
           break;
         case 0x04 : 
@@ -680,7 +680,7 @@ function J6507() {
         case 0xF4 :
         case 0xFC :
         case 0xFA :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_nop(zOperand);
           break;
         case 0xC3 :
@@ -690,7 +690,7 @@ function J6507() {
         case 0xD7 :
         case 0xDB :
         case 0xDF :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_dcp(zOperand, zOperandAddress);
           break;
@@ -701,7 +701,7 @@ function J6507() {
         case 0xF7 :
         case 0xFB :
         case 0xFF :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_isb(zOperand, zOperandAddress);
           break;
@@ -712,12 +712,12 @@ function J6507() {
         case 0x17 :
         case 0x1B :
         case 0x1F :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_slo(zOperand, zOperandAddress);
           break;
         case 0x4B :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           this.INSTR_asr(zOperand);
           break;    
         case 0x27 :
@@ -727,7 +727,7 @@ function J6507() {
         case 0x3B :
         case 0x23 :
         case 0x33 :
-          zOperand=this.retrieveOperand(this.ourAddressingModeTable[IR]);
+          zOperand=this.retrieveOperand(this.ourAddressingModeTable[this.IR]);
           zOperandAddress=this.myLastOperandAddress;
           this.INSTR_rla(zOperand, zOperandAddress);
           break;

@@ -2,15 +2,25 @@ function JSConsole (aConsoleClient) {
   this.serialVersionUID = 1;
   this.DEFAULT_YSTART = 34;
   this.DEFAULT_DISPLAY_HEIGHT = 210;
-  this.DEFAULT_DISPLAY_WIDTH = this.CLOCKS_PER_LINE_VISBILE;
+  this.DEFAULT_DISPLAY_WIDTH = CLOCKS_PER_LINE_VISIBLE;
   this.TRASH_FRAMES =60;
 
   this.myFrameRate = 60;
-  this.myDisplayFormat; // TODO
-  this.myStart = this.DEFAUKT_YSTART;
-  this.myConsoleClient = null; // TODO
-  this.myController = null ; // TODO
-
+ 
+ 	this.myDisplayFormat=DisplayFormat.NTSC;
+    
+    
+  this.myDisplayHeight=this.DEFAULT_DISPLAY_HEIGHT;
+  this.myDisplayWidth=this.DEFAULT_DISPLAY_WIDTH;
+  this.myYStart=this.DEFAULT_YSTART;
+	(function(t){console.log(t);})(this);
+    
+  this.myConsoleClient=null;
+    
+  this.myControllers= [];
+    
+    
+ 
   this.mySwitches = 0xFF;
   this.mySystem = null; // TODO
   this.myCart = null; // TODO
@@ -18,7 +28,7 @@ function JSConsole (aConsoleClient) {
   this.myVideo = null; // TODO
   this.myAudio = null; // TODO
 
-  this.myTelevisionMode = this.TELEVISION_MODE_OFF;
+  this.myTelevisionMode = TELEVISION_MODE_OFF;
 
  // this.JSConsole = function (aConsoleClient) {
 //    this.setConsoleClient(aConsoleClient);
@@ -81,37 +91,37 @@ function JSConsole (aConsoleClient) {
 //    
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private void detectDisplayHeight() throws JSException
-//    {
-//       mySystem.reset();
-//        for (int i=0; i<TRASH_FRAMES; i++)
-//        {           
-//            myTIA.processFrame();          
-//        }
-//        
-//       // System.out.println("debug : myDetectedYStop=" + myTIA.getDetectedYStop() + ", myDetectedYStart=" + myTIA.getDetectedYStart());
-//        myDisplayHeight=myTIA.getDetectedYStop() - myTIA.getDetectedYStart(); //getVBlankOn() - myTIA.getVBlankOff();
-//        if (myDisplayHeight<=0) myDisplayHeight += myTIA.getVSyncOn();
-//        myDisplayHeight=Math.min(myDisplayHeight, FRAME_Y_MAX);
-//        
-//        if (myDisplayHeight < FRAME_Y_MIN)
-//        {
-//            //TODO : make sure this doesn't happen
-//            myDisplayHeight=220;
-//            myYStart=34;
-//            
-//            System.out.println("Warning: JStella was unable to detect the proper frame height");
-//           // assert(false);
-//        }//end : less than the min
-//        
-//        myYStart=myTIA.getDetectedYStart();
-//       // System.out.println("Detected display dimensions: yStart=" + myYStart + ", display height=" + myDisplayHeight);
-//        
-//        
-//        if ((myDisplayFormat == DisplayFormat.PAL) && (myDisplayHeight ==210)) myDisplayHeight=250;
-//        
-//        adjustBackBuffer(); 
-//    }
+   	this.detectDisplayHeight = function()
+    {
+  	    this.mySystem.reset();
+        for (var i=0; i<this.TRASH_FRAMES; i++)
+        {           
+            this.myTIA.processFrame();          
+        }
+        
+        console.log("debug : myDetectedYStop=" + this.myTIA.getDetectedYStop() + ", myDetectedYStart=" + this.myTIA.getDetectedYStart());
+        this.myDisplayHeight=this.myTIA.getDetectedYStop() - this.myTIA.getDetectedYStart(); //getVBlankOn() - myTIA.getVBlankOff();
+        if (this.myDisplayHeight<=0) this.myDisplayHeight += this.myTIA.getVSyncOn();
+        this.myDisplayHeight=Math.min(this.myDisplayHeight, FRAME_Y_MAX);
+        
+        if (this.myDisplayHeight < FRAME_Y_MIN)
+        {
+            //TODO : make sure this doesn't happen
+            this.myDisplayHeight=220;
+            this.myYStart=34;
+            
+            console.log("Warning: JStella was unable to detect the proper frame height");
+           // assert(false);
+        }//end : less than the min
+        
+        this.myYStart=this.myTIA.getDetectedYStart();
+       // System.out.println("Detected display dimensions: yStart=" + myYStart + ", display height=" + myDisplayHeight);
+        
+        
+        if ((this.myDisplayFormat == DisplayFormat.PAL) && (this.myDisplayHeight ==210)) this.myDisplayHeight=250;
+        
+        this.adjustBackBuffer(); 
+    }
 //    
     this.detectDisplayFormat = function() {
         // Run the system for 60 frames, looking for PAL scanline patterns
@@ -144,7 +154,7 @@ function JSConsole (aConsoleClient) {
         else this.setDisplayFormat(DisplayFormat.NTSC);
        
         
-       // System.out.println("Display format = " + myDisplayFormat + ", display height=" + myDisplayHeight);
+       console.log("Display format = " + this.myDisplayFormat + ", display height=" + this.myDisplayHeight);
         
     }
 //    
@@ -168,10 +178,11 @@ function JSConsole (aConsoleClient) {
 //       }//end : new value
 //    }
 //    
-//    private void adjustBackBuffer()
-//    {
-//        getVideo().adjustBackBuffer(JSVideo.DEFAULT_WIDTH, myDisplayHeight);
-//    }
+			this.adjustBackBuffer = function()
+    {
+				var t = this.getVideo();
+        t.adjustBackBuffer(t.DEFAULT_WIDTH, this.myDisplayHeight);
+    }
 //    
 //   
 //    
@@ -179,7 +190,7 @@ function JSConsole (aConsoleClient) {
 	   	this.getDisplayHeight = function() { return this.myDisplayHeight; }
 	    this.getYStart = function() {    return this.myYStart; }
 //    
-    	this.setConsoleClient = function(aConsoleClient) { myConsoleClient=aConsoleClient; }
+    	this.setConsoleClient = function(aConsoleClient) { this.myConsoleClient=aConsoleClient; }
 			this.getConsoleClient = function() { return this.myConsoleClient;}
     	this.getController = function(jack) {return (jack == Jack.LEFT) ? this.myControllers[0] : this.myControllers[1];}
 //    
@@ -374,8 +385,8 @@ function JSConsole (aConsoleClient) {
         {
             if (this.myCart!=null) 
             {
-            myTIA.processFrame();    
-//            myVideo.doFrameVideo();
+            this.myTIA.processFrame();    
+            this.myVideo.doFrameVideo();
 //            myAudio.doFrameAudio(mySystem.getCycles(), getNominalFrameRate());
             }//end : cartridge loaded
 						else
@@ -561,8 +572,8 @@ function JSConsole (aConsoleClient) {
         
         
        // this.initializeAudio();
+
         this.initializeVideo();
-        
         this.flipSwitch(ConsoleSwitch.SWITCH_RESET, false);
         this.flipSwitch(ConsoleSwitch.SWITCH_SELECT, false);
         this.flipSwitch(ConsoleSwitch.SWITCH_BW, false);
@@ -579,4 +590,5 @@ function JSConsole (aConsoleClient) {
         
         this.mySystem.attach(this.myRiot);
         this.mySystem.attach(this.myTIA);
+				console.log(this);
 }

@@ -148,14 +148,12 @@ function JStellaCanvas(){
             }//end : changed value
         }
         */
-				/*
-        public void refreshCanvas()
+        this.refreshCanvas = function()
         {
-            updateScale();
+/*            updateScale();
             myRefreshNeeded=true;
-            repaint();
+            repaint();*/
         }
-        */
 				/*
         public boolean getLetterBoxMode()
         {
@@ -207,12 +205,14 @@ function JStellaCanvas(){
 				var x = aOriginalClip.x, y= aOriginalClip.y, w = aOriginalClip.width, h = aOriginalClip.height;
 
 				var i, j, c;
-				for(i=0;i<width;i++){
-					for(j=0;j<height;j++){
+				for(i=0;i<w;i++){
+					for(j=0;j<h;j++){
 						c = aImage[(x+i)*WIDTH+(y+j)];
 						setPixel(t, x+i, y+j, (c >> 16) & 0xFF, (c >> 8) & 0xFF, c & 0xFF);
 					}
 				}
+				
+			putImageData(t);
 /*        setOriginalDimensions(aOriginalWidth, aOriginalHeight);
      
         setClippingRectangle(aOriginalClip);

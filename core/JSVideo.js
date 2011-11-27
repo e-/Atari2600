@@ -176,7 +176,7 @@ function JSVideo(aConsole){
    //     BufferedImage zReturn=GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(aWidth, aHeight);
 				
         //System.out.println("debug: image=" + zReturn);
-				zReturn = new Array(aWidth * aHeight);
+				zReturn = array2d(aWidth, aHeight);
         return zReturn;
         
     }
@@ -463,7 +463,7 @@ function JSVideo(aConsole){
             var zHeight = Math.min(this.getHeight()/*, myBackBuffer.getHeight()*/);
             
             var zBufferIndexAtLineStart = 0;
-            
+          	
             for(var y = 0; y < zHeight; y++) {         //for each line
                 
                 for(var x = 0; x < zWidth; x++) {    //for each pixel on a given line
@@ -475,8 +475,8 @@ function JSVideo(aConsole){
                     //TODO : make the following code more "elegant", and self-explanatory
                     var zOldPaintedColor= this.myResidualColorBuffer[zBufferIndex];
                     var zNewPaintedColor= this.myUsePhosphor ? this.getBlendedColorInt(zOldColorIndex, zNewColorIndex) : this.getColorInt(zNewColorIndex);
-                    
-                    if((zNewPaintedColor != zOldPaintedColor) || (myRedrawTIAIndicator) ) {   // either the color has changed, or we have been ordered to draw it regardless
+                  
+                    if((zNewPaintedColor != zOldPaintedColor) || (this.myRedrawTIAIndicator) ) {   // either the color has changed, or we have been ordered to draw it regardless
                         this.myClipRect.addPoint(x,y);                   // expands the clip rectangle, telling it there is another part of the screen in need of update
                         
                         this.myResidualColorBuffer[zBufferIndex]=zNewPaintedColor;
@@ -514,7 +514,7 @@ function JSVideo(aConsole){
             this.getCanvas().paintCanvas(this.myBackBuffer, this.getWidth(), this.getHeight(), this.myClipRect);
             this.myClipRect.resetRect();
         }//end : canvas not null
-        
+       	else console.log("no canvas!"); 
     }
      /**
      * This method is one of the most important of the program.  It draws the pixels
@@ -524,10 +524,10 @@ function JSVideo(aConsole){
     this.doFrameVideo = function() {
        
        // long zTimeA=System.nanoTime();
-        prepareBackBuffer();
+        this.prepareBackBuffer();
       //  long zTimeB=System.nanoTime();
      
-        paintBackBufferToCanvas();
+        this.paintBackBufferToCanvas();
      //    long zTimeC=System.nanoTime();
    /*        if (JSConsole.DEBUG_MODE_ON==true)
         {
