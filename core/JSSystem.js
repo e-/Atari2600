@@ -202,11 +202,12 @@ function JSSystem(aConsole){
         assert(this.myNumberOfDevices < 100);
        	
 				var flag = false;
-				for(var i in myDeviceList){
-					if(myDeviceList[i] == aDevice) flag=true;
+				var length = this.myDeviceList.length;
+				for(var i=0;i<length;i++){
+					if(this.myDeviceList[i] == aDevice) flag=true;
 				}
 				if(!flag)
-					myDeviceList.push(aDevice);
+					this.myDeviceList.push(aDevice);
    //     if (this.myDeviceList.contains(aDevice)==false) myDeviceList.add(aDevice);   // Add device to my collection of devices
         aDevice.install(this);// Ask the device to install itself
 				}
@@ -277,7 +278,7 @@ function JSSystem(aConsole){
      */
     this.reset = function() {
         this.resetCycles();  // Reset system cycle counter
-        for (var zDev=0;zDev<this.myDeviceList.length;zDev++) { myDeviceList[zDev].reset();   } //resets every device
+        for (var zDev=0;zDev<this.myDeviceList.length;zDev++) { this.myDeviceList[zDev].reset();   } //resets every device
         if(this.myCPU != null)  this.myCPU.reset();  // Now we reset the processor if it exists
     }
     
@@ -373,5 +374,5 @@ function JSSystem(aConsole){
         this.clearPageAccesses(); // Installs null devices for every page
 
         this.myDataBusLocked = false;  // Bus starts out unlocked (in other words, peek() changes myDataBusState)
-        this.attach(new J6507(this)); //creates the CPU and installs it
+        this.attach	(new J6507(this)); //creates the CPU and installs it
 }

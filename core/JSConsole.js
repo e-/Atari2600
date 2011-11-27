@@ -113,40 +113,40 @@ function JSConsole (aConsoleClient) {
 //        adjustBackBuffer(); 
 //    }
 //    
-//    private void detectDisplayFormat() throws JSException {
-//        // Run the system for 60 frames, looking for PAL scanline patterns
-//        // We assume the first 30 frames are garbage, and only consider
-//        // the second 30 (useful to get past SuperCharger BIOS)
-//        // Unfortunately, this means we have to always enable 'fastscbios',
-//        // since otherwise the BIOS loading will take over 250 frames!
-//        mySystem.reset();
-//        
-//        int zPalCount = 0;
-//        
-//        
-//        for (int i=0; i<TRASH_FRAMES; i++)
-//        {
-//            myTIA.processFrame();
-//        }
-//        
-//        for (int i=0; i<30; i++)
-//        {           
-//            myTIA.processFrame();
-//           //  System.out.println("Debug : scan lines=" + myTIA.scanlines());
-//            if(myTIA.scanlines() > 285) 
-//            {
-//                ++zPalCount;
-//               
-//            }//end : >285 lines
-//        }
-//        
-//        if (zPalCount >= 15) setDisplayFormat(DisplayFormat.PAL);
-//        else setDisplayFormat(DisplayFormat.NTSC);
-//       
-//        
-//       // System.out.println("Display format = " + myDisplayFormat + ", display height=" + myDisplayHeight);
-//        
-//    }
+    this.detectDisplayFormat = function() {
+        // Run the system for 60 frames, looking for PAL scanline patterns
+        // We assume the first 30 frames are garbage, and only consider
+        // the second 30 (useful to get past SuperCharger BIOS)
+        // Unfortunately, this means we have to always enable 'fastscbios',
+        // since otherwise the BIOS loading will take over 250 frames!
+        this.mySystem.reset();
+        
+        var zPalCount = 0;
+        
+        
+        for (var i=0; i<this.TRASH_FRAMES; i++)
+        {
+            this.myTIA.processFrame();
+        }
+        
+        for (var i=0; i<30; i++)
+        {           
+            this.myTIA.processFrame();
+           //  System.out.println("Debug : scan lines=" + myTIA.scanlines());
+            if(this.myTIA.scanlines() > 285) 
+            {
+                ++zPalCount;
+               
+            }//end : >285 lines
+        }
+        
+        if (zPalCount >= 15) this.setDisplayFormat(DisplayFormat.PAL);
+        else this.setDisplayFormat(DisplayFormat.NTSC);
+       
+        
+       // System.out.println("Display format = " + myDisplayFormat + ", display height=" + myDisplayHeight);
+        
+    }
 //    
 //    public void changeYStart(int aNewYStart)
 //    {
@@ -185,8 +185,8 @@ function JSConsole (aConsoleClient) {
 //    
 //    public JSController getController(Jack jack) {return (jack == Jack.LEFT) ? myControllers[0] : myControllers[1];}
 //    
-//    public JSTIA getTIA() { return myTIA; }
-//    public JSVideo getVideo() {    return myVideo;  }
+			this.getTIA = function() { return this.myTIA; }
+			this.getVideo = function() {    return this.myVideo;  }
 //    public JSAudio getAudio()   {   return myAudio;  }
 //    public jstella.core.JSSystem getSystem()  { return mySystem; }
 //    public Cartridge getCartridge()  { return myCart; }
@@ -210,10 +210,10 @@ function JSConsole (aConsoleClient) {
 //    }
 //    
 //    
-//  public DisplayFormat getDisplayFormat()
-//  {
-//      return myDisplayFormat;
-//  }
+  	this.getDisplayFormat = function()
+  {
+      return this.myDisplayFormat;
+  }
 //    
 //  private   void setDisplayFormat(DisplayFormat aDisplayFormat) {
 //        myDisplayFormat=aDisplayFormat;
@@ -270,30 +270,30 @@ function JSConsole (aConsoleClient) {
     
     this.insertCartridge2 = function(aCart, aDisplayHeight){
         if ((this.myCart!=null)&&(this.myCart!=aCart)) {
-//TODO            mySystem.unattach(myCart);
-//TODO            reinstallCore();
+	            this.mySystem.unattach(myCart);
+	            this.reinstallCore();
         }//end : previous cartridge is being replaced
         
- //TODO       myVideo.clearBackBuffer();
+ //       myVideo.clearBackBuffer();
  //       myVideo.clearBuffers();
- //       myCart=aCart;
- //       myCart.setConsole(this);
+ 	        this.myCart=aCart;
+ 	       this.myCart.setConsole(this);
         
- //       mySystem.attach(myCart);
- //       mySystem.reset();
+ 	       this.mySystem.attach(this.myCart);
+ 				 this.mySystem.reset();
         //myDisplayFormat = DEFAULT_DISPLAY_FORMAT;//myProperties.get(Properties.PropertyType.Display_Format);
-  //      detectDisplayFormat();
+          this.detectDisplayFormat();
         
-  //      if (aDisplayHeight<=0) detectDisplayHeight();
-  //      else myDisplayHeight=aDisplayHeight;
+  	     if (aDisplayHeight<=0) this.detectDisplayHeight();
+         else this.myDisplayHeight=aDisplayHeight;
   //      adjustBackBuffer();
         
         
         // Make sure height is set properly for PAL ROM
        
-  //      setTelevisionMode(TELEVISION_MODE_GAME);
+        this.setTelevisionMode(TELEVISION_MODE_GAME);
         // Reset, the system to its power-on state
-  //      mySystem.reset();
+        this.mySystem.reset();
        	console.log("JStella display: YStart=" + this.myYStart + ", DisplayHeight=" + this.myDisplayHeight);
     }
     
@@ -584,6 +584,6 @@ function JSConsole (aConsoleClient) {
         this.myRiot = new JSRiot(this);
         this.myTIA = new JSTIA(this);
         
-        mySystem.attach(this.myRiot);
-        mySystem.attach(this.myTIA);
+        this.mySystem.attach(this.myRiot);
+        this.mySystem.attach(this.myTIA);
 }

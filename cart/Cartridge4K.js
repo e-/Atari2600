@@ -31,6 +31,10 @@ function Cartridge4K (image){
     
 		//이하 원래 상속 
 
+this.setConsole = function(aConsole) { myConsole=aConsole; };
+
+  	this.systemCyclesReset = function() {    };
+    
 		this.getMD5 = function(){ return this. myMD5; };
     this.setMD5 = function(aMD5){ this.myMD5=aMD5; };
     
@@ -51,21 +55,20 @@ function Cartridge4K (image){
         
         for(var zAddress = (aStartAddress & ~PAGE_MASK); zAddress < (aEndAddress & ~PAGE_MASK); zAddress += PAGE_SIZE)
         {
-            mySystem.setPageAccess(zAddress >> PAGE_SHIFT, PageAccess.createIndirectAccess(this));
+            mySystem.setPageAccess(zAddress >> PAGE_SHIFT, (new PageAccess()).createIndirectAccess(this));
         } 
     };
     
     this.addDirectPeekAccess = function(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, aBaseAddressOffset)
-    {
-        for(var zAddress = (aStartAddress & ~PAGE_MASK); zAddress < (aEndAddress & ~PAGE_MASK); zAddress += PAGE_SIZE)
-        {
-            mySystem.setPageAccess(zAddress >> PAGE_SHIFT, PageAccess.createDirectPeekAccess(this, aMemory, aBaseAddressOffset + (zAddress & aBaseAddressMask)));
-        }    
-    };
-    
-    this.addDirectPeekAccess = function(aStartAddress, aEndAddress, aMemory, aBaseAddressMask)
      {
-         addDirectPeekAccess(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, 0);
+			 	if(arguments.length == 4)
+	         this.addDirectPeekAccess(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, 0);
+				else  {
+		        for(var zAddress = (aStartAddress & ~PAGE_MASK); zAddress < (aEndAddress & ~PAGE_MASK); zAddress += PAGE_SIZE)
+    	    {
+      	      this.mySystem.setPageAccess(zAddress >> PAGE_SHIFT, (new PageAccess()).createDirectPeekAccess(this, aMemory, aBaseAddressOffset + (zAddress & aBaseAddressMask)));
+        	}  
+				}
      };
     
     this.addDirectPokeAccess = function(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, aBaseAddressOffset)
@@ -100,7 +103,7 @@ function Cartridge4K (image){
     
     this.install = function(system) { //JSSystem?
         this.mySystem = system;        
-        this.addDirectPeekAccess(0x1000, 0x2000, myImage, this.CARTRIDGE_MASK_VALUE);  // Map ROM image into the system
+        this.addDirectPeekAccess(0x1000, 0x2000, this.myImage, this.CARTRIDGE_MASK_VALUE);  // Map ROM image into the system
         
     }
     

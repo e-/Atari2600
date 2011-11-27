@@ -24,8 +24,8 @@ function JSRiot(console) {
     this.systemCyclesReset = function() {
         // JSSystem cycles are being reset to zero so we need to adjust
         // the cycle count we remembered when the timer was last set
-        this.myCyclesWhenTimerSet -= mySystem.getCycles(); // TODO : MYSYSTEM
-        this.myCyclesWhenInterruptReset -= mySystem.getCycles();
+        this.myCyclesWhenTimerSet -= this.mySystem.getCycles(); // TODO : MYSYSTEM
+        this.myCyclesWhenInterruptReset -= this.mySystem.getCycles();
     }
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -45,7 +45,7 @@ function JSRiot(console) {
                     access.setDirectPeekMemory(this.myRAM, address & 0x007f);
                     access.setDirectPokeMemory(this.myRAM, address & 0x007f);
                     
-                    mySystem.setPageAccess((address >> shift), access);
+                    this.mySystem.setPageAccess((address >> shift), access);
                 } else {
                     var access= new PageAccess(this);
                     access.setIndirectMode();//Bases(0,0);//directPeekBase = 0;

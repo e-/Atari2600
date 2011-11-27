@@ -1,4 +1,4 @@
-function JSTIA() {
+function JSTIA(aConsole) {
     this.serialVersionUID = -1703217043035095708;
     //TODO : Maybe get rid of the old offset (0-3) system, as currently used in these masks
     //TODO : Get rid of disabled missile mask table...
@@ -131,7 +131,7 @@ function JSTIA() {
     
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    this.myConsole=console;
+    this.myConsole=aConsole;
         
     this.myColorLossEnabled=false;
     this.myMaximumNumberOfScanlines=LINES_PER_FRAME_TOTAL; //262 scanlines        
@@ -290,8 +290,8 @@ function JSTIA() {
     
     
     
-    this.getAudio = function() { return this.myConsole.getAudio(); }
-    
+   this.getAudio = function() { console.log("NO AUDIO!! in JSTIA"); 
+	 return null; } 
     
     
     
@@ -328,7 +328,7 @@ function JSTIA() {
     this.reset = function() {
         // Reset the sound device
         // dbg.out("RESETTING TIA");
-        this.getAudio().reset(); //The TIA is in charge of the audio, at least as far as system is concerned
+        //this.getAudio().reset(); //The TIA is in charge of the audio, at least as far as system is concerned
         
         for (var i=0; i<this.myTIAPokeRegister.length; i++) {
             this.myTIAPokeRegister[i]=0;
@@ -514,7 +514,7 @@ function JSTIA() {
         
      
         
-        if (!this.myPartialFrameFlag) startFrame();
+        if (!this.myPartialFrameFlag) this.startFrame();
         this.myPartialFrameFlag=true;
         
         

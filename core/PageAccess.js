@@ -14,7 +14,7 @@ function PageAccess(aDevice) {
   }
   this.createDirectPeekAccess = function (aDevice, aDirectPeekMemory, aDirectPeekBaseIndex) {
     var zReturn = new PageAccess(aDevice);
-    zReturn.setDirectPeekMemory(aDirectPeekMemory, aDirectPeekBaseIndeX);
+    zReturn.setDirectPeekMemory(aDirectPeekMemory, aDirectPeekBaseIndex);
     return zReturn;
   }
   this.createDirectPokeAccess = function (aDevice, aDirectPokeMemory, aDirectPokeBaseIndex) {
