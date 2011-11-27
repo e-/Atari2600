@@ -1676,7 +1676,7 @@ function JSTIA(aConsole) {
             case COLUPF:    // COLUM PF
             case COLUBK:    // COLUM BK
             {
-                var zColor = (aByteValue & 0xfe);
+                var zColor = Math.floor(aByteValue & 0xfe);
                 if(this.myColorLossEnabled && this.bool(this.myScanlineCountForLastFrame & BIT0))  zColor |= BIT0;
                 this.myTIAPokeRegister[addr]=zColor;
                 break;
