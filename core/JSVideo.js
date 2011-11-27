@@ -32,6 +32,73 @@
  * @author Bradford W. Mott and the Stella team (original)
  * J.L. Allen (Java translation)
  */
+
+    
+    //==================================================
+    /**
+     * A rectangle that remembers what part of the screen has been changed.
+     * Everytime the drawMediaSource() method encounters a changed pixel,
+     * it informs an object of this class, which resizes to encompass the new
+     * point.
+     */
+    function ClipRectangle(){
+        this.isClear=true;
+        
+        
+        /**
+         * Resets the area of the rectangle.  Should be called every frame.
+         */
+        this.resetRect = function() {
+            this.isClear=true;
+            this.x=0;
+            this.y=0;
+            this.width=0;
+            this.height=0;
+        }
+        
+        
+        
+        /**
+         * Tells the rectangle to expand to encompass the given point.
+         * @param aX X
+         * @param aY Y
+         */
+        this.addPoint = function(aX, aY) {
+            if (this.isClear==true) //first point
+            {
+                this.x=aX - 1;
+                this.y=aY - 1;
+                this.width=3;
+                this.height=3;
+                this.isClear=false;
+            }//end : first point
+            else {
+                if (aX >= (this.x+this.width)) //to the right of rect
+                {
+                    this.width=(aX - this.x)+ 2;
+                } else if (aX <= this.x) //to the left of x
+                {
+                    this.width += (this.x - aX) + 2; //expand width
+                    this.x=aX - 1;
+                }
+                
+                if (aY >= (this.y+this.height)) //below rect
+                {
+                    this.height=(aY -this.y) + 2;
+                } else if (aY <= this.y) //above y
+                {
+                    this.height += (this.y - aY) + 2; //expand height
+                    this.y=aY - 1;
+                }
+                
+            }//end : additional points
+            
+            
+        }//::
+        
+        
+    }//INNER CLASS END
+    
 function JSVideo(aConsole){
     this.serialVersionUID = 701607876730703063;
     
@@ -51,13 +118,10 @@ function JSVideo(aConsole){
 			return (r<<16 | g<<8 | b);
 		}
 
-    static {
         for (var i=0; i<256; i++) {
-            PALETTE_GRAY_STANDARD[i]=getRGB(i,i,i);
+            this.PALETTE_GRAY_STANDARD[i]=getRGB(i,i,i);
         }//end : for i loop
         
-    }//end : static
-    
     this.myConsole=null;
     
     // TIA palettes for normal and phosphor modes
@@ -106,8 +170,10 @@ function JSVideo(aConsole){
     this.createBackBuffer = function(aWidth, aHeight)
     {
        // BufferedImage zReturn=new BufferedImage(aWidth, aHeight, BufferedImage.TYPE_INT_ARGB);
-        BufferedImage zReturn=GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(aWidth, aHeight);
+   //     BufferedImage zReturn=GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(aWidth, aHeight);
+				
         //System.out.println("debug: image=" + zReturn);
+				zReturn = new Array(aWidth, aHeight);
         return zReturn;
         
     }
@@ -149,7 +215,7 @@ function JSVideo(aConsole){
      * @throws java.io.IOException input/output exception
      * @throws java.lang.ClassNotFoundException called if it can't find the class.
      */
-    private void readObject(java.io.ObjectInputStream in)  throws IOException, ClassNotFoundException {
+/*    private void readObject(java.io.ObjectInputStream in)  throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         if (myClipRect==null) myClipRect=new ClipRectangle();
       //  if (myBackBuffer==null) myBackBuffer=createBackBuffer(getWidth(), getHeight()); //new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -161,7 +227,7 @@ function JSVideo(aConsole){
         initialize();
         refresh();
     }
-    
+    */
     
     /**
      * This is a special method that is called by Java's serialization mechanism.
@@ -174,20 +240,20 @@ function JSVideo(aConsole){
     }
     
 
-    private void initPalettes()
+   	this.initPalettes = function()
     {
-        myNormalPalette=new int[256];
-        myBlendedPalette=new int[256][256];
-        myGrayPalette=new int[256];
+        myNormalPalette=new Array(256);
+        myBlendedPalette=arry2d(256, 256);
+        myGrayPalette=new Array(256);
     }
     
     /**
      * Clears the buffers.
      */
-    protected void clearBuffers() {
-        for(int i = 0; i < myCurrentFrameBuffer.length; ++i) {
-            myCurrentFrameBuffer[i] = 0;
-            myPreviousFrameBuffer[i] = 0;
+    this.clearBuffers  = function() {
+        for(var i = 0; i < myCurrentFrameBuffer.length; ++i) {
+            this.myCurrentFrameBuffer[i] = 0;
+            this.myPreviousFrameBuffer[i] = 0;
         }
         
     }
@@ -196,8 +262,8 @@ function JSVideo(aConsole){
      * This is called once a frame to swap the previous and the current frame buffers.
      * The previous becomes the current, and the former current becomes the previous.
      */
-    protected void swapFrameBuffers() {
-        int[] tmp = myCurrentFrameBuffer;
+    this.swapFrameBuffers function() {
+        var tmp = myCurrentFrameBuffer;
         myCurrentFrameBuffer = myPreviousFrameBuffer;
         myPreviousFrameBuffer = tmp;
     }
@@ -210,7 +276,7 @@ function JSVideo(aConsole){
      * </p>
      * @return the current frame buffer
      */
-    protected int[] getCurrentFrameBuffer() { return myCurrentFrameBuffer; }
+    this.getCurrentFrameBuffer = function() { return this.myCurrentFrameBuffer; }
     /**
      * Returns the previous frame buffer.
      * There are two frame buffers, a current and a previous, and they are switched every
@@ -218,20 +284,50 @@ function JSVideo(aConsole){
      * it only has to redraw things that have changed.
      * @return previous frame buffer
      */
-    protected int[] getPreviousFrameBuffer() { return myPreviousFrameBuffer; }
+  	this.getPreviousFrameBuffer = function() { return this.myPreviousFrameBuffer; }
     
     /**
      * Calls the console's getWidth() method.
      * @return width of the display (as far as TIA is concerned)
      */
-    protected int getWidth() { return myConsole.getDisplayWidth();}
+    this.getWidth = function() { return this.myConsole.getDisplayWidth();}
     /**
      * Calls the console's getHeight() method.
      * @return height of the display (as far as TIA is concerned)
      */
-    protected int getHeight() { return myConsole.getDisplayHeight(); }
+    this.getHeight = function() { return this.myConsole.getDisplayHeight(); }
     
     
+    /**
+     * This method signals to the JSVideo that the whole display screen needs to be 
+     * updated.  Normally, for performance reasons, the JSVideo object will only update
+     * those regions of the display that, by its calculations, have changed.  This method 
+     * tells JSVideo to ignore its calculations during the next frame, and redraw the whole
+     * thing.
+     * It does not cause the frame to be redrawn...it merely causes the ENTIRE frame to be
+     * redrawn the next time a redraw occurs.
+     */
+    this.refresh = function() {
+        this.myRedrawTIAIndicator = true;
+    }
+    
+    /**
+     * Repaints the current frame.
+     * This is similar to refresh(), but it also redraws the current frame, whereas refresh waits 
+     * until it's time to redraw the frame again.
+     */
+    this.updateVideoFrame = function() {
+        this.refresh();
+        switch (this.myConsole.getTelevisionMode())
+        {
+            case TELEVISION_MODE_GAME : this.doFrameVideo(); break;
+            case TELEVISION_MODE_SNOW : this.doSnow(); break;
+            case TELEVISION_MODE_TEST_PATTERN : this.doTestPattern(); break;
+        }//end : switch
+        
+    }
+    
+     
     
     
     /**
@@ -241,44 +337,26 @@ function JSVideo(aConsole){
      * it was previously.  Thus, this is only good for one frame, so this is best
      * used when the game is paused.
      */
-    protected void grayCurrentFrame() {
-        boolean zOldMode=myGrayPaletteMode;
+   this.grayCurrentFrame = function() {
+        var zOldMode=myGrayPaletteMode;
         myGrayPaletteMode=true;
-        updateVideoFrame();
+        this.updateVideoFrame();
         myGrayPaletteMode=zOldMode;
         
     }
-    
-    /**
-     * Repaints the current frame.
-     * This is similar to refresh(), but it also redraws the current frame, whereas refresh waits 
-     * until it's time to redraw the frame again.
-     */
-    protected void updateVideoFrame() {
-        
-        refresh();
-        switch (myConsole.getTelevisionMode())
-        {
-            case TELEVISION_MODE_GAME : doFrameVideo(); break;
-            case TELEVISION_MODE_SNOW : doSnow(); break;
-            case TELEVISION_MODE_TEST_PATTERN : doTestPattern(); break;
-        }//end : switch
-        
-    }
-    
-    
+   
     /**
      * Returns the back buffer object
      * @return the back buffer
      */
-    protected BufferedImage getBackBuffer() {
-        return myBackBuffer;
+    this.getBackBuffer = function() {
+        return this.myBackBuffer;
     }
     
     /**
      * Erases any images on the back buffer
      */
-    protected  void clearBackBuffer() {
+   	this.clearBackBuffer = function() {
         Graphics2D z2D=myBackBuffer.createGraphics();
         z2D.setColor(Color.BLACK);
         z2D.fillRect(0,0, myBackBuffer.getWidth(), myBackBuffer.getHeight());
@@ -293,11 +371,12 @@ function JSVideo(aConsole){
      * @param aNewWidth new display width
      * @param aNewHeight new display height
      */
-    protected void adjustBackBuffer(int aNewWidth, int aNewHeight) {
-        if ((aNewWidth>myBackBuffer.getWidth())||(aNewHeight > myBackBuffer.getHeight())) {
+    this.adjustBackBuffer = function(aNewWidth, aNewHeight) {
+				return;
+//        if ((aNewWidth>myBackBuffer.getWidth())||(aNewHeight > myBackBuffer.getHeight())) {
          //   myBackBuffer=createBackBuffer(
-             initBackBuffer(Math.max(myBackBuffer.getWidth(), aNewWidth), Math.max(myBackBuffer.getHeight(), aNewHeight));//new BufferedImage(Math.max(myBackBuffer.getWidth(), aNewWidth), Math.max(myBackBuffer.getHeight(), aNewHeight), BufferedImage.TYPE_INT_ARGB);
-        }//end : needs to be larger
+  //           initBackBuffer(Math.max(myBackBuffer.getWidth(), aNewWidth), Math.max(myBackBuffer.getHeight(), aNewHeight));//new BufferedImage(Math.max(myBackBuffer.getWidth(), aNewWidth), Math.max(myBackBuffer.getHeight(), aNewHeight), BufferedImage.TYPE_INT_ARGB);
+    //    }//end : needs to be larger
     }
     
     
@@ -308,50 +387,35 @@ function JSVideo(aConsole){
     /**
      * Prepares the JSVideo for use.
      */
-    protected void initialize() {
-        setTIAPalette(PALETTE_NTSC);
-    }
-    
-    /**
-     * This method signals to the JSVideo that the whole display screen needs to be 
-     * updated.  Normally, for performance reasons, the JSVideo object will only update
-     * those regions of the display that, by its calculations, have changed.  This method 
-     * tells JSVideo to ignore its calculations during the next frame, and redraw the whole
-     * thing.
-     * It does not cause the frame to be redrawn...it merely causes the ENTIRE frame to be
-     * redrawn the next time a redraw occurs.
-     */
-    protected void refresh() {
-        myRedrawTIAIndicator = true;
+  	this.initialize = function() {
+        this.setTIAPalette(PALETTE_NTSC);
     }
     
     /**
      * This method loads any images needed by the JSVideo object (e.g. the television 
      * test pattern image).  It is called when JSVideo object is created.
      */
-    private void loadImages() {
+    this.loadImages = function() {
         
-        URL zTestPatternURL=this.getClass().getResource(RESOURCE_IMAGE_TEST_PATTERN);
-        if (zTestPatternURL!=null) myTestPattern=new ImageIcon(zTestPatternURL);
-        
-        
+//        URL zTestPatternURL=this.getClass().getResource(RESOURCE_IMAGE_TEST_PATTERN);
+//        if (zTestPatternURL!=null) myTestPattern=new ImageIcon(zTestPatternURL);
     }
     
     /**
      * Draws static ("snow") on the back buffer, and paints the back buffer to the canvas.
      */
-    protected void doSnow() {
-        if (myBackBuffer!=null) {
-            snowBackBuffer();
-            if (getCanvas()!=null) getCanvas().paintCanvas(myBackBuffer, myBackBuffer.getWidth(), myBackBuffer.getHeight());
-        }//end : not null
+    this.doSnow = function() {
+//        if (myBackBuffer!=null) {
+//            snowBackBuffer();
+//            if (getCanvas()!=null) getCanvas().paintCanvas(myBackBuffer, myBackBuffer.getWidth(), myBackBuffer.getHeight());
+//        }//end : not null
     }
     
     /**
      * This sets out random grayscale pixels on the backbuffer to simulate television static
      */
-    private void snowBackBuffer() {
-        if (myBackBuffer!=null) {
+    this.snowBackBuffer = function() {
+/*        if (myBackBuffer!=null) {
             int zWidth=myBackBuffer.getWidth();
             int zHeight=myBackBuffer.getHeight();
             for (int iY=0; iY<zHeight; iY++) {
@@ -364,6 +428,7 @@ function JSVideo(aConsole){
                 
             }//end : for iY
         }//end : back buffer not null
+				*/
     }
     
     /**
@@ -371,19 +436,89 @@ function JSVideo(aConsole){
      * Console's client (i.e. the GUI).
      * @return the current canvas
      */
-    private IfcCanvas getCanvas() {
-        if (myConsole.getConsoleClient()!=null) return myConsole.getConsoleClient().getCanvas();
+    this.getCanvas = function() {
+        if (this.myConsole.getConsoleClient()!=null) return  this.myConsole.getConsoleClient().getCanvas();
         else return null;
     }
     
     
     
+   
+	 	function setRGB(a, x, y, color){
+			a[x][y] = color;
+		}
+
     /**
+     * This method takes data from the TIA object and uses it to draw the back buffer.
+     */
+    this.prepareBackBuffer = function() {
+      
+            var zCurrentBuffer=this.getCurrentFrameBuffer();
+            var zPrevBuffer=this.getPreviousFrameBuffer();
+            if (this.myResidualColorBuffer==null) this.myResidualColorBuffer=new Array(zCurrentBuffer.length); //maybe a better way to set it
+            var zWidth  = Math.min(this.getWidth()/*, myBackBuffer.getWidth()*/);
+            var zHeight = Math.min(this.getHeight()/*, myBackBuffer.getHeight()*/);
+            
+            var zBufferIndexAtLineStart = 0;
+            
+            for(var y = 0; y < zHeight; y++) {         //for each line
+                
+                for(var x = 0; x < zWidth; x++) {    //for each pixel on a given line
+                    var zBufferIndex = zBufferIndexAtLineStart + x;  //determing the buffer index at this given x and y
+                    
+                    var zNewColorIndex = zCurrentBuffer[zBufferIndex];
+                    var zOldColorIndex = zPrevBuffer[zBufferIndex];
+                    
+                    //TODO : make the following code more "elegant", and self-explanatory
+                    var zOldPaintedColor= this.myResidualColorBuffer[zBufferIndex];
+                    var zNewPaintedColor= this.myUsePhosphor ? this.getBlendedColorInt(zOldColorIndex, zNewColorIndex) : this.getColorInt(zNewColorIndex);
+                    
+                    if((zNewPaintedColor != zOldPaintedColor) || (myRedrawTIAIndicator) ) {   // either the color has changed, or we have been ordered to draw it regardless
+                        this.myClipRect.addPoint(x,y);                   // expands the clip rectangle, telling it there is another part of the screen in need of update
+                        
+                        this.myResidualColorBuffer[zBufferIndex]=zNewPaintedColor;
+                        
+                        
+                        
+                        if (this.myBackBufferData!=null) this.myBackBufferData[zBufferIndex]=zNewPaintedColor; //a quicker way if available
+                        else setRGB(this.myBackBuffer, x, y, zNewPaintedColor);     // the actual act of drawing
+                        
+                    }//end : pixel has changed
+                }//end : for x to width loop
+                
+                zBufferIndexAtLineStart += zWidth;  //moving to next line
+            }//end : for y to height loop
+            this.myRedrawTIAIndicator=false;
+       
+    }//::
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * This method paints the back buffer to the previously specified canvas
+     */
+    this.paintBackBufferToCanvas = function() {
+        
+        if (this.getCanvas()!=null) {
+            //Tells the canvas to call the paint command...the coordinates are very important...drawing the screen is incredibly slow, so you must only
+            //draw a portion of it at a time.  The portion that has changed is contained in myClipRect
+            //The calculations are there to scale, converting double into ints by rounding the correct direction
+            
+            this.getCanvas().paintCanvas(this.myBackBuffer, this.getWidth(), this.getHeight(), this.myClipRect);
+            this.myClipRect.resetRect();
+        }//end : canvas not null
+        
+    }
+     /**
      * This method is one of the most important of the program.  It draws the pixels
      * on the back buffer and then tells the component that display the back buffer to
      * repaint itself immediately.
      */
-    protected void doFrameVideo() {
+    this.doFrameVideo = function() {
        
        // long zTimeA=System.nanoTime();
         prepareBackBuffer();
@@ -404,80 +539,13 @@ function JSVideo(aConsole){
     }
     
     /**
-     * This method takes data from the TIA object and uses it to draw the back buffer.
-     */
-    private void prepareBackBuffer() {
-      
-            int[] zCurrentBuffer=getCurrentFrameBuffer();
-            int[] zPrevBuffer=getPreviousFrameBuffer();
-            if (myResidualColorBuffer==null) myResidualColorBuffer=new int[zCurrentBuffer.length]; //maybe a better way to set it
-            int zWidth  = Math.min(getWidth(), myBackBuffer.getWidth());
-            int zHeight = Math.min(getHeight(), myBackBuffer.getHeight());
-            
-            int zBufferIndexAtLineStart = 0;
-            
-            for(int y = 0; y < zHeight; y++) {         //for each line
-                
-                for(int x = 0; x < zWidth; x++) {    //for each pixel on a given line
-                    int zBufferIndex = zBufferIndexAtLineStart + x;  //determing the buffer index at this given x and y
-                    
-                    int zNewColorIndex = zCurrentBuffer[zBufferIndex];
-                    int zOldColorIndex = zPrevBuffer[zBufferIndex];
-                    
-                    //TODO : make the following code more "elegant", and self-explanatory
-                    int zOldPaintedColor= myResidualColorBuffer[zBufferIndex];
-                    int zNewPaintedColor= myUsePhosphor ? getBlendedColorInt(zOldColorIndex, zNewColorIndex) : getColorInt(zNewColorIndex);
-                    
-                    if((zNewPaintedColor != zOldPaintedColor) || (myRedrawTIAIndicator) ) {   // either the color has changed, or we have been ordered to draw it regardless
-                        myClipRect.addPoint(x,y);                   // expands the clip rectangle, telling it there is another part of the screen in need of update
-                        
-                        myResidualColorBuffer[zBufferIndex]=zNewPaintedColor;
-                        
-                        
-                        
-                        if (myBackBufferData!=null) myBackBufferData[zBufferIndex]=zNewPaintedColor; //a quicker way if available
-                        else myBackBuffer.setRGB(x, y, zNewPaintedColor);     // the actual act of drawing
-                        
-                    }//end : pixel has changed
-                }//end : for x to width loop
-                
-                zBufferIndexAtLineStart += zWidth;  //moving to next line
-            }//end : for y to height loop
-            myRedrawTIAIndicator=false;
-       
-    }//::
-    
-    
-    
-    
-    
-    
-    
-    /**
-     * This method paints the back buffer to the previously specified canvas
-     */
-    private void paintBackBufferToCanvas() {
-        
-        if (getCanvas()!=null) {
-            //Tells the canvas to call the paint command...the coordinates are very important...drawing the screen is incredibly slow, so you must only
-            //draw a portion of it at a time.  The portion that has changed is contained in myClipRect
-            //The calculations are there to scale, converting double into ints by rounding the correct direction
-            
-            getCanvas().paintCanvas(myBackBuffer, getWidth(), getHeight(), myClipRect);
-            
-            
-            myClipRect.resetRect();
-        }//end : canvas not null
-        
-    }
-    
-    /**
      * The "test pattern" is the image of colored bars that may be display when 
      * no ROM is loaded.  This method draws it to the canvas.
      */
-    protected void doTestPattern()
+    this.doTestPattern = function()
     {
-         Graphics2D z2D=myBackBuffer.createGraphics();
+			return;
+/*         Graphics2D z2D=myBackBuffer.createGraphics();
             double zScaleX=(double)myBackBuffer.getWidth() / myTestPattern.getIconWidth();
             double zScaleY=(double)myBackBuffer.getHeight() / myTestPattern.getIconHeight();
             double zScale=Math.min(zScaleX, zScaleY);
@@ -497,7 +565,7 @@ function JSVideo(aConsole){
             
           
         }//end : canvas not null
-            
+  */          
     }
     
     // ======================= COLOR STUFF ==================================
@@ -510,8 +578,8 @@ function JSVideo(aConsole){
      * Returns true if phosphor mode is enabled
      * @return true if phosphor mode is enabled
      */
-    protected boolean getPhosphorEnabled() {
-        return myUsePhosphor;
+    this.getPhosphorEnabled = function() {
+        return this.myUsePhosphor;
     }
     
     
@@ -532,8 +600,8 @@ function JSVideo(aConsole){
      * </p>
      * @param aEnable true to turn on phosphor mode
      */
-    protected void setPhosphorEnabled(boolean aEnable) {
-        myUsePhosphor=aEnable;
+   	this.setPhosphorEnabled = function(Enable) {
+        this.myUsePhosphor=aEnable;
     }
     
    
@@ -543,9 +611,9 @@ function JSVideo(aConsole){
      * @param aEnable true to enable
      * @param aBlendPercent percentage that the two colors should be blended
      */
-    protected void setPhosphorEnabled(boolean aEnable, int aBlendPercent) {
-        setPhosphorEnabled(aEnable);
-        myPhosphorBlendPercent=aBlendPercent;
+    this.setPhosphorEnabled = function(aEnable, aBlendPercent) {
+       this.setPhosphorEnabled(aEnable);
+       this.myPhosphorBlendPercent=aBlendPercent;
         
     }
     
@@ -565,9 +633,9 @@ function JSVideo(aConsole){
      * @param aIndex The array index of the desired color
      * @return An integer representing the desired color
      */
-    private int getColorInt(int aIndex) {
-        if (myGrayPaletteMode==true) return myGrayPalette[aIndex & 0xFF];
-        else return myNormalPalette[aIndex & 0xFF];
+    this.getColorInt = function(aIndex) {
+        if (this.myGrayPaletteMode==true) return this.myGrayPalette[aIndex & 0xFF];
+        else return this.myNormalPalette[aIndex & 0xFF];
     }
     
     /**
@@ -577,12 +645,70 @@ function JSVideo(aConsole){
      * @param aNewIndex the new color index
      * @return the color that represents the blend between the two indices
      */
-    private int getBlendedColorInt(int aOldIndex, int aNewIndex) {
+    this.getBlendedColorInt = function(aOldIndex, aNewIndex) {
         return myBlendedPalette[aOldIndex & 0xFF][aNewIndex & 0xFF];
     }
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * Returns an integer version of a color based on its components.
+     * @param r red component
+     * @param g green component
+     * @param b blue component
+     * @return an integer version of the specified color
+     */
+    this.calculateNormalColor = function(r,  g, b) {
+        assert((r>=0)&&(g>=0)&&(b>=0));
+        return getRGB(r,g,b);
+    }
+    
+    
+    /**
+     * Calculates a given phosphor blend based on the colors provided.  This is used 
+     * when the palette is being set.
+     * @param aColorComponentA the first component e.g. the red component (0-255) of the previous pixel
+     * @param aColorComponentB the second component e.g. the red component (0-255) of the new pixel
+     * @param aPhosphorBlend percentage to blend (e.g. 77)
+     * @return new component value
+     */
+  	this.calculatePhosphorColor = function(aColorComponentA, aColorComponentB, aPhosphorBlend) {
+        
+        var zDifference=Math.abs(aColorComponentA - aColorComponentB);
+        var zBlendFactor=aPhosphorBlend/100.0;
+        
+        var zPhosp=Math.min(aColorComponentA, aColorComponentB) + Math.floor(zBlendFactor * zDifference);
+        
+        assert((zPhosp>=0)&&(zPhosp<0x100)); //i.e. between 0 and 256 (a byte value)
+        return zPhosp;
+    }
+    
+    /**
+     * Calculates a gray color based on the given components
+     * @param aRed red component (0-255)
+     * @param aGreen green component (0-255)
+     * @param aBlue blue component (0-255)
+     * @return the new gray color in integer RGB format
+     */
+    this.calculateGrayColor = function( aRed, aGreen, aBlue) {
+        var zAverage=(aRed + aGreen + aBlue) / 3;
+        return this.calculateNormalColor(zAverage, zAverage, zAverage);
+    }
+    
+    
+    
+    
+    
+ 
+     
     
     /**
      * Sets the palette to be used.
@@ -591,9 +717,9 @@ function JSVideo(aConsole){
      * value, and the next 8 represent the red value.
      * @param palette the palette to use
      */
-    protected void setTIAPalette(int[] palette) {
+   	this.setTIAPalette = function( palette) {
         
-        int i, j;
+        var i, j;
         
         // Set palette for normal fill
         for(i = 0; i < 256; ++i) {
@@ -602,31 +728,31 @@ function JSVideo(aConsole){
             int b = palette[i] & 0xff;
             
             
-            myNormalPalette[i] = calculateNormalColor(r, g, b);
-            myGrayPalette[i] = calculateGrayColor(r, g, b);
+            this.myNormalPalette[i] = this.calculateNormalColor(r, g, b);
+            this.myGrayPalette[i] = this.calculateGrayColor(r, g, b);
         }
         
         // Set palette for phosphor effect
         for(i = 0; i < 256; ++i) {
             for(j = 0; j < 256; ++j) {
-                int ri = (palette[i] >> 16) & 0xff;
-                int gi = (palette[i] >> 8) & 0xff;
-                int bi = palette[i] & 0xff;
-                int rj = (palette[j] >> 16) & 0xff;
-                int gj = (palette[j] >> 8) & 0xff;
-                int bj = palette[j] & 0xff;
+                var ri = (palette[i] >> 16) & 0xff;
+                var gi = (palette[i] >> 8) & 0xff;
+                var bi = palette[i] & 0xff;
+                var rj = (palette[j] >> 16) & 0xff;
+                var gj = (palette[j] >> 8) & 0xff;
+                var bj = palette[j] & 0xff;
                 
-                int r = calculatePhosphorColor(ri, rj, myPhosphorBlendPercent);
-                int g =  calculatePhosphorColor(gi, gj, myPhosphorBlendPercent);
-                int b = calculatePhosphorColor(bi, bj, myPhosphorBlendPercent);
+                var r = this.calculatePhosphorColor(ri, rj, this.myPhosphorBlendPercent);
+                var g =  this.calculatePhosphorColor(gi, gj, this.myPhosphorBlendPercent);
+                var b = this.calculatePhosphorColor(bi, bj, this.myPhosphorBlendPercent);
                 
-                myBlendedPalette[i][j] = calculateNormalColor(r, g, b);
+                this.myBlendedPalette[i][j] = this.calculateNormalColor(r, g, b);
             }
         }
         
         
         
-        myRedrawTIAIndicator = true;
+        this.myRedrawTIAIndicator = true;
     }
     
     
@@ -669,65 +795,7 @@ function JSVideo(aConsole){
         }//for int i (palette)
     }
     */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /**
-     * Returns an integer version of a color based on its components.
-     * @param r red component
-     * @param g green component
-     * @param b blue component
-     * @return an integer version of the specified color
-     */
-    private static int calculateNormalColor(int r, int g, int b) {
-        assert((r>=0)&&(g>=0)&&(b>=0));
-        return new Color(r,g,b).getRGB();
-    }
-    
-    
-    /**
-     * Calculates a given phosphor blend based on the colors provided.  This is used 
-     * when the palette is being set.
-     * @param aColorComponentA the first component e.g. the red component (0-255) of the previous pixel
-     * @param aColorComponentB the second component e.g. the red component (0-255) of the new pixel
-     * @param aPhosphorBlend percentage to blend (e.g. 77)
-     * @return new component value
-     */
-    private static int calculatePhosphorColor(int aColorComponentA, int aColorComponentB, int aPhosphorBlend) {
-        
-        int zDifference=Math.abs(aColorComponentA - aColorComponentB);
-        double zBlendFactor=(double)aPhosphorBlend/100.0;
-        
-        int zPhosp=Math.min(aColorComponentA, aColorComponentB) + (int)(zBlendFactor * zDifference);
-        
-        assert((zPhosp>=0)&&(zPhosp<0x100)); //i.e. between 0 and 256 (a byte value)
-        return zPhosp;
-    }
-    
-    /**
-     * Calculates a gray color based on the given components
-     * @param aRed red component (0-255)
-     * @param aGreen green component (0-255)
-     * @param aBlue blue component (0-255)
-     * @return the new gray color in integer RGB format
-     */
-    private static int calculateGrayColor(int aRed, int aGreen, int aBlue) {
-        int zAverage=(aRed + aGreen + aBlue) / 3;
-        return calculateNormalColor(zAverage, zAverage, zAverage);
-    }
-    
-    
-    
-    
-    
- 
-    
+   
     
   
     
@@ -744,72 +812,6 @@ function JSVideo(aConsole){
     
     
     //
-    
-    
-    //==================================================
-    /**
-     * A rectangle that remembers what part of the screen has been changed.
-     * Everytime the drawMediaSource() method encounters a changed pixel,
-     * it informs an object of this class, which resizes to encompass the new
-     * point.
-     */
-    private class ClipRectangle extends java.awt.Rectangle {
-        private boolean isClear=true;
-        
-        
-        /**
-         * Resets the area of the rectangle.  Should be called every frame.
-         */
-        public void resetRect() {
-            isClear=true;
-            this.x=0;
-            this.y=0;
-            this.width=0;
-            this.height=0;
-        }
-        
-        
-        
-        /**
-         * Tells the rectangle to expand to encompass the given point.
-         * @param aX X
-         * @param aY Y
-         */
-        public void addPoint(int aX, int aY) {
-            if (isClear==true) //first point
-            {
-                this.x=aX - 1;
-                this.y=aY - 1;
-                this.width=3;
-                this.height=3;
-                isClear=false;
-            }//end : first point
-            else {
-                if (aX >= (x+width)) //to the right of rect
-                {
-                    width=(aX - x)+ 2;
-                } else if (aX <= x) //to the left of x
-                {
-                    width += (x - aX) + 2; //expand width
-                    x=aX - 1;
-                }
-                
-                if (aY >= (y+height)) //below rect
-                {
-                    height=(aY - y) + 2;
-                } else if (aY <= y) //above y
-                {
-                    height += (y - aY) + 2; //expand height
-                    y=aY - 1;
-                }
-                
-            }//end : additional points
-            
-            
-        }//::
-        
-        
-    }//INNER CLASS END
     
     
     

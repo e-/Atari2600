@@ -235,11 +235,8 @@ function JSConsole (aConsoleClient) {
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    
     	this.initializeVideo = function() {
-//        if(myVideo==null) myVideo = new JSVideo(this);
-//        
-//        //setColorLossPalette(false);
-//        getVideo().initialize();
-//        
+        if(this.myVideo==null) this.myVideo = new JSVideo(this);
+	        this.getVideo().initialize();
       }
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
