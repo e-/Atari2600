@@ -185,7 +185,7 @@ function JSTIA(aConsole) {
      * will be the current scanline.
      * @return total number of scanlines generated
      */
-    this.scanlines = function() { return ((this.mySystem.getCycles() * CLOCKS_PER_CPU_CYCLE) - this.myClockWhenFrameStarted)/CLOCKS_PER_LINE_TOTAL;}
+    this.scanlines = function() { return Math.floor(((this.mySystem.getCycles() * CLOCKS_PER_CPU_CYCLE) - this.myClockWhenFrameStarted)/CLOCKS_PER_LINE_TOTAL);}
     this.getConsole = function() { return this.myConsole; }
     
     
@@ -326,6 +326,7 @@ function JSTIA(aConsole) {
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     this.reset = function() {
+				console.log("JS TIA RESET!");
         // Reset the sound device
         // dbg.out("RESETTING TIA");
         //this.getAudio().reset(); //The TIA is in charge of the audio, at least as far as system is concerned
@@ -497,7 +498,7 @@ function JSTIA(aConsole) {
         // We're installing in a 2600 system
         for(var i = 0; i < 8192; i += (1 << shift)) {
             if((i & 0x1080) == 0x0000) {
-                this.mySystem.setPageAccess((i >> shift), access);
+                this.mySystem.setPageAccess((i >> shift) % 256, access);
             }
         }
         
@@ -657,7 +658,7 @@ function JSTIA(aConsole) {
         var zPFBlock=aHPos / CLOCKS_PER_PLAYFIELD_BIT;
         if (zPFBlock >= 20)
         {
-            if (isBitOn(0, this.myTIAPokeRegister[CTRLPF])==true) zPFBlock=39 - zPFBlock; //reflected
+            if (this.isBitOn(0, this.myTIAPokeRegister[CTRLPF])==true) zPFBlock=39 - zPFBlock; //reflected
             else zPFBlock=zPFBlock - 20;
         }//end : right half of screen
         if (zPFBlock < 4) return this.isBitOn(4 + zPFBlock, this.myTIAPokeRegister[PF0]); //7 - zPFBlock, myTIAPokeRegister[PF0]);
@@ -666,7 +667,7 @@ function JSTIA(aConsole) {
     }
     
     this.isPlayer0PixelOn = function (aHPos) {   return ((this.myCurrentGRP0 & this.getCurrentP0Mask(aHPos))!=0);  }    
-    this.isPlayer1PixelOn = function(aHPos) {   return ((this.myCurrentGRP1 & getCurrentP1Mask(aHPos))!=0);  }    
+    this.isPlayer1PixelOn = function(aHPos) {   return ((this.myCurrentGRP1 & this.getCurrentP1Mask(aHPos))!=0);  }    
     this.isMissile0PixelOn = function(aHPos) {  return this.getCurrentM0Mask(aHPos);  }    
     this.isMissile1PixelOn = function(aHPos) {  return this.getCurrentM1Mask(aHPos);   }    
     this.isRESMP0 = function()  {    return ((this.myTIAPokeRegister[RESMP0] & BIT1) != 0);  }    
@@ -1533,7 +1534,7 @@ function JSTIA(aConsole) {
         if(delay == -1) {
             var d = [4, 5, 2, 3];
             var x = this.getCurrentXPos();//((clock - this.myClockWhenFrameStarted) % CLOCKS_PER_LINE_TOTAL);
-            delay = d[(x / 3) & 3];
+            delay = (d[(x / 3) & 3])%256;
         }
         
         // Update frame to current CPU cycle before we make any changes!
@@ -1560,12 +1561,12 @@ function JSTIA(aConsole) {
             case VSYNC:    // VSYNC (vertical sync set/clear)
             {
                 // this.myVSYNC = aByteValue;
-              //  System.out.println("Debug : VSYNC poked, value=" + aByteValue + ", scanlines()==" + scanlines()); 
+              	//console.log("Debug : VSYNC poked, value=" + aByteValue + ", scanlines()==" + this.scanlines()); 
                 if (((aByteValue & BIT1) != 0) &&((zPreviousValue & BIT1)==0))
                 {
                     
                     this.myVSyncOn=this.scanlines();
-                   // System.out.println("Debug : VSYNC ON, value=" + aByteValue + ", scanlines()==" + scanlines()); 
+//                   	console.log("Debug : VSYNC ON, value=" + aByteValue + ", scanlines()==" + this.scanlines()); 
                 }//end : turned VBlank ON
                
                 
@@ -1590,6 +1591,7 @@ function JSTIA(aConsole) {
             case VBLANK:    // VBLANK (vertical blank set/clear)
             {
                 // Is the dump to ground path being set for I0, I1, I2, and I3?
+              	console.log(aByteValue, zPreviousValue); 
                  
                 if (((aByteValue & BIT1) != 0) &&((zPreviousValue & BIT1)==0)) //AUTO DETECT FRAME HEIGHT
                 {
@@ -1603,14 +1605,15 @@ function JSTIA(aConsole) {
                         this.myDetectedYStart=this.myVBlankOff;
                         if (this.myDetectedYStart>=this.myVSyncOn) this.myDetectedYStart -= this.myVSyncOn;
                         this.myDetectedYStop=this.myDetectedYStart + zHeight;
+												console.log('YStart 대입' + this.myVBlankOff);
                     }
-                  //  System.out.println("Debug : VBLANK ON, value=" + aByteValue + ", scanlines()==" + scanlines()); 
+  //                	console.log("Debug : VBLANK ON, value=" + aByteValue + ", scanlines()==" + this.scanlines()); 
                 }//end : turned VBlank ON
                 else if (((aByteValue & BIT1) == 0) && ((zPreviousValue & BIT1)!=0)) 
                 {
                     this.myVBlankOff=this.scanlines();
                     
-                  // System.out.println("Debug : VBLANK OFF, value=" + aByteValue + ", scanlines()==" + scanlines()); 
+    //              console.log("Debug : VBLANK OFF, value=" + aByteValue + ", scanlines()==" + this.scanlines()); 
                 }//end : turned VBlank OFF
                 
                 

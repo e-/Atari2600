@@ -7,7 +7,7 @@
 		<meta name="author" content="">
 	</head>
 	<body>
-		<canvas id="cv" width="160" height="120"></canvas>
+		<canvas id="cv" width="160" height="300"></canvas>
 		<script src="./../jquery.js" type="text/javascript"></script>
 		<script src="md5.js" type="text/javascript"></script>
 
@@ -34,33 +34,42 @@
 			var context;	
 
 			var WIDTH = 160;
-			var HEIGHT = 120;
+			var HEIGHT = 300;
 
 			function getImageData(){
-				return context.getImageData(0, 0, WIDTH, HEIGHT);
+				return context.createImageData(WIDTH, HEIGHT);
 			}
 
 			function setPixel(imageData, x, y, r, g, b){
 				index = (x + y * imageData.width) * 4;
-				   
 				imageData.data[index+0] = r;
 				imageData.data[index+1] = g;
 				imageData.data[index+2] = b;
-				imageData.data[index+3] = 0;
+				imageData.data[index+3] = 255;
 			}
 
 			function putImageData(imageData){
-				c.putImageData(imageData, 0, 0);
+				context.putImageData(imageData, 0, 0);
 			}
 
 			$(function(){
 				canvas = document.getElementById("cv");
 				context = canvas.getContext("2d");
+				
+	/*			t=getImageData();
+				setPixel(t, 1, 1, 0, 0, 0);
+				setPixel(t, 2,2, 0, 0, 0);
+							setPixel(t, 3,3, 0, 0, 0);
+			setPixel(t, 4,4, 0, 0, 0);
+			setPixel(t, 4,4, 0, 0, 0);
 
+				putImageData(t);
+*/
 			});
 
 		</script>
 		<script src="./roms/Pacman.js" type="text/javascript"></script>
+	<script src="./core/JSConstant.js" type="text/javascript"></script>
 
 		<script src="./cart/Cartridge.js" type="text/javascript"></script>
 		<script src="./cart/Cartridge4K.js" type="text/javascript"></script>
@@ -74,8 +83,7 @@
 		<script src="./core/JSRiot.js" type="text/javascript"></script>
 		<script src="./core/NullDevice.js" type="text/javascript"></script>
 		<script src="./core/PageAccess.js" type="text/javascript"></script>
-		<script src="./core/JSConstant.js" type="text/javascript"></script>
-		<script src="./core/JSSystem.js" type="text/javascript"></script>
+			<script src="./core/JSSystem.js" type="text/javascript"></script>
 		<script src="./core/JSConsole.js" type="text/javascript"></script>
 
 		<script src="./runner/Intercessor.js" type="text/javascript"></script>

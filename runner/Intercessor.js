@@ -71,14 +71,14 @@ function Intercessor(aClient){
     
 		this.createCanvas = function()
     {
-        if (myCanvas==null) 
+        if (this.myCanvas==null) 
         {
-           myCanvas=new JStellaCanvas();
-           myCanvas.addKeyListener(myInputMaster.getKeyListener());
-           myCanvas.addFocusListener(myCanvasFocusListener);
+           this.myCanvas=new JStellaCanvas();
+       //    myCanvas.addKeyListener(myInputMaster.getKeyListener());
+       //    myCanvas.addFocusListener(myCanvasFocusListener);
            
-           myInputMaster.addPaddleToComponent(0, myCanvas);
-           if (myIntercessorClient!=null) myIntercessorClient.displayCanvas(myCanvas);
+       //    myInputMaster.addPaddleToComponent(0, myCanvas);
+         //  if (myIntercessorClient!=null) myIntercessorClient.displayCanvas(myCanvas);
         }
     };
     
@@ -88,7 +88,7 @@ function Intercessor(aClient){
         }//end : destroy old console
         this.myConsole=aConsole;
         this.myConsole.setConsoleClient(this);
-    
+    		
        //updateTelevisionMode(); TODO
        
 			 //myCanvas.requestFocusInWindow(); TODO
@@ -96,8 +96,10 @@ function Intercessor(aClient){
     };
     
 		this.myIntercessorClient=aClient; /* Constructor */
-		//createCanvas(); TODO
-    this.initConsole(new JSConsole(this));
+		this.createCanvas();
+		tempConsole = new JSConsole(this);
+		console.log(tempConsole);
+		this.initConsole(tempConsole);
     
 
     /**
@@ -109,10 +111,10 @@ function Intercessor(aClient){
     };
     
     this.updateTimerDelay = function() {
-        if (myConsole.getTelevisionMode()==TELEVISION_MODE_SNOW) myCurrentTimerDelay=TIMER_DELAY_SNOW;
-        else if (myConsole.getDisplayFormat()==DisplayFormat.PAL) myCurrentTimerDelay=TIMER_DELAY_PAL;
-        else myCurrentTimerDelay=TIMER_DELAY_NTSC;
-       myConsole.getAudio().setRealDisplayFrameRate(1000.0 / myCurrentTimerDelay);
+        if (this.myConsole.getTelevisionMode()==TELEVISION_MODE_SNOW) this.myCurrentTimerDelay=this.TIMER_DELAY_SNOW;
+        else if (this.myConsole.getDisplayFormat()==DisplayFormat.PAL) this.myCurrentTimerDelay=this.TIMER_DELAY_PAL;
+        else this.myCurrentTimerDelay=this.TIMER_DELAY_NTSC;
+//       	this.myConsole.getAudio().setRealDisplayFrameRate(1000.0 / myCurrentTimerDelay);
     };
     
     
@@ -181,14 +183,21 @@ function Intercessor(aClient){
      */
     this.startTimer = function() {
 //TODO        myIntercessorClient.informUserOfPause(false);
-        if (myUtilTimer!=null) {
-          killTimer(myUtilTimer);
+        if (this.myUtilTimer!=null) {
+          killTimer(this.myUtilTimer);
         }//end : resetting timer
 
 				//TODO DODO CONVERT THIS CODE TO JS TIMER
 //        myUtilTimer=new java.util.Timer(true);
 //        myUtilTimer = scheduleAtFixedRate(new MainTimerTask(), myCurrentTimerDelay, myCurrentTimerDelay);
-					myUtilTimer = setInterval(this.MainTimerTask, myCurrentTimerDelay);
+					this.myUtilTimer = setInterval(
+					(function(self){
+						return function(){
+							self.MainTimerTask(self);
+						};
+					}
+					)(this)
+						 ,this.myCurrentTimerDelay);
       //  }//end : use java.util.Timer
       /*  else {
             
@@ -317,13 +326,6 @@ function Intercessor(aClient){
         }//end : visible
     }*/
     
-    
-    this.runMainLoop = function() {
-        if (this.myConsole!=null) {
-        	this.myConsole.doFrame();
-        }//end : my console == false
-    };
-    
     this.updatePause = function() { 
 			/* TODO DODO NO Pause Support
         if ((myPausedByFocusLoss==false)&&(myPausedByPlayer==false)) {
@@ -429,10 +431,10 @@ function Intercessor(aClient){
           
         if (zCart!=null) {
             this.myConsole.insertCartridge(zCart, aDisplayHeight);
-            updateTimerDelay();
+            this.updateTimerDelay();
                 
-            myCanvas.refreshCanvas();
-            startTimer();
+            this.myCanvas.refreshCanvas();
+            this.startTimer();
         }//end : not null
     };
 
@@ -510,11 +512,11 @@ function Intercessor(aClient){
     //}
 
     this.getConsole = function() {
-        return myConsole;
+        return this.myConsole;
     };
 
     this.getCanvas = function() {
-        return myCanvas;
+        return this.myCanvas;
     };
     
     
@@ -526,7 +528,7 @@ function Intercessor(aClient){
      */
     this.getJStellaCanvas = function()
     {
-        return myCanvas;
+        return this.myCanvas;
     };
     
     /**
@@ -543,25 +545,33 @@ function Intercessor(aClient){
     //public boolean getLetterBoxMode() {  return ((myCanvas!=null) ? myCanvas.getLetterBoxMode() : false); }
   
     
+
+    
+    this.runMainLoop = function() {
+        if (this.myConsole!=null) {
+        	this.myConsole.doFrame();
+        }//end : my console == false
+    };
+    
     
     //==============================================
     
-    this.MainTimerTask = function() {
+    this.MainTimerTask = function(self) {
         /**
          * This is called by a java.util.Timer
          */
-        this.run = function() {
-            runMainLoop();
-        };
+//        this.run = function() {
+            self.runMainLoop();
+  //      };
         
         
         /**
          * This is called by a javax.swing.Timer
          * @param e
          */
-        this.actionPerformed = function(e) {
-            runMainLoop();
-        };
+    //    this.actionPerformed = function(e) {
+    //      runMainLoop();
+    //    };
         
     };//END INNER CLASS
     
