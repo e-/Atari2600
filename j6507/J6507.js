@@ -295,22 +295,29 @@ function J6507() {
     return this.C;
   }
   this.getA = function() {
+    assert((aValue>=0)&&(aValue<0x100));
     return this.A; 
   }
   this.setA = function(aValue) {
+    assert((aValue>=0)&&(aValue<0x100));
     this.A = aValue & 0xFF;
   }
   this.getX = function() {
     return this.X;
   }
   this.setX = function(aValue) {
+    assert((aValue>=0)&&(aValue<0x100));
     this.X = aValue & 0xFF;
   }
   this.getY = function() {
     return this.Y;
   } 
   this.setY = function(aValue) {
+    assert((aValue>=0)&&(aValue<0x100));
     this.Y = aValue & 0xFF;
+  }
+  this.getSP = function(aValue) {
+    assert((aValue>=0)&&(aValue<0x100));
   }
   this.SPdec = function() {
     var oldSP = this.SP;
@@ -326,6 +333,7 @@ function J6507() {
     return this.IR;
   }
   this.setIR = function(aValue) {
+    assert((aValue>=0)&&(aValue<0x100));
     this.IR = aValue;
   }
   this.getPC = function() {
@@ -731,11 +739,12 @@ function J6507() {
       if (zCycles > 0) {
         var zDebug = 20;
       }
+      assert(zCycles>=0);
       this.myCurrentSystem.processorCycles(zCycles); // TODO : Processor class is undefined!
       this.myCyclesSignaled = 0;
 
       if (((this.myExecutionStatus & this.MaskabaleInsterruptBit) != 0) || (this.myExecutionStatus & this.NonmaskableInterruptBit) != 0) {
-        asdf("NO!!!!!!!!!!!!!!!!!!!!!!!!111");
+        assert(false);
         // InterruptHandlers(); ::1250 in J6507.java
       }
       if ((this.myExecutionStatus & this.StopExecutionBit) != 0) {
@@ -768,6 +777,7 @@ function J6507() {
   }
   this.peek = function(aAddress, aSignalCycle) {
     if (aSignalCycle === undefined || aSignalCycle == null) return this.peek(Address, true);
+    assert(aAddress>=0);
     this.myReadLast = true;
     this.myLastOperandAddress = aAddress;
     if (aSignalCycle == true) this.signalCycle();
@@ -857,8 +867,10 @@ function J6507() {
     return zOldPC + zAdd;
   }
   this.toSignedByteValue = function(aUBV) {
-    if ((aUBFV >= 0) && (aUBV <= 127)) return aUVB;
-    else return aUVB - 256;
+    assert(aUBV>=0);
+    assert(aUBV<256);
+    if ((aUBV >= 0) && (aUBV <= 127)) return aUBV;
+    else return aUBV - 256;
   }
   this.retrieveOperand = function(aMode) {
     if (aMode==this.AddressingMode.Immediate) return this.peekImmediate();
@@ -873,11 +885,12 @@ function J6507() {
     else if (aMode==this.AddressingMode.AbsoluteY) return this.peekAbsoluteIndex(Y);
     else if (aMode==this.AddressingMode.Relative) return this.peekRelative();
     else {
-      alert('asdf');
+      assert(false);
       return 0;
     }
   }
   this.poke = function(aAddress, aByteValue) {
+    assert((aByteValue<0x100)&&(aByteValue)>=0x00));
     if (aAddress >= 0) {
       this.myCurrentSystem.poke(aAdress, aByteValue);
     }
@@ -898,6 +911,7 @@ function J6507() {
 
   /* INSTRUCTIONS */
   this.INSTR_ADC = function (operand) {
+    assert((operand>=0)&&(operand<0x100));
     var oldA = this.A;
     if(!this.D) {
       var zSignedSum=(this.A + operand);
@@ -921,6 +935,7 @@ function J6507() {
   }
   this.INSTR_SBC = function (operand) { 
     var oldA = this.A & 0xFF;
+    assert((operand>=0)&&(operand<0x100));
     if(!this.D) {
       var zRevOperand = (~operand) & 0xFF; 
       var zAmountToAdd = this.toSignedByteValue(zRevOperand) + (this.C ? 1 : 0); //if carry is on, amountToAdd= -1 * amountToSubtract, else it's one less (i.e. more negative)
@@ -950,6 +965,7 @@ function J6507() {
     this.N = ((this.A & 0x80)!=0);
   }
   this.INSTR_LDX = function (operand) {
+    assert(operand<0x100);
     this.setX(operand);
     this.notZ = (this.X!=0);
     this.N = ((this.X & 0x80)!=0);
@@ -1079,6 +1095,7 @@ function J6507() {
   this.INSTR_INX = function () { //OK
     this.X++;
     this.X &=0xFF;
+    assert(X<0x100);
     this.notZ = (this.X!=0);
     this.N = ((this.X & 0x80)!=0);
   }
