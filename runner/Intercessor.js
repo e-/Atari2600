@@ -47,7 +47,7 @@ function Intercessor(aClient){
     this.TIMER_DELAY_SNOW=100;
     
 		this.myUtilTimer=null; 
-    this.myInputMaster=new InputMaster(this);
+//    this.myInputMaster=new InputMaster(this);
     this.myCanvas=null;
     
     
@@ -56,12 +56,12 @@ function Intercessor(aClient){
     
     this.myVirtualJoystickDialog=null;
     
-    this.myCurrentTimerDelay=TIMER_DELAY_NTSC;
+    this.myCurrentTimerDelay=this.TIMER_DELAY_NTSC;
     this.myAutoPauseMode=false;
     this.myPausedByPlayer=false;
     this.myPausedByFocusLoss=false;
    
-    this.myCanvasFocusListener=new IntercessorKeyboardFocusListener();
+//    this.myCanvasFocusListener=new IntercessorKeyboardFocusListener();
     
     /**
      * Creates a new instance of Intercessor.  GUI classes should implement the interface
@@ -69,11 +69,7 @@ function Intercessor(aClient){
      * @param aClient the client (i.e. GUI class) of the intercessor.
      */
     
-		this.myIntercessorClient=aClient; /* Constructor */
-		createCanvas();
-    initConsole(new JSConsole(this));
-    
-    this.createCanvas = function()
+		this.createCanvas = function()
     {
         if (myCanvas==null) 
         {
@@ -87,38 +83,43 @@ function Intercessor(aClient){
     };
     
     this.initConsole = function(aConsole) {
-        if ((myConsole!=null)&&(myConsole!=aConsole)) {
+        if ((this.myConsole!=null)&&(this.myConsole!=aConsole)) {
             myConsole.destroy();
         }//end : destroy old console
-        myConsole=aConsole;
-        myConsole.setConsoleClient(this);
+        this.myConsole=aConsole;
+        this.myConsole.setConsoleClient(this);
     
-       updateTelevisionMode();
+       //updateTelevisionMode(); TODO
        
-			 myCanvas.requestFocusInWindow();
-       updateTimerDelay();
-    }
+			 //myCanvas.requestFocusInWindow(); TODO
+       //updateTimerDelay(); TODO
+    };
     
+		this.myIntercessorClient=aClient; /* Constructor */
+		//createCanvas(); TODO
+    this.initConsole(new JSConsole(this));
+    
+
     /**
      * Returns the cartridge object.  Will return NULL if no cartridge has been loaded.
      * @return the cartridge object
      */
     this.getCartridge = function() {
         return myConsole.getCartridge();
-    }
+    };
     
     this.updateTimerDelay = function() {
         if (myConsole.getTelevisionMode()==TELEVISION_MODE_SNOW) myCurrentTimerDelay=TIMER_DELAY_SNOW;
         else if (myConsole.getDisplayFormat()==DisplayFormat.PAL) myCurrentTimerDelay=TIMER_DELAY_PAL;
         else myCurrentTimerDelay=TIMER_DELAY_NTSC;
        myConsole.getAudio().setRealDisplayFrameRate(1000.0 / myCurrentTimerDelay);
-    }
+    };
     
     
     this.getInputMaster = function()
     {
         return myInputMaster;
-    }
+    };
     
     /**
      * Changes the television mode (game, tv test pattern, snow/static) based
@@ -141,7 +142,7 @@ function Intercessor(aClient){
     this.isVirtualJoystickEnabled = function() {
         if ((myVirtualJoystickDialog==null)||(myVirtualJoystickDialog.isVisible()==false)) return false;
         else return true;
-    }
+    };
     
     /**
      * The virtual joystick is a separate window with a graphical representation of a 
@@ -157,12 +158,12 @@ function Intercessor(aClient){
         myVirtualJoystickDialog.setVisible(true);*/
         // this.setAutoPauseMode(false);
         
-    }
+    };
     
     this.disableVirtualJoystick = function() {
         if (myVirtualJoystickDialog!=null) myVirtualJoystickDialog.setVisible(false);
        
-    }
+    };
     
     this.toggleVirtualJoystick = function(aParent) {
 			/* TODO DODO no Virtual Joystick support */
@@ -202,9 +203,9 @@ function Intercessor(aClient){
      */
     this.stopTimer = function() {
      //   if (USE_UTIL_TIMER==true) {
-            if (myUtilTimer!=null) {
-                killTimer(myUtilTimer);
-               	myUtilTimer=null;
+            if (this.myUtilTimer!=null) {
+                killTimer(this.myUtilTimer);
+               	this.myUtilTimer=null;
                 
             }
       //  }//end : use java.util.Timer
@@ -214,7 +215,7 @@ function Intercessor(aClient){
             }//end : not null
         }//end : use javax.swing.Timer
    */
-        myIntercessorClient.informUserOfPause(true);
+        //this.myIntercessorClient.informUserOfPause(true);
     };
     
     
@@ -225,7 +226,7 @@ function Intercessor(aClient){
      */
     this.destroy = function() {
         myConsole.destroy();
-    }
+    };
     
     
     
@@ -289,15 +290,15 @@ function Intercessor(aClient){
      * @param e Exception to communicate to user
      * @param aDialogParent Parent in which an error-message dialog can open under
      */
-    public void showDefaultExceptionResponse(JSException e, Component aDialogParent) {
-        
-        System.out.println("" + e.getMessage());
+    this.showDefaultExceptionResponse = function(e) {
+				console.log(e);
+        /*System.out.println("" + e.getMessage());
         if (e.getExceptionType()==JSException.ExceptionType.INSTRUCTION_NOT_RECOGNIZED) {
             JOptionPane.showMessageDialog(aDialogParent, "There was an error running the ROM.", "JSTELLA ERROR", JOptionPane.ERROR_MESSAGE);
             
         } else {
             JOptionPane.showMessageDialog(aDialogParent, e.getJStellaMessage(), "JSTELLA ERROR", JOptionPane.ERROR_MESSAGE);
-        }//end : other
+        }*///end : other 
     }
     
     
@@ -306,14 +307,14 @@ function Intercessor(aClient){
      * If the focus is lost, this method can attempt to transfer the keyboard focus
      * back to the canvas (or whatever else is appropriate) object
      */
-    public void refocusKeyboard() {
+    /*public void refocusKeyboard() {
         if ((myCanvas!=null) && (myCanvas.isVisible()==true)) 
         {
             myCanvas.requestFocus();
             myCanvas.requestFocusInWindow();
             
         }//end : visible
-    }
+    }*/
     
     
     this.runMainLoop = function() {
@@ -404,30 +405,11 @@ function Intercessor(aClient){
     }*/
     
     
-    public void setControls(java.util.Map<String, String> aConfigMap) {
+    /*public void setControls(java.util.Map<String, String> aConfigMap) {
         myInputMaster.setControls(aConfigMap);
-    }
+    }*/
     
-    /**
-     * This loads the ROM from the given stream, and starts its execution by the 
-     * emulator.
-     * 
-     * This method will auto-detect the cartridge type (RECOMMENDED)
-     * @param aROMStream the previously opened stream containing the ROM to open
-     */
-    this.playROM = function(aROMStream)  {   playROM3(aROMStream, null, -1);   }    
-    /**
-     * This loads the ROM from the given stream, and starts its execution by the 
-     * emulator.
-     * 
-     * This method allows the GUI to manually specify the cartridge type.  If the 
-     * cartridge type specified is null, then the emulator will auto-detect the type.
-     * @param aROMStream the previously opened stream containing the ROM to open
-     * @param aCartridgeType manually specified cartridge type.
-     */
-    this.playROM2 = function(aROMStream, aCartridgeType) { playROM3(aROMStream, aCartridgeType, -1); }
-    
-    /**
+		/**
      * This loads the ROM from the given stream, and starts its execution by the 
      * emulator.
      * 
@@ -441,8 +423,8 @@ function Intercessor(aClient){
      * @param aDisplayHeight the display height for the ROM.  If -1, emulator will auto-detect height.
      */
     this.playROM3 = function(aROMStream, aCartridgeType, aDisplayHeight) {   
-        stopTimer();
-        zCart = JSConsole.createCartridge(aROMStream, aCartridgeType);
+        this.stopTimer();
+        zCart = this.myConsole.createCartridge(aROMStream, aCartridgeType);
           
         if (zCart!=null) {
             myConsole.insertCartridge(zCart, aDisplayHeight);
@@ -451,7 +433,28 @@ function Intercessor(aClient){
             myCanvas.refreshCanvas();
             startTimer();
         }//end : not null
-    }
+    };
+
+    /**
+     * This loads the ROM from the given stream, and starts its execution by the 
+     * emulator.
+     * 
+     * This method will auto-detect the cartridge type (RECOMMENDED)
+     * @param aROMStream the previously opened stream containing the ROM to open
+     */
+    this.playROM = function(aROMStream)  {   this.playROM3(aROMStream, null, -1);   }    
+    /**
+     * This loads the ROM from the given stream, and starts its execution by the 
+     * emulator.
+     * 
+     * This method allows the GUI to manually specify the cartridge type.  If the 
+     * cartridge type specified is null, then the emulator will auto-detect the type.
+     * @param aROMStream the previously opened stream containing the ROM to open
+     * @param aCartridgeType manually specified cartridge type.
+     */
+    this.playROM2 = function(aROMStream, aCartridgeType) { this.playROM3(aROMStream, aCartridgeType, -1); }
+    
+    
     
     /**
      * Enables/disables the audio in the core emulator classes.  GUI classes should call
@@ -559,7 +562,7 @@ function Intercessor(aClient){
             runMainLoop();
         };
         
-    }//END INNER CLASS
+    };//END INNER CLASS
     
     //========================================================
     /**

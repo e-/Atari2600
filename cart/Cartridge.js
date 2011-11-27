@@ -1,6 +1,6 @@
 function Cartridge() /* implements IfcDevice */
 {
-    this.serialVersionUID = 7979700597113264401L;
+    this.serialVersionUID = "7979700597113264401L";
     //  AUTODETECT="AUTO-DETECT";
     
     this.TYPE_2K="2K";
