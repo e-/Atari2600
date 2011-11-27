@@ -55,10 +55,10 @@ function JSController() {
     this.myPinValue[aControlEventT$ype] = zValue;
   }
   this.toPercentX = function (aResistance) {
-    return (10- (aResistance/10000.0));
+    return Math.floor(10- (aResistance/10000.0));
   }
   this.toResistance = function (aPercentX) {
-    return (10000.0 * (100 - aPercentX));
+    return Math.floor(10000.0 * (100 - aPercentX));
   }
   this.setPaddlePosition = function (aID, aPercentage) {
     var zNewPercent = (aPercentage>100)? 100: aPercentage;
