@@ -81,6 +81,13 @@ function Intercessor(aClient){
          //  if (myIntercessorClient!=null) myIntercessorClient.displayCanvas(myCanvas);
         }
     };
+
+    this.updateTimerDelay = function() {
+        if (this.myConsole.getTelevisionMode()==TELEVISION_MODE_SNOW) this.myCurrentTimerDelay=this.TIMER_DELAY_SNOW;
+        else if (this.myConsole.getDisplayFormat()==DisplayFormat.PAL) this.myCurrentTimerDelay=this.TIMER_DELAY_PAL;
+        else this.myCurrentTimerDelay=this.TIMER_DELAY_NTSC;
+//       	this.myConsole.getAudio().setRealDisplayFrameRate(1000.0 / myCurrentTimerDelay);
+    };
     
     this.initConsole = function(aConsole) {
         if ((this.myConsole!=null)&&(this.myConsole!=aConsole)) {
@@ -92,7 +99,7 @@ function Intercessor(aClient){
        //updateTelevisionMode(); TODO
        
 			 //myCanvas.requestFocusInWindow(); TODO
-       //updateTimerDelay(); TODO
+       this.updateTimerDelay();
     };
     
 		this.myIntercessorClient=aClient; /* Constructor */
@@ -110,12 +117,6 @@ function Intercessor(aClient){
         return myConsole.getCartridge();
     };
     
-    this.updateTimerDelay = function() {
-        if (this.myConsole.getTelevisionMode()==TELEVISION_MODE_SNOW) this.myCurrentTimerDelay=this.TIMER_DELAY_SNOW;
-        else if (this.myConsole.getDisplayFormat()==DisplayFormat.PAL) this.myCurrentTimerDelay=this.TIMER_DELAY_PAL;
-        else this.myCurrentTimerDelay=this.TIMER_DELAY_NTSC;
-//       	this.myConsole.getAudio().setRealDisplayFrameRate(1000.0 / myCurrentTimerDelay);
-    };
     
     
     this.getInputMaster = function()

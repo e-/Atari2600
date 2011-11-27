@@ -228,7 +228,7 @@ function JSRiot(console) {
   this.mySystem = null;
   this.myRAM = [];
   for (var i=0;i<128;i++) {
-    this.myRAM[i] = Math.floor(Math.random()*255);
+    this.myRAM[i] = 0; //Math.floor(Math.random()*255);
   }
   this.myTimer = 0;
   this.myIntervalShift = 0;

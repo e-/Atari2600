@@ -385,7 +385,10 @@ function J6507(aSystem) {
       var zOperand = 0;
       var zOperandAddress = 0;
 
-			
+	
+			if(zCounter == 775){
+				var k=0;
+			}
       switch (this.IR) {
         case 0x00 :   
           this.INSTR_BRK();

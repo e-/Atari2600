@@ -55,7 +55,7 @@ this.setConsole = function(aConsole) { myConsole=aConsole; };
         
         for(var zAddress = (aStartAddress & ~PAGE_MASK); zAddress < (aEndAddress & ~PAGE_MASK); zAddress += PAGE_SIZE)
         {
-            mySystem.setPageAccess(zAddress >> PAGE_SHIFT, (new PageAccess()).createIndirectAccess(this));
+            this.mySystem.setPageAccess(zAddress >> PAGE_SHIFT, (new PageAccess()).createIndirectAccess(this));
         } 
     };
     
@@ -75,13 +75,13 @@ this.setConsole = function(aConsole) { myConsole=aConsole; };
     {
         for(var zAddress = (aStartAddress & ~PAGE_MASK); zAddress < (aEndAddress & ~PAGE_MASK); zAddress += PAGE_SIZE)
         {
-            mySystem.setPageAccess(zAddress >> PAGE_SHIFT, PageAccess.createDirectPokeAccess(this, aMemory, aBaseAddressOffset + (zAddress & aBaseAddressMask)));
+            this.mySystem.setPageAccess(zAddress >> PAGE_SHIFT, (new PageAccess()).createDirectPokeAccess(this, aMemory, aBaseAddressOffset + (zAddress & aBaseAddressMask)));
         } 
     }
     
     this.addDirectPokeAccess = function(aStartAddress, aEndAddress,aMemory, aBaseAddressMask)
      {
-         addDirectPokeAccess(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, 0);
+         this.addDirectPokeAccess(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, 0);
      }
     //상속 끝
 
