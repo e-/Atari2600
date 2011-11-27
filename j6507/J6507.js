@@ -961,7 +961,7 @@ function J6507(aSystem) {
       this.setN((this.A & 0x80)!=0);
     } 
     else {
-      var difference = this.BCDTable[0][A] - this.BCDTable[0][operand] - (this.C ? 0 : 1);
+      var difference = this.BCDTable[0][this.A] - this.BCDTable[0][operand] - (this.C ? 0 : 1);
       if(difference < 0)
         difference += 100;
         this.setA(this.BCDTable[1][difference]);
