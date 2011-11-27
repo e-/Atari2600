@@ -1,5 +1,5 @@
 function j6507() {
-  var AddressingMode = {
+  this.AddressingMode = {
     Absolute: "Absolute",
     AbsoluteX: "AbsoluteX",
     AbsoluteY: "AbsoluteY",
@@ -14,7 +14,7 @@ function j6507() {
     ZeroX: "ZeroX",
     ZeroY: "ZeroY"
   };
-  var ourAddressingModeTable = [
+  this.ourAddressingModeTable = [
     AddressingMode.Implied,    AddressingMode.IndirectX, AddressingMode.Invalid,   AddressingMode.IndirectX,    // 0x0?
     AddressingMode.Zero,   AddressingMode.Zero,      AddressingMode.Zero,      AddressingMode.Zero,
     AddressingMode.Implied,    AddressingMode.Immediate, AddressingMode.Implied,   AddressingMode.Immediate,
@@ -96,7 +96,7 @@ function j6507() {
     AddressingMode.AbsoluteX,  AddressingMode.AbsoluteX, AddressingMode.AbsoluteX, AddressingMode.AbsoluteX
   ];
   
-  var InstructionProcessorCycleTable = [
+  this.InstructionProcessorCycleTable = [
     //  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
         7, 6, 2, 8, 3, 3, 5, 5, 3, 2, 2, 2, 4, 4, 6, 6,  // 0
         2, 5, 2, 8, 4, 4, 6, 6, 2, 4, 2, 7, 4, 4, 7, 7,  // 1
@@ -115,7 +115,7 @@ function j6507() {
         2, 6, 2, 8, 3, 3, 5, 5, 2, 2, 2, 2, 4, 4, 6, 6,  // e
         2, 5, 2, 8, 4, 4, 6, 6, 2, 4, 2, 7, 4, 4, 7, 7   // f
   ];
-  var InstructionPageCrossDelay = [
+  this.InstructionPageCrossDelay = [
     //  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // 0
         2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,  // 1
@@ -134,7 +134,7 @@ function j6507() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // e
         2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0  // f
   ];
-  var ourInstructionMnemonicTable = [
+  this.ourInstructionMnemonicTable = [
         "BRK",  "ORA",  "n/a",  "slo",  "nop",  "ORA",  "ASL",  "slo",    // 0x0?
         "PHP",  "ORA",  "ASLA", "anc",  "nop",  "ORA",  "ASL",  "slo",
         
@@ -183,40 +183,40 @@ function j6507() {
         "BEQ",  "SBC",  "n/a",  "isb",  "nop",  "SBC",  "INC",  "isb",    // 0xF?
         "SED",  "SBC",  "nop",  "isb",  "nop",  "SBC",  "INC",  "isb"
   ];
-  var StopExcecutionBit = 0x01;
-  var FatalErrorBit = 0x02;
-  var MaskableInterruptBit = 0x04;
-  var NonmaskableInterruptBit = 0x08;
-  var BCDTable;
+  this.StopExcecutionBit = 0x01;
+  this.FatalErrorBit = 0x02;
+  this.MaskableInterruptBit = 0x04;
+  this.NonmaskableInterruptBit = 0x08;
+  this.BCDTable;
 
-  var myCurrentSystem = null;
-  var N = false;
-  var V = false;
-  var B = false;
-  var D = false; 
-  var I = false; 
-  var C = false; 
-  var notZ = false;
-  var A = 0;
-  var X = 0;
-  var SP = 0; 
-  var IR = 0; 
-  var PC = 0;
+  this.myCurrentSystem = null;
+  this.N = false;
+  this.V = false;
+  this.B = false;
+  this.D = false; 
+  this.I = false; 
+  this.C = false; 
+  this.notZ = false;
+  this.A = 0;
+  this.X = 0;
+  this.SP = 0; 
+  this.IR = 0; 
+  this.PC = 0;
   
-  var myExecutionStatus = 0;
-  var myLastOperandAddress = 0;
-  var myLastImmediateValues= [0, 0];
-  var myPageCrossed = false;
-  var myBranchResult = 0;
-  var myCyclesSignaled = 0;
-  var myReadLast = false;
-  var debugStartDump = false;
+  this.myExecutionStatus = 0;
+  this.myLastOperandAddress = 0;
+  this.myLastImmediateValues= [0, 0];
+  this.myPageCrossed = false;
+  this.myBranchResult = 0;
+  this.myCyclesSignaled = 0;
+  this.myReadLast = false;
+  this.debugStartDump = false;
 
   this.j6507 = function(aSystem) {
     // constructor
   }
   this.getRegisterSnapshot = function() {
-    var zReturn = [this.A, this.X, this.Y, this.PC, this.SP, this.getFlags()];
+    this.zReturn = [this.A, this.X, this.Y, this.PC, this.SP, this.getFlags()];
     return zReturn;
   }
   this.getFlags = function() {
