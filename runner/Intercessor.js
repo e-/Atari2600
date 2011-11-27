@@ -180,14 +180,15 @@ function Intercessor(aClient){
      * unnecessary for the GUI class to call it.
      */
     this.startTimer = function() {
-        myIntercessorClient.informUserOfPause(false);
+//TODO        myIntercessorClient.informUserOfPause(false);
         if (myUtilTimer!=null) {
           killTimer(myUtilTimer);
         }//end : resetting timer
 
 				//TODO DODO CONVERT THIS CODE TO JS TIMER
-        myUtilTimer=new java.util.Timer(true);
-        myUtilTimer = scheduleAtFixedRate(new MainTimerTask(), myCurrentTimerDelay, myCurrentTimerDelay);
+//        myUtilTimer=new java.util.Timer(true);
+//        myUtilTimer = scheduleAtFixedRate(new MainTimerTask(), myCurrentTimerDelay, myCurrentTimerDelay);
+					myUtilTimer = setInterval(this.MainTimerTask, myCurrentTimerDelay);
       //  }//end : use java.util.Timer
       /*  else {
             
@@ -318,8 +319,8 @@ function Intercessor(aClient){
     
     
     this.runMainLoop = function() {
-        if (myConsole!=null) {
-        	myConsole.doFrame();
+        if (this.myConsole!=null) {
+        	this.myConsole.doFrame();
         }//end : my console == false
     };
     

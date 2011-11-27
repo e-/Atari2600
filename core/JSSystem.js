@@ -193,10 +193,12 @@ function JSSystem(aConsole){
      */
     this.attach = function(aDevice) {
 				if(aDevice instanceof J6507){
-		     	this.myCPU = a6507;  // Remember the processor
+					console.log("a CPU attached!");
+		     	this.myCPU = aDevice;  // Remember the processor
     	    this.myCPU.install(this);   // Ask the processor to install itself
 				}
 				else {
+					console.log("a Device attached!");
         assert(this.myNumberOfDevices < 100);
        	
 				var flag = false;

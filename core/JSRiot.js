@@ -1,25 +1,9 @@
 function JSRiot(console) {
-  this.serialVersionID;
-  this.mvRandom = Math.random();
-
-  this.myConsole = null;
-  this.JSSystem = null;
-  this.myRAM = [];
-  for (var i=0;i<128;i++) {
-    myRAM[i] = Math.floor(Math.random()*255);
-  }
-  this.myTimer = 0;
-  this.myIntervalShift = 0;
-  this.myCyclesWhenTimerSet = 0;
-  this.myCyclesWhenInterruptReset = 0;
-  this.myTimerReadAfterInterrupt = false;
-
-  this.myDDRA = 0;
-  this.myDDRB = 0;
-
-  // Constructor
-  this.myConsole = console;
-  this.reset();
+  
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    /**
+     * Resets the RIOT chip
+     */
 
   this.name = function() {
     return "6532";
@@ -36,11 +20,7 @@ function JSRiot(console) {
     this.myDDRB = 0x00;
   }
 
-  
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    /**
-     * Resets the RIOT chip
-     */
+   
     this.systemCyclesReset = function() {
         // JSSystem cycles are being reset to zero so we need to adjust
         // the cycle count we remembered when the timer was last set
@@ -241,6 +221,27 @@ function JSRiot(console) {
     }
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+  this.serialVersionID = 7428490123154878165;
+  this.mvRandom = Math.random();
+
+  this.myConsole = null;
+  this.JSSystem = null;
+  this.myRAM = [];
+  for (var i=0;i<128;i++) {
+    this.myRAM[i] = Math.floor(Math.random()*255);
+  }
+  this.myTimer = 0;
+  this.myIntervalShift = 0;
+  this.myCyclesWhenTimerSet = 0;
+  this.myCyclesWhenInterruptReset = 0;
+  this.myTimerReadAfterInterrupt = false;
+
+  this.myDDRA = 0;
+  this.myDDRB = 0;
+
+  // Constructor
+  this.myConsole = console;
+  this.reset();
+
     
 }
