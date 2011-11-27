@@ -36,8 +36,8 @@ function JSController() {
 
   this.read = function (pin) {
     // TODO
-    if (typeof pin == "Digital") return (this.myPinValue[this.getPinIndex(pin)]!=0);
-    if (typeof pin == "Analog") return (this.myPinValue[this.getPinIndex(pin)]);
+    if (pin instanceof DigitalPin) return (this.myPinValue[this.getPinIndex(pin)]!=0);
+    if (pin instanceof AnalogPin) return (this.myPinValue[this.getPinIndex(pin)]);
   }
   this.write = function (pin, value) {
   }
@@ -83,7 +83,7 @@ function JSController() {
   }
   this.getPinIndex = function (aPin) {
     // TODO
-    if (typeof aPin == "DigitalPin") {
+    if (aPin instanceof DigitalPin) {
       switch (aPin) {
         case One : return 0;
         case Two : return 1;
@@ -93,7 +93,7 @@ function JSController() {
         default : return 0;
       }
     }
-    if (typeof aPin == "AnalogPin") {
+    if (aPin instanceof AnalogPin) {
       switch (aPin) {
         case Five : return 4;
         case Nine : return 8;
