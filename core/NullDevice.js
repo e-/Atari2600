@@ -27,8 +27,8 @@
 function NullDevice ()
 {    
 		this.serialVersionUID = 2224011782042263586;
-    this.name(){  return "NULL";}
-    this.reset(){}
+    this.name = function(){  return "NULL";}
+    this.reset = function(){}
     this.install= function(system){}
     this.peek = function(address){ 
         console.log("DEBUG:ERROR - peek at null device address : " + address);   

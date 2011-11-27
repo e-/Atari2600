@@ -33,7 +33,7 @@ function JSConsole (aConsoleClient) {
      * @param in This is a method called by the JVM system whenever this object
      * is deserialized.  It serves as sort of an alternate constructor,
      * one that is used in place of the normal one.
-     * @throws java.io.IOException
+    * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
      */
 //    private void readObject(java.io.ObjectInputStream in)  throws IOException, ClassNotFoundException {
