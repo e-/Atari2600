@@ -20,12 +20,12 @@ function JSConsole (aConsoleClient) {
 
   this.myTelevisionMode = this.TELEVISION_MODE_OFF;
 
-  this.JSConsole = function (aConsoleClient) {
+ // this.JSConsole = function (aConsoleClient) {
 //    this.setConsoleClient(aConsoleClient);
 //    this.initializeAudio();
 //    this.initializeVideo();
     // ... 
-  }
+  //}
 
 
     /**
@@ -234,13 +234,13 @@ function JSConsole (aConsoleClient) {
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    
-//    private void initializeVideo() {
+    	this.initializeVideo = function() {
 //        if(myVideo==null) myVideo = new JSVideo(this);
 //        
 //        //setColorLossPalette(false);
 //        getVideo().initialize();
 //        
-//    }
+      }
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    private  void initializeAudio() {
@@ -266,55 +266,59 @@ function JSConsole (aConsoleClient) {
 //    
 //    // ===================== Cartridge related methods ============================
 //    
-//    public void insertCartridge(Cartridge aCart) throws JSException
-//    {
-//        insertCartridge(aCart, -1);
-//    }
-//    
-//    public void insertCartridge(Cartridge aCart, int aDisplayHeight) throws JSException {
-//        if ((myCart!=null)&&(myCart!=aCart)) {
-//            mySystem.unattach(myCart);
-//            reinstallCore();
-//        }//end : previous cartridge is being replaced
-//        
-//        myVideo.clearBackBuffer();
-//        myVideo.clearBuffers();
-//        myCart=aCart;
-//        myCart.setConsole(this);
-//        
-//        mySystem.attach(myCart);
-//        mySystem.reset();
-//        //myDisplayFormat = DEFAULT_DISPLAY_FORMAT;//myProperties.get(Properties.PropertyType.Display_Format);
-//        detectDisplayFormat();
-//        
-//        if (aDisplayHeight<=0) detectDisplayHeight();
-//        else myDisplayHeight=aDisplayHeight;
-//        adjustBackBuffer();
-//        
-//        
-//        // Make sure height is set properly for PAL ROM
-//       
-//        setTelevisionMode(TELEVISION_MODE_GAME);
-//        // Reset, the system to its power-on state
-//        mySystem.reset();
-//        System.out.println("JStella display: YStart=" + myYStart + ", DisplayHeight=" + myDisplayHeight);
-//    }
-//    
-//    
-//    
-//    
-		
+	    
+    
+    this.insertCartridge2 = function(aCart, aDisplayHeight){
+        if ((this.myCart!=null)&&(this.myCart!=aCart)) {
+//TODO            mySystem.unattach(myCart);
+//TODO            reinstallCore();
+        }//end : previous cartridge is being replaced
+        
+ //TODO       myVideo.clearBackBuffer();
+ //       myVideo.clearBuffers();
+ //       myCart=aCart;
+ //       myCart.setConsole(this);
+        
+ //       mySystem.attach(myCart);
+ //       mySystem.reset();
+        //myDisplayFormat = DEFAULT_DISPLAY_FORMAT;//myProperties.get(Properties.PropertyType.Display_Format);
+  //      detectDisplayFormat();
+        
+  //      if (aDisplayHeight<=0) detectDisplayHeight();
+  //      else myDisplayHeight=aDisplayHeight;
+  //      adjustBackBuffer();
+        
+        
+        // Make sure height is set properly for PAL ROM
+       
+  //      setTelevisionMode(TELEVISION_MODE_GAME);
+        // Reset, the system to its power-on state
+  //      mySystem.reset();
+       	console.log("JStella display: YStart=" + this.myYStart + ", DisplayHeight=" + this.myDisplayHeight);
+    }
+    
+    
+    
+    
+		this.insertCartridge = function (aCart)
+  	  {
+	        this.insertCartridge2(aCart, -1);
+	    }
+
     this.createCartridge = function(aInputStream, aCartridgeType) {
         var zCart=null;
-				try{
+				//try
+				{
             if (aInputStream!=null) {
                 //zROMData = readByteArrayFromStream(aInputStream);
 								zROMData = aInputStream;
 
                 if (zROMData!=null) {
                     
-                    if (aCartridgeType==null) zCart=Cartridge.create(zROMData);
-                    else zCart=Cartridge.create(zROMData, aCartridgeType);
+										cart = new Cartridge();
+
+                    if (aCartridgeType==null) zCart=cart.create(zROMData);
+                    else zCart=cart.create(zROMData, aCartridgeType);
                     
                 }//end : ROMData not null
                 else {
@@ -327,9 +331,9 @@ function JSConsole (aConsoleClient) {
                 console.log("JSTELLA ERROR : attempting to read from a null stream");
             }//end : stream is null
         }//end : try
-        catch (e) {
-            console.log("Could not load ROM");
-        }
+//        catch (e) {
+//            console.log("Could not load ROM");
+//        }
         
 			  return zCart;
     }
@@ -460,18 +464,15 @@ function JSConsole (aConsoleClient) {
 //     * @param aSwitchType what switch to flip (see SWITCH constants in JSConstants)
 //     * @param aSwitchDown true if the switch should be down (see method description for details)
 //     */
-//    public  void flipSwitch(ConsoleSwitch aSwitchType, boolean aSwitchDown) {
-//        
-//        if (aSwitchDown) mySwitches &= ~aSwitchType.getBitMask();
-//        else mySwitches |= aSwitchType.getBitMask();
-//        
-//     
-//    }
-//    
-//    public boolean isSwitchOn(ConsoleSwitch aSwitch)
-//    {
-//        return ((mySwitches & aSwitch.getBitMask())==0); //in this case, a bit value of zero means 'on'
-//    }
+    this.flipSwitch = function(aSwitchType, aSwitchDown) {
+        if (aSwitchDown) this.mySwitches &= ~aSwitchType.getBitMask();
+        else this.mySwitches |= aSwitchType.getBitMask();
+    }
+    
+    this.isSwitchOn = function(aSwitch)
+    {
+        return ((this.mySwitches & aSwitch.getBitMask())==0); //in this case, a bit value of zero means 'on'
+    }
 //    
 //    
 //    
@@ -577,4 +578,27 @@ function JSConsole (aConsoleClient) {
 //     
 //    
 //   
+        this.setConsoleClient(aConsoleClient);
+        //   myUserPaletteDefined=false;
+        
+        
+        
+       // this.initializeAudio();
+        this.initializeVideo();
+        
+        this.flipSwitch(ConsoleSwitch.SWITCH_RESET, false);
+        this.flipSwitch(ConsoleSwitch.SWITCH_SELECT, false);
+        this.flipSwitch(ConsoleSwitch.SWITCH_BW, false);
+        this.flipSwitch(ConsoleSwitch.SWITCH_DIFFICULTY_P0, false); //amateur setting
+        this.flipSwitch(ConsoleSwitch.SWITCH_DIFFICULTY_P1, false); //amateur setting
+        
+        /*myControllers[0] = new JSController(Jack.LEFT);
+        myControllers[1] = new JSController(Jack.RIGHT); */
+        
+        this.mySystem = new JSSystem(this);
+        this.myRiot = new JSRiot(this);
+        this.myTIA = new JSTIA(this);
+        
+        mySystem.attach(this.myRiot);
+        mySystem.attach(this.myTIA);
 }

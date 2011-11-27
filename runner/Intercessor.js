@@ -427,7 +427,7 @@ function Intercessor(aClient){
         zCart = this.myConsole.createCartridge(aROMStream, aCartridgeType);
           
         if (zCart!=null) {
-            myConsole.insertCartridge(zCart, aDisplayHeight);
+            this.myConsole.insertCartridge(zCart, aDisplayHeight);
             updateTimerDelay();
                 
             myCanvas.refreshCanvas();
