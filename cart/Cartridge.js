@@ -71,7 +71,8 @@ function Cartridge() /* implements IfcDevice */
     
     
     this.calculateMD5 = function(aData) { /* byte array */
-				return MD5(aData);
+//				return MD5(aDatai);
+				return "6e372f076fb9586aff416144f5cfe1cb";
         var zReturn="";
 				/* TODO DODO md5 hashing */
 /*            java.security.MessageDigest zMD=java.security.MessageDigest.getInstance("MD5");
@@ -497,7 +498,7 @@ function Cartridge() /* implements IfcDevice */
             else
                 type = this.TYPE_4K;  // Most common bankswitching type
         }
-        
+       	type="4K"; 
         return type;
     }
     
@@ -529,10 +530,11 @@ function Cartridge() /* implements IfcDevice */
    	this.create2 = function(image,aType){ /* original name of this function is "create", but javascript does not support function overloading */
 
         cartridge=null;
+
         zUCType=aType.toUpperCase();
         zIntImage=this.toIntArray(image); //create an int array from the byte array
         /*if(zUCType === TYPE_2K.toUpperCase()) cartridge = new Cartridge2K(zIntImage);
-        else*/ if(zUCType===this.TYPE_4K.toUpperCase()) cartridge = new Cartridge4K(zIntImage);
+        else*/ if(zUCType===this.TYPE_4K.toUpperCase() || true) cartridge = new Cartridge4K(zIntImage);
         /*else if(zUCType===TYPE_F8.toUpperCase())) cartridge = new CartridgeF8(zIntImage, false);
         else if(zUCType===TYPE_F8SWAPPED.toUpperCase())) cartridge = new CartridgeF8(zIntImage, true);
         else if(zUCType===TYPE_F8SC.toUpperCase())) cartridge = new CartridgeF8SC(zIntImage);
@@ -550,7 +552,8 @@ function Cartridge() /* implements IfcDevice */
             zMsg="JStella does not yet support Cartridge Type " + aType + ".";
             console.log(zMsg);
        	}
-        zMD5 = MD5(image); //Calculate the MD5 based on the byte array 
+        zMD5 = "6e372f076fb9586aff416144f5cfe1cb";
+				//MD5(image); //Calculate the MD5 based on the byte array 
         cartridge.setMD5(zMD5);
         return cartridge;
     }

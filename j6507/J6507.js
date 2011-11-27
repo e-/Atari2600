@@ -183,11 +183,15 @@ function J6507() {
         "BEQ",  "SBC",  "n/a",  "isb",  "nop",  "SBC",  "INC",  "isb",    // 0xF?
         "SED",  "SBC",  "nop",  "isb",  "nop",  "SBC",  "INC",  "isb"
   ];
-  this.StopExcecutionBit = 0x01;
+  this.StopExecutionBit = 0x01;
   this.FatalErrorBit = 0x02;
   this.MaskableInterruptBit = 0x04;
   this.NonmaskableInterruptBit = 0x08;
-  this.BCDTable;
+  this.BCDTable = array2d(2,256);
+	for(var t=0;t<256;t++){
+		this.BCDTable[0][t] = ((t>>4)*10) + (t & 0x0f);
+		this.BCDTable[1][t] = (((t %100) / 10) <<4) | (t % 10);
+	}
 
   this.myCurrentSystem = null;
   this.N = false;
@@ -252,7 +256,8 @@ function J6507() {
     return V;
   }
   this.setV = function(inputV) {
-    this.V = V;
+    if(typeof inputV == "boolean") this.V = inputV;
+		else this.V = (inputV != 0);
   }
   this.isB = function() {
     return this.B;
@@ -282,7 +287,7 @@ function J6507() {
     return this.notZ;
   }
   this.setNotZ = function(inputnotZ) {
-    if (typeof inputnotZ == "boolean") this.notZ = notZ;
+    if (typeof inputnotZ == "boolean") this.notZ = inputnotZ;
     if (typeof inputnotZ == "number") this.notZ = (inputnotZ!=0);
     return this.notZ;
   }
@@ -295,7 +300,7 @@ function J6507() {
     return this.C;
   }
   this.getA = function() {
-    assert((aValue>=0)&&(aValue<0x100));
+    assert((this.A>=0)&&(this.A<0x100));
     return this.A; 
   }
   this.setA = function(aValue) {
@@ -319,6 +324,10 @@ function J6507() {
   this.getSP = function(aValue) {
     assert((aValue>=0)&&(aValue<0x100));
   }
+	this.setSP = function(aValue) {
+        assert((aValue>=0)&&(aValue<0x100));
+        this.SP = aValue;
+    }
   this.SPdec = function() {
     var oldSP = this.SP;
     this.SP = ((this.SP-1)&0xFF);
@@ -326,7 +335,7 @@ function J6507() {
   }
   this.SPinc = function() {
     var oldSP = this.SP;
-    this.SP = ((SP+1)&0xFF);
+    this.SP = ((this.SP+1)&0xFF);
     return oldSP;
   }
   this.getIR = function() {
@@ -353,7 +362,7 @@ function J6507() {
   }
   this.execute = function(aRepeats) {
     var Repeats = aRepeats;
-    if (aRepeats === undefined || aRepeats === null) Repeats = aRepeats;
+    if (aRepeats === undefined || aRepeats === null) Repeats = -1;
     
     var zContinue = true;
     this.myExecutionStatus &= this.FatalErrorBit;
@@ -375,6 +384,7 @@ function J6507() {
       var zOperand = 0;
       var zOperandAddress = 0;
 
+			
       switch (this.IR) {
         case 0x00 :   
           this.INSTR_BRK();
@@ -508,11 +518,11 @@ function J6507() {
         case 0x88 : this.INSTR_DEY(); break;
         case 0xC8 : this.INSTR_INY(); break;
         case 0x4C :
-          peekAbsoluteJMP();
+          this.peekAbsoluteJMP();
           this.INSTR_JMP(zOperand, this.myLastOperandAddress);
           break;
         case 0x6C :
-          peekIndirect();
+          this.peekIndirect();
           this.INSTR_JMP(zOperand, this.myLastOperandAddress);
           break;
         case 0x20 :  this.INSTR_JSR(); break;
@@ -732,8 +742,9 @@ function J6507() {
           this.INSTR_rla(zOperand, zOperandAddress);
           break;
         default :
-          alert("Instruction not recognized");
+//          alert(this.IR);
           // TODO : Throw Exception
+//					return;
       }
       var zCycles = this.calculateCycles(this.IR) - this.myCyclesSignaled;
       if (zCycles > 0) {
@@ -762,8 +773,8 @@ function J6507() {
     var zCycleNum = this.ourInstructionProcessorCycleTable[aIR];
     var zIsBranch = (this.ourInstructionPageCrossDelay[aIR]==2);
     var zPageDependent = (this.ourInstructionPageCrossDelay[aIR] == 1);
-    if ((zIsBranch == true)) zCycleNum += myBranchResult;
-    else if ((zPageDependent == true) && (myPageCrossed == true)) zCycleNum++;
+    if ((zIsBranch == true)) zCycleNum += this.myBranchResult;
+    else if ((zPageDependent == true) && (this.myPageCrossed == true)) zCycleNum++;
     return zCycleNum;
   }
   this.reset = function() {
@@ -776,7 +787,7 @@ function J6507() {
     this.setPC(this.myCurrentSystem.getResetPC());
   }
   this.peek = function(aAddress, aSignalCycle) {
-    if (aSignalCycle === undefined || aSignalCycle == null) return this.peek(aAddress, true);
+    if (aSignalCycle === undefined) return this.peek(aAddress, true);
     assert(aAddress>=0);
     this.myReadLast = true;
     this.myLastOperandAddress = aAddress;
@@ -833,7 +844,7 @@ function J6507() {
   }
   this.peekIndirect = function() {
     var zLowByte = this.peekImmediate();
-    var zHighByute = this.peekImmediate();
+    var zHighByte = this.peekImmediate();
     var zAddr = (zLowByte | (zHighByte << 8));
     var zLowByteB = this.peek(zAddr);
     var zHighByteB = this.peek((zAddr+1));
@@ -849,7 +860,7 @@ function J6507() {
     return zReturn;
   }
   this.peekIndirectY = function() {
-    var zZerPage = this.peekImmediate();
+    var zZeroPage = this.peekImmediate();
     var zLowByte = this.peek(zZeroPage);
     var zHighByte = this.peek(zZeroPage + 1);
     var zAddr = (zLowByte | (zHighByte << 8)) + this.Y;
@@ -875,14 +886,14 @@ function J6507() {
   this.retrieveOperand = function(aMode) {
     if (aMode==this.AddressingMode.Immediate) return this.peekImmediate();
     else if (aMode==this.AddressingMode.Zero) return this.peekZeroPage();
-    else if (aMode==this.AddressingMode.ZeroX) return this.peekZeroPage(X);
-    else if (aMode==this.AddressingMode.ZeroY) return this.peekZeroPage(Y);
+    else if (aMode==this.AddressingMode.ZeroX) return this.peekZeroPage(this.X);
+    else if (aMode==this.AddressingMode.ZeroY) return this.peekZeroPage(this.Y);
     else if (aMode==this.AddressingMode.Indirect) return this.peekIndirect();
     else if (aMode==this.AddressingMode.IndirectX) return this.peekIndirectX();
     else if (aMode==this.AddressingMode.IndirectY) return this.peekIndirectY();
     else if (aMode==this.AddressingMode.Absolute) return this.peekAbsolute();
-    else if (aMode==this.AddressingMode.AbsoluteX) return this.peekAbsoluteIndex(X);
-    else if (aMode==this.AddressingMode.AbsoluteY) return this.peekAbsoluteIndex(Y);
+    else if (aMode==this.AddressingMode.AbsoluteX) return this.peekAbsoluteIndex(this.X);
+    else if (aMode==this.AddressingMode.AbsoluteY) return this.peekAbsoluteIndex(this.Y);
     else if (aMode==this.AddressingMode.Relative) return this.peekRelative();
     else {
       assert(false);
@@ -917,19 +928,19 @@ function J6507() {
       var zSignedSum=(this.A + operand);
       if (this.C==true) zSignedSum++;
       this.V = ((zSignedSum > 127) || (zSignedSum < -128)); //overflow
-      var zUSum = A +operand;
+      var zUSum = this.A +operand;
       if (this.C==true) zUSum++;
       this.setC(zUSum > 0xff);
       this.setA(zUSum & 0xFF);
       this.setNotZ((zUSum & 0xff)!=0);
-      this.setN(this.getBit(A, 7));
+      this.setN(this.getBit(this.A, 7));
     } 
     else {
-      var sum = this.BCDTable[0][A] + this.BCDTable[0][operand] + (this.C ? 1 : 0);
+      var sum = this.BCDTable[0][this.A] + this.BCDTable[0][operand] + (this.C ? 1 : 0);
       this.setC(sum > 99);
       this.setA(this.BCDTable[1][sum & 0xff]);
-      this.setNotZ(A!=0);
-      this.setN(this.getBit(A, 7));
+      this.setNotZ(this.A!=0);
+      this.setN(this.getBit(this.A, 7));
       this.V=(((oldA ^ this.A) & 0x80)!=0) && (((this.A ^ operand) & 0x80)!=0);
     }
   }
@@ -1002,18 +1013,18 @@ function J6507() {
     this.setN(aValue & 0x80);
   }
   this.INSTR_ASLA = function() {
-    this.setC(A & 0x80);
+    this.setC(this.A & 0x80);
     var zNewA= this.getA()  << 1;
     zNewA&=0xFF;
     this.setA(zNewA);
     this.setNotZ(this.A!=0);
-    this,setN((this.A & 0x80)!=0);
+    this.setN((this.A & 0x80)!=0);
   }
   this.branch = function (aDoBranch, aDelta) {
     if(aDoBranch==true) {
-      this.peek(PC);
+      this.peek(this.PC);
       var address = this.PC + this.toSignedByteValue(aDelta);
-      if(this.notSamePage(PC, address)) this.myBranchResult=2;
+      if(this.notSamePage(this.PC, address)) this.myBranchResult=2;
       else this.myBranchResult=1;
       this.setPC(address);
     } 
@@ -1068,6 +1079,7 @@ function J6507() {
     this.setC((value & 0x0100)==0);
   }
   this.INSTR_DEC = function (operand, operandAddress) { 
+		var value = operand - 1;
     value &= 0xFF;
     this.poke(operandAddress, value);
     this.setNotZ(value);
@@ -1095,7 +1107,7 @@ function J6507() {
   this.INSTR_INX = function () { //OK
     this.X++;
     this.X &=0xFF;
-    assert(X<0x100);
+    assert(this.X<0x100);
     this.notZ = (this.X!=0);
     this.N = ((this.X & 0x80)!=0);
   }
@@ -1122,7 +1134,7 @@ function J6507() {
     zAddr=this.peek(0x100 + this.SPinc());
     var zNewPC= (zAddr | (this.peek(0x0100 + this.SP) << 8));
     this.setPC(zNewPC);
-    this.peek(PC++);
+    this.peek(this.PC++);
   }
   this.INSTR_LSR = function (operand, operandAddress) { //OK
     this.setC(operand & 0x01);
@@ -1134,7 +1146,7 @@ function J6507() {
   this.INSTR_LSRA = function() { //OK
     this.setC(this.A & 0x01);
     this.setA( (this.getA() >> 1) & 0x7f);
-    this.setNotZ(this/A!=0);
+    this.setNotZ(this.A!=0);
     this.setN((this.A & 0x80)!=0);
   }
   this.INSTR_NOP = function() {  //OK
@@ -1147,7 +1159,7 @@ function J6507() {
   }
   this.INSTR_PLA = function() { //OK
     this.peek(0x0100 + this.SPinc());
-    this.setA(peek(0x0100 + this.SP));
+    this.setA(this.peek(0x0100 + this.SP));
     this.setNotZ(this.A!=0);
     this.setN((this.A & 0x80)!=0);
   }
@@ -1156,7 +1168,7 @@ function J6507() {
     this.setFlags(this.peek(0x0100 + this.SP));
   }
   this.INSTR_ROL = function(operand, operandAddress) { //OK
-    var oldC=C;
+    var oldC=this.C;
     this.setC(operand & 0x80);
     operand = ((operand << 1) | (oldC ? 1 : 0))& 0xFF;
     this.poke(operandAddress, operand);
@@ -1164,15 +1176,15 @@ function J6507() {
     this.setN(operand & 0x80);
   }
   this.INSTR_ROLA = function() { //OK
-    var oldC=C;
+    var oldC=this.C;
     this.setC(this.A & 0x80);
     var zNewA=(this.getA() << 1) | (oldC ? 1 : 0);
     this.setA(zNewA & 0xFF);
-    this.setNotZ(A!=0);
+    this.setNotZ(this.A!=0);
     this.N = ((this.A & 0x80)!=0);
   }
   this.INSTR_ROR = function (operand, operandAddress) { 
-    var oldC=C;
+    var oldC=this.C;
     this.setC(operand & 0x01);
     operand = ((operand >> 1) & 0x7f) | (oldC ? 0x80 : 0x00);
     this.poke(operandAddress, operand);
@@ -1180,7 +1192,7 @@ function J6507() {
     this.setN(operand & 0x80);
   }
   this.INSTR_RORA = function() {
-    var oldC=C;
+    var oldC=this.C;
     this.setC(this.A & 0x01);
     var zOldA=this.getA();
     var zNewA=((this.getA() >> 1) & 0x7f) | (oldC ? 0x80 : 0x00);
@@ -1281,10 +1293,10 @@ function J6507() {
     var value = operand + 1;
     value &=0xFF;
     this.poke(operandAddress, value);
-    var oldA = A;
+    var oldA = this.A;
     if(!this.D) {
       var zRevOperand = (~value) & 0xFF; 
-      var Sdifference = this.toSignedByteValue(A) + this.toSignedByteValue(zRevOperand) + (this.C ? 1 : 0);
+      var Sdifference = this.toSignedByteValue(this.A) + this.toSignedByteValue(zRevOperand) + (this.C ? 1 : 0);
       this.setV(((Sdifference > 127) || (Sdifference < -128)));
       var zSBV= this.toSignedByteValue(zRevOperand);
       var difference = this.A + zSBV + (this.C ? 1 : 0);
@@ -1294,7 +1306,7 @@ function J6507() {
       this.setNotZ(this.A!=0);
       this.setN((this.A & 0x80)!=0);
     } else {
-      var difference = this.BCDTable[0][A&0xff] - this.BCDTable[0][value&0xff] - (this.C ? 0 : 1);
+      var difference = this.BCDTable[0][this.A&0xff] - this.BCDTable[0][value&0xff] - (this.C ? 0 : 1);
       if(difference < 0)
         difference += 100;
       this.setA(this.BCDTable[1][difference&0xff]);

@@ -39,12 +39,12 @@ DEBUG_MODE_ON = false;
 //    public final static String RESOURCE_IMAGE_TEST_PATTERN=DIRECTORY_RESOURCES + "testpattern.gif";
 //    
 //    
-//    public final static int RESISTANCE_MAX = Integer.MAX_VALUE;//0x7FFFFFFF;
-//    public final static int RESISTANCE_MIN = 0x00000000;
+    var RESISTANCE_MAX = 0x7FFFFFFF;
+		var RESISTANCE_MIN = 0x00000000;
 //  
     	var Jack = {  LEFT: 1, RIGHT:2 };
 			var DigitalPin = { One:1, Two:2, Three:3, Four:4, Six:5 };
-			var AnalogPin =  { Five:1, Nine:2  };
+			var AnalogPin =  { Five:11, Nine:12  };
 //   
     var TELEVISION_MODE_OFF=0;
     var TELEVISION_MODE_GAME=1;
@@ -828,7 +828,7 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
                 for(x = 0; x < CLOCKS_PER_LINE_VISIBLE + 72; ++x) {
                     if(mode == 0x00) {
                         if((enable == 0) && (x >= 0) && (x < 8))
-                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = (0x80 >> x) & 0xFF;
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = (0x80 >> x) ;
                     } else if(mode == 0x01) {
                         if((enable == 0) && (x >= 0) && (x < 8))
                             PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;

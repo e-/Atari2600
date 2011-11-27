@@ -277,19 +277,18 @@ function JSConsole (aConsoleClient) {
 	            this.reinstallCore();
         }//end : previous cartridge is being replaced
         
- //       myVideo.clearBackBuffer();
- //       myVideo.clearBuffers();
- 	        this.myCart=aCart;
- 	       this.myCart.setConsole(this);
+        this.myVideo.clearBackBuffer();
+       	this.myVideo.clearBuffers();
+ 	      this.myCart=aCart;
+ 	      this.myCart.setConsole(this);
         
- 	       this.mySystem.attach(this.myCart);
- 				 this.mySystem.reset();
-        //myDisplayFormat = DEFAULT_DISPLAY_FORMAT;//myProperties.get(Properties.PropertyType.Display_Format);
-          this.detectDisplayFormat();
+ 	      this.mySystem.attach(this.myCart);
+ 				this.mySystem.reset();
+        this.detectDisplayFormat();
         
-  	     if (aDisplayHeight<=0) this.detectDisplayHeight();
-         else this.myDisplayHeight=aDisplayHeight;
-  //      adjustBackBuffer();
+  	    if (aDisplayHeight<=0) this.detectDisplayHeight();
+        else this.myDisplayHeight=aDisplayHeight;
+      	this.adjustBackBuffer();
         
         
         // Make sure height is set properly for PAL ROM
@@ -430,9 +429,9 @@ function JSConsole (aConsoleClient) {
 //    //================= JSConsole Switches =====================
 //    
 //    
-//    public  int readSwitches() {
-//        return mySwitches;
-//    }
+    	this.readSwitches = function() {
+	        return this.mySwitches;	
+					}
 //    
 //    
 //    

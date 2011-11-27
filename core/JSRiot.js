@@ -225,7 +225,7 @@ function JSRiot(console) {
   this.mvRandom = Math.random();
 
   this.myConsole = null;
-  this.JSSystem = null;
+  this.mySystem = null;
   this.myRAM = [];
   for (var i=0;i<128;i++) {
     this.myRAM[i] = Math.floor(Math.random()*255);

@@ -1,26 +1,26 @@
 function JSController() {
-  var serialVersionUID;
-  var JOYSTICK_UP = 0;
-  var JOYSTICK_DOWN=1;
-  var JOYSTICK_LEFT=2;
-  var JOYSTICK_RIGHT=3;
-  var JOYSTICK_BUTTON=5;
+  this.serialVersionUID;
+  this.JOYSTICK_UP = 0;
+  this.JOYSTICK_DOWN=1;
+  this.JOYSTICK_LEFT=2;
+  this.JOYSTICK_RIGHT=3;
+  this.JOYSTICK_BUTTON=5;
 
-  var PADDLE_ALPHA_BUTTON = 3;
-  var PADDLE_BETA_BUTTON=2;
-  var PADDLE_ALPHA_RESISTANCE = 8;
-  var PADDLE_BETA_RESISTANCE = 4;
+  this.PADDLE_ALPHA_BUTTON = 3;
+  this.PADDLE_BETA_BUTTON=2;
+  this.PADDLE_ALPHA_RESISTANCE = 8;
+  this.PADDLE_BETA_RESISTANCE = 4;
 
-  var BOOSTERGRIP_BOOSTER = 4;
-  var BOOSTERGRIP_TRIGGER = 8;
+  this.BOOSTERGRIP_BOOSTER = 4;
+  this.BOOSTERGRIP_TRIGGER = 8;
 
-  var PaddleID = {
+  this.PaddleID = {
     PADDLE_ALPHA: "PADDLE_ALPHA",
     PADDLE_BETA: "PADDLE_BETA"
   };
 
-  var myJack = Jack.LEFT; // TODO
-  var myPinValue = [0,0,0,0,0,0,0,0];
+  this.myJack = Jack.LEFT; // TODO
+	this.myPinValue = [0,0,0,0,0,0,0,0];
 
   this.JSController = function () {
     this.resetController();
@@ -36,14 +36,14 @@ function JSController() {
 
   this.read = function (pin) {
     // TODO
-    if (pin instanceof DigitalPin) return (this.myPinValue[this.getPinIndex(pin)]!=0);
-    if (pin instanceof AnalogPin) return (this.myPinValue[this.getPinIndex(pin)]);
+    if (pin <10 ) return (this.myPinValue[this.getPinIndex(pin)]!=0);
+    if (pin >=10) return (this.myPinValue[this.getPinIndex(pin)]);
   }
   this.write = function (pin, value) {
   }
   this.setJoystickState = function(aJoystickDir, aPressed) {
-    if (aPressed == true) myPinValue[aJoystickDir] = 0;
-    else myPinValue[aJoystickDir] =1;
+    if (aPressed == true) this.myPinValue[aJoystickDir] = 0;
+    else this.myPinValue[aJoystickDir] =1;
   }
   this.setPaddleTrigger = function(aID, aPressed) {
     var zValue = (aPressed)? 0: 1;
@@ -83,20 +83,20 @@ function JSController() {
   }
   this.getPinIndex = function (aPin) {
     // TODO
-    if (aPin instanceof DigitalPin) {
+    if (aPin < 10) {
       switch (aPin) {
-        case One : return 0;
-        case Two : return 1;
-        case Three : return 2;
-        case Four : return 3;
-        case Six : return 5;
+        case 1 : return 0;
+        case 2 : return 1;
+        case 3 : return 2;
+        case 4 : return 3;
+        case 5 : return 5;
         default : return 0;
       }
     }
-    if (aPin instanceof AnalogPin) {
+    if (aPin>10) {
       switch (aPin) {
-        case Five : return 4;
-        case Nine : return 8;
+        case 11 : return 4;
+        case 12 : return 8;
         default : return 0;
       }
     }

@@ -42,7 +42,7 @@ function Intercessor(aClient){
     // a util timer is used, with a delay of 17 milliseconds.  Thus, there are (1000 ms /17 ms) or about 58.8 cycles
     // per second using this delay.
     
-    this.TIMER_DELAY_NTSC=17;
+    this.TIMER_DELAY_NTSC= 17;
     this.TIMER_DELAY_PAL=20;
     this.TIMER_DELAY_SNOW=100;
     
@@ -431,10 +431,10 @@ function Intercessor(aClient){
           
         if (zCart!=null) {
             this.myConsole.insertCartridge(zCart, aDisplayHeight);
-            this.updateTimerDelay();
+            /*this.updateTimerDelay();
                 
             this.myCanvas.refreshCanvas();
-            this.startTimer();
+            this.startTimer(); */
         }//end : not null
     };
 

@@ -498,7 +498,7 @@ function JSTIA(aConsole) {
         // We're installing in a 2600 system
         for(var i = 0; i < 8192; i += (1 << shift)) {
             if((i & 0x1080) == 0x0000) {
-                this.mySystem.setPageAccess((i >> shift) % 256, access);
+                this.mySystem.setPageAccess((i >> shift) /*% 256*/, access);
             }
         }
         
@@ -542,8 +542,8 @@ function JSTIA(aConsole) {
         //todo : this execution do-while think may be unneeded-figure out
          if (zExecutions>=3) 
          {
-            if (debugHasExecutionOverrun==false) console.log("debug: ********** Execution overrun in TIA *********");
-            debugHasExecutionOverrun=true;
+            if (this.debugHasExecutionOverrun==false) console.log("debug: ********** Execution overrun in TIA *********");
+            this.debugHasExecutionOverrun=true;
             //assert(false);  //california games sets this assertion off
          }//end : too many executions
         //  long zTimeB=System.nanoTime();  
@@ -1132,7 +1132,7 @@ function JSTIA(aConsole) {
                     while(this.myFramePointer < zEnding) {
                         var zPlayfieldIsOn=this.isPlayfieldPixelOn(hpos);
                     
-                         setCurrentFrameBuffer(this.myFramePointer, (zPlayfieldIsOn || this.getCurrentBLMask(mBL)) ? this.myTIAPokeRegister[COLUPF] : this.myTIAPokeRegister[COLUBK]);
+                         this.setCurrentFrameBuffer(this.myFramePointer, (zPlayfieldIsOn || this.getCurrentBLMask(mBL)) ? this.myTIAPokeRegister[COLUPF] : this.myTIAPokeRegister[COLUBK]);
                         
                         if(zPlayfieldIsOn && this.getCurrentBLMask(mBL))
                             this.myCollision |= COLLISION_TABLE[BIT_PF | BIT_BL];
@@ -1534,7 +1534,7 @@ function JSTIA(aConsole) {
         if(delay == -1) {
             var d = [4, 5, 2, 3];
             var x = this.getCurrentXPos();//((clock - this.myClockWhenFrameStarted) % CLOCKS_PER_LINE_TOTAL);
-            delay = (d[(x / 3) & 3])%256;
+            delay = (d[(x / 3) & 3]);
         }
         
         // Update frame to current CPU cycle before we make any changes!
@@ -1591,8 +1591,6 @@ function JSTIA(aConsole) {
             case VBLANK:    // VBLANK (vertical blank set/clear)
             {
                 // Is the dump to ground path being set for I0, I1, I2, and I3?
-              	console.log(aByteValue, zPreviousValue); 
-                 
                 if (((aByteValue & BIT1) != 0) &&((zPreviousValue & BIT1)==0)) //AUTO DETECT FRAME HEIGHT
                 {
                     //TODO : have this done only when in detection mode

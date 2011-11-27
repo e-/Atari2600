@@ -53,11 +53,11 @@ function JSSystem(aConsole){
      * space, in bytes.
      */
     
-    this.pageOffset = function(aAddress) { return (aAddress & PAGE_MASK) % 256;  }
+    this.pageOffset = function(aAddress) { return (aAddress & PAGE_MASK) /*% 256 */;  }
     this.myPageAccessTable=(function(){
 			var t = [];
 			for(var i =0; i< PAGE_COUNT;i++){
-				t.push(new PageAccess());
+				t[i] = (new PageAccess());
 			}
 			return t;})();
     
@@ -157,7 +157,7 @@ function JSSystem(aConsole){
         var access=new PageAccess(this.myNullDevice);
         for(var page = 0; page < PAGE_COUNT; page++) {
             this.myPageAccessTable[page]=new PageAccess(this.myNullDevice);
-            this.setPageAccess(page % 256, access);
+            this.setPageAccess(page /*% 256 */, access);
         } //end : for page loop
     }
     
@@ -345,7 +345,7 @@ function JSSystem(aConsole){
         
         var zReturn= ((this.peek(0xfffc)) | (this.peek(0xfffd) << 8));
         //  dbg.out("getResetPC()", zReturn);
-        return zReturn % 256;
+        return zReturn;
     }
     
     

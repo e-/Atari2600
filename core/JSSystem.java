@@ -353,7 +353,7 @@ public class JSSystem implements IfcSystem, java.io.Serializable {
         
         int zReturn= ((peek(0xfffc)) | (peek(0xfffd) << 8));
         //  dbg.out("getResetPC()", zReturn);
-        return (char)zReturn;
+        return zReturn;
     }
     
     
