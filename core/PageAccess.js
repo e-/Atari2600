@@ -41,11 +41,19 @@ function PageAccess(aDevice) {
     return (this.myDirectPokeMemory != null);
   }
   this.directPoke = function(aPageOffset, aByteValue) {
+    assert((aByteValue>=0)&&(aByteValue<0x100));
+    assert(this.myDirectPokeMemory!=null);
+
     this.myDirectPokeMemory[this.myDirectPokeBaseIndex + aPageOffset] = aByteValue;
   }
   this.directPeek = function (aPageOffset) {
     var zReturn = 0;
+    assert(this.myDirectPeekMemory!=null);
     zReturn = this.myDirectPeekMemory[this.myDirectPeekBaseIndex + aPageOffset];
+    if (zReturn <0) {
+      assert(false);
+    }
+    assert((zReturn>=0)&&(zRetrun<0x100));
     return zReturn;
   }
   this.setDevice = function (aDevice){
@@ -59,7 +67,7 @@ function PageAccess(aDevice) {
     this.directPoke(aAddress, aValue);
   }
   this.pagePeek = function(aAddress) {
-    return this.directPoke(aAddress);
+    return this.directPeek(aAddress);
   }
   this.peek = function(aAddress) {
     if (this.usesDirectPeek() == true) return this.directPeek(aAddress & PAGE_MASK);
