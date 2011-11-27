@@ -21,19 +21,6 @@ function JSController() {
 
   this.myJack = Jack.LEFT; // TODO
 	this.myPinValue = [0,0,0,0,0,0,0,0];
-
-  this.JSController = function () {
-    this.resetController();
-  }
-  this.resetController = function() {
-    var i;
-    for (i=0;iL<this.myPinValue.length;i++) {
-      this.myPinValue[i] = 1;
-    }
-    this.setPaddlePosition(this.PaddleID.PADDLE_ALPHA, 00);
-    this.setPaddlePosition(this.PaddleID.PADDLE_BETA, 00);
-  }
-
   this.read = function (pin) {
     // TODO
     if (pin <10 ) return (this.myPinValue[this.getPinIndex(pin)]!=0);
@@ -52,7 +39,7 @@ function JSController() {
   }
   this.changeControllerState = function (aControlEventType, aOn) {
     var zValue = (aOn)? 0: 1;
-    this.myPinValue[aControlEventT$ype] = zValue;
+    this.myPinValue[aControlEventType] = zValue;
   }
   this.toPercentX = function (aResistance) {
     return Math.floor(10- (aResistance/10000.0));
@@ -63,7 +50,7 @@ function JSController() {
   this.setPaddlePosition = function (aID, aPercentage) {
     var zNewPercent = (aPercentage>100)? 100: aPercentage;
     zNewPercent = (zNewPercent>0)? zNewPercent: 0;
-    var zRes = toResistance(zNewPercent);
+    var zRes = this.toResistance(zNewPercent);
     if (aID == this.PaddleID.PADDLE_ALPHA) this.myPinValue[this.PADDLE_ALPHA_RESISTANCE] = zRes;
     else if (aID == this.PaddleID.PADDLE_BETA) this.myPinValue[this.PADDLE_BETA_RESISTANCE] = zRes;
   }
@@ -101,4 +88,16 @@ function JSController() {
       }
     }
   }
+
+  this.resetController = function() {
+    var i;
+    for (i=0;i<this.myPinValue.length;i++) {
+      this.myPinValue[i] = 1;
+    }
+    this.setPaddlePosition(this.PaddleID.PADDLE_ALPHA, 00);
+    this.setPaddlePosition(this.PaddleID.PADDLE_BETA, 00);
+  }
+
+    this.resetController();
+
 }

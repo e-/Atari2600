@@ -207,8 +207,11 @@ function JStellaCanvas(){
 				var i, j, c;
 				for(i=0;i<w;i++){
 					for(j=0;j<h;j++){
-						c = aImage[(x+i)*WIDTH+(y+j)];
-						setPixel(t, x+i, y+j, (c >> 16) & 0xFF, (c >> 8) & 0xFF, c & 0xFF);
+						if(x+i>=0 && y+j>=0 && x+i<160)
+						{
+							c = aImage[(x+i)][(y+j)];
+							setPixel(t, x+i, y+j, (c >> 16) & 0xFF, (c >> 8) & 0xFF, c & 0xFF);
+						}
 					}
 				}
 				

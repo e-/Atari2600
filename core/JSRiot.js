@@ -49,7 +49,6 @@ function JSRiot(console) {
                 } else {
                     var access= new PageAccess(this);
                     access.setIndirectMode();//Bases(0,0);//directPeekBase = 0;
-                    
                     this.mySystem.setPageAccess((address >> shift), access);
                 }
             }

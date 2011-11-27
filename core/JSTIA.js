@@ -1603,7 +1603,7 @@ function JSTIA(aConsole) {
                         this.myDetectedYStart=this.myVBlankOff;
                         if (this.myDetectedYStart>=this.myVSyncOn) this.myDetectedYStart -= this.myVSyncOn;
                         this.myDetectedYStop=this.myDetectedYStart + zHeight;
-												console.log('YStart 대입' + this.myVBlankOff);
+												//console.log('YStart 대입' + this.myVBlankOff);
                     }
   //                	console.log("Debug : VBLANK ON, value=" + aByteValue + ", scanlines()==" + this.scanlines()); 
                 }//end : turned VBlank ON

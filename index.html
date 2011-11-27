@@ -37,7 +37,7 @@
 			var HEIGHT = 300;
 
 			function getImageData(){
-				return context.createImageData(WIDTH, HEIGHT);
+				return context.getImageData(0,0,WIDTH, HEIGHT);
 			}
 
 			function setPixel(imageData, x, y, r, g, b){

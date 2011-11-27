@@ -73,16 +73,15 @@ this.setConsole = function(aConsole) { myConsole=aConsole; };
     
     this.addDirectPokeAccess = function(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, aBaseAddressOffset)
     {
+				if(aBaseAddressOffset == undefined) this.addDirectPokeAccess(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, 0);
+				else{
         for(var zAddress = (aStartAddress & ~PAGE_MASK); zAddress < (aEndAddress & ~PAGE_MASK); zAddress += PAGE_SIZE)
         {
             this.mySystem.setPageAccess(zAddress >> PAGE_SHIFT, (new PageAccess()).createDirectPokeAccess(this, aMemory, aBaseAddressOffset + (zAddress & aBaseAddressMask)));
         } 
+				}
     }
     
-    this.addDirectPokeAccess = function(aStartAddress, aEndAddress,aMemory, aBaseAddressMask)
-     {
-         this.addDirectPokeAccess(aStartAddress, aEndAddress, aMemory, aBaseAddressMask, 0);
-     }
     //상속 끝
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -8,14 +8,14 @@ function InputMaster(aClient) {
     JOYSTICK_A_BUTTON : "JOYSTICK_A_BUTTON",
   };
   this.performControlItemAction = function(aVItem, aPressed) {
-    var zScontrollerA = this.myInputMasterClient.getConsole().getController(Jack.LEFT);
+    var zSControllerA = this.myInputMasterClient.getConsole().getController(Jack.LEFT);
     var zSControllerB = this.myInputMasterClient.getConsole().getController(Jack.RIGHT);
     switch (aVItem) {
-      case VirtualControlTask.JOYSTICK_A_UP : zSControllerA.changeControllerState(JSController.JOYSTICK_UP, aPressed); break;
-      case VirtualControlTask.JOYSTICK_A_DOWN : zSControllerA.changeControllerState(JSController.JOYSTICK_DOWN, aPressed); break;
-      case VirtualControlTask.JOYSTICK_A_LEFT : zSControllerA.changeControllerState(JSController.JOYSTICK_LEFT, aPressed); break;
-      case VirtualControlTask.JOYSTICK_A_RIGHT : zSControllerA.changeControllerState(JSController.JOYSTICK_RIGHT, aPressed); break;
-      case VirtualControlTask.JOYSTICK_A_BUTTON : zSControllerA.changeControllerState(JSController.JOYSTICK_BUTTON, aPressed); break;
+      case this.VirtualControlTask.JOYSTICK_A_UP : zSControllerA.changeControllerState(0, aPressed); break;
+      case this.VirtualControlTask.JOYSTICK_A_DOWN : zSControllerA.changeControllerState(1, aPressed); break;
+      case this.VirtualControlTask.JOYSTICK_A_LEFT : zSControllerA.changeControllerState(2, aPressed); break;
+      case this.VirtualControlTask.JOYSTICK_A_RIGHT : zSControllerA.changeControllerState(3, aPressed); break;
+      case this.VirtualControlTask.JOYSTICK_A_BUTTON : zSControllerA.changeControllerState(5, aPressed); break;
             
 //      case JOYSTICK_B_UP : zSControllerB.changeControllerState(JSController.JOYSTICK_UP, aPressed); break;
 //      case JOYSTICK_B_DOWN : zSControllerB.changeControllerState(JSController.JOYSTICK_DOWN, aPressed); break;
@@ -52,59 +52,61 @@ function InputMaster(aClient) {
     this.setControls(DEFAULT_CONTROL_BINDERS);
     this.setSwitches(DEFAULT_SWITCH_BINDERS);
   }
-  this.myInputMaster = aClient;
+  this.myInputMasterClient = aClient;
+
+	self=this;
 
   $(document).keydown(function(e){
-    switch(e.charCode) {
+    switch(e.keyCode) {
       case 32:
         // SPACE
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_BUTTON, true);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_BUTTON, true);
         break;
       case 37:
         // left arrow
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_LEFT, true);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_LEFT, true);
         break;
       case 38:
         // up arrow
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_UP, true);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_UP, true);
         break;
 
       case 39:
         // right arrow
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_RIGHT, true);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_RIGHT, true);
         break;
 
       case 40:
         // down arrow
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_DOWN, true);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_DOWN, true);
         break;
 
     }
   });
 
 	$(document).keyup(function(e){
-    switch(e.charCode) {
+    switch(e.keyCode) {
       case 32:
         // SPACE
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_BUTTON, false);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_BUTTON, false);
         break;
       case 37:
         // left arrow
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_LEFT, false);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_LEFT, false);
         break;
       case 38:
         // up arrow
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_UP, false);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_UP, false);
         break;
 
       case 39:
         // right arrow
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_RIGHT, false);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_RIGHT, false);
         break;
 
       case 40:
         // down arrow
-        this.performControlItemAction(this.VirtualControlTask.JOYSTICK_A_DOWN, false);
+        self.performControlItemAction(self.VirtualControlTask.JOYSTICK_A_DOWN, false);
         break;
 
     }

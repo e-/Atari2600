@@ -455,7 +455,6 @@ function JSVideo(aConsole){
      * This method takes data from the TIA object and uses it to draw the back buffer.
      */
     this.prepareBackBuffer = function() {
-      
             var zCurrentBuffer=this.getCurrentFrameBuffer();
             var zPrevBuffer=this.getPreviousFrameBuffer();
             if (this.myResidualColorBuffer==null) this.myResidualColorBuffer=new Array(zCurrentBuffer.length); //maybe a better way to set it
@@ -471,7 +470,7 @@ function JSVideo(aConsole){
                     
                     var zNewColorIndex = zCurrentBuffer[zBufferIndex];
                     var zOldColorIndex = zPrevBuffer[zBufferIndex];
-                    
+                  	
                     //TODO : make the following code more "elegant", and self-explanatory
                     var zOldPaintedColor= this.myResidualColorBuffer[zBufferIndex];
                     var zNewPaintedColor= this.myUsePhosphor ? this.getBlendedColorInt(zOldColorIndex, zNewColorIndex) : this.getColorInt(zNewColorIndex);
@@ -482,8 +481,7 @@ function JSVideo(aConsole){
                         this.myResidualColorBuffer[zBufferIndex]=zNewPaintedColor;
                         
                         
-                        
-                  /*      if (this.myBackBufferData!=null) this.myBackBufferData[zBufferIndex]=zNewPaintedColor; //a quicker way if available */
+                  //      if (this.myBackBufferData!=null) this.myBackBufferData[zBufferIndex]=zNewPaintedColor; //a quicker way if available */
                        /* else */ setRGB(this.myBackBuffer, x, y, zNewPaintedColor);     // the actual act of drawing
                         
                     }//end : pixel has changed

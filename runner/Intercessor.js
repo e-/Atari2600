@@ -47,7 +47,7 @@ function Intercessor(aClient){
     this.TIMER_DELAY_SNOW=100;
     
 		this.myUtilTimer=null; 
-//    this.myInputMaster=new InputMaster(this);
+    this.myInputMaster=new InputMaster(this);
     this.myCanvas=null;
     
     
@@ -432,10 +432,10 @@ function Intercessor(aClient){
           
         if (zCart!=null) {
             this.myConsole.insertCartridge(zCart, aDisplayHeight);
-            /*this.updateTimerDelay();
+            this.updateTimerDelay();
                 
             this.myCanvas.refreshCanvas();
-            this.startTimer(); */
+            this.startTimer(); 
         }//end : not null
     };
 

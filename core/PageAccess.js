@@ -53,7 +53,7 @@ function PageAccess(aDevice) {
     if (zReturn <0) {
       assert(false);
     }
-    assert((zReturn>=0)&&(zRetrun<0x100));
+    assert((zReturn>=0)&&(zReturn<0x100));
     return zReturn;
   }
   this.setDevice = function (aDevice){
@@ -74,7 +74,7 @@ function PageAccess(aDevice) {
     else return this.getDevice().peek(aAddress);
   }
   this.poke = function (aAddress, aByteValue) {
-    if (this.usesDirectPoke() == true) return this.directPoke((aAddress & PAGE_MAGE), aByteValue);
+    if (this.usesDirectPoke() == true) this.directPoke((aAddress & PAGE_MASK), aByteValue);
     else this.getDevice().poke(aAddress, aByteValue);
   }
   this.setIndirectMode = function () {
@@ -93,7 +93,7 @@ function PageAccess(aDevice) {
     return this.myDirectPokeMemory;
   }
   this.setDirectPokeMemory = function (aDirectPokeMemory, aDirectPokeBaseIndex) {
-    this.myDirectPockMemory = aDirectPokeMemory;
+    this.myDirectPokeMemory = aDirectPokeMemory;
     this.myDirectPokeBaseIndex = aDirectPokeBaseIndex;
   }
 
