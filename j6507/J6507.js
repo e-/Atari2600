@@ -967,7 +967,7 @@ function J6507(aSystem) {
         this.setA(this.BCDTable[1][difference]);
         this.setNotZ(A!=0);
         this.setN((this.A & 0x80)!=0);
-        this.setC((oldA >= (operand + (C ? 0 : 1))));
+        this.setC((oldA >= (operand + (this.C ? 0 : 1))));
         this.setV((((oldA ^ this.A) & 0x80)!=0) && (((this.A ^ operand) & 0x80)!=0));
     }
   }
