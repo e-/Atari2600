@@ -510,7 +510,7 @@ public class JSConsole implements java.io.Serializable {
             throw new JSException(JSException.ExceptionType.IO, "Could not load ROM");
         }
         
-        return zCart;
+   return zCart;
     }
     
     public static Cartridge createCartridge(java.io.InputStream aInputStream) throws JSException {
