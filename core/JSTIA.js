@@ -290,7 +290,7 @@ function JSTIA(aConsole) {
     
     
     
-   this.getAudio = function() { console.log("NO AUDIO!! in JSTIA"); 
+   this.getAudio = function() { /*console.log("NO AUDIO!! in JSTIA"); */
 	 return null; } 
     
     

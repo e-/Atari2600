@@ -215,7 +215,7 @@ function Intercessor(aClient){
     this.stopTimer = function() {
      //   if (USE_UTIL_TIMER==true) {
             if (this.myUtilTimer!=null) {
-                killTimer(this.myUtilTimer);
+                clearInterval(this.myUtilTimer);
                	this.myUtilTimer=null;
                 
             }

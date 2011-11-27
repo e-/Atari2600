@@ -232,11 +232,11 @@ function JSConsole (aConsoleClient) {
         this.mySystem.reset();
     }
 //
-//   private void reinstallCore()
-//   {
-//        mySystem.attach(myRiot);
-//        mySystem.attach(myTIA);
-//   }
+   this.reinstallCore = function()
+   {
+        this.mySystem.attach(this.myRiot);
+        this.mySystem.attach(this.myTIA);
+   }
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    
@@ -273,7 +273,7 @@ function JSConsole (aConsoleClient) {
     
     this.insertCartridge2 = function(aCart, aDisplayHeight){
         if ((this.myCart!=null)&&(this.myCart!=aCart)) {
-	            this.mySystem.unattach(myCart);
+	            this.mySystem.unattach(this.myCart);
 	            this.reinstallCore();
         }//end : previous cartridge is being replaced
         

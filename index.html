@@ -4,10 +4,21 @@
 	<head>
 		<title>Atari2600 Emulation Using JavaScript</title>
 		<meta encoding="utf8">
-		<meta name="author" content="">
+		<meta name="author" content="Jaeman An, Jaemin Jo">
 	</head>
 	<body>
-		<canvas id="cv" width="160" height="300"></canvas>
+		<div style="text-align:center;">
+		<h1>Atari2600 Emulation Using JavaScript</h1>
+		<section style="text-align:center;margin-top:100px;">
+		<canvas id="cv" width="200" height="300" ></canvas>
+		</section>
+
+		<a href="#" class="rom" data-rom="Pacman">PacMan</a>
+		<a href="#" class="rom" data-rom="Starfire">StarFire</a>
+		<a href="#" class="rom" data-rom="od">OkieDokie</a>
+		<a href="#" class="rom" data-rom="dm">Dark Mage</a>
+
+		</div>
 		<script src="./../jquery.js" type="text/javascript"></script>
 		<script src="md5.js" type="text/javascript"></script>
 
@@ -70,6 +81,11 @@
 		</script>
 	<!--	<script src="all.js" type="text/javascript"></script> -->
 	<script src="./roms/Pacman.js" type="text/javascript"></script>
+	<script src="./roms/od.js" type="text/javascript"></script>
+	<script src="./roms/Starfire.js" type="text/javascript"></script>
+
+		<script src="./roms/dm.js" type="text/javascript"></script>
+
 	<script src="./core/JSConstant.js" type="text/javascript"></script>
 
 		<script src="./cart/Cartridge.js" type="text/javascript"></script>
