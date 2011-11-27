@@ -44,6 +44,7 @@ function InputMaster(aClient) {
 //      case BOOSTERGRIP_A_TRIGGER : zSControllerA.setBoosterGripTrigger(aPressed); break;
 //      case BOOSTERGRIP_B_TRIGGER : zSControllerB.setBoosterGripTrigger(aPressed); break;
   }
+	}
   
  
   /* Constructor */
@@ -80,7 +81,8 @@ function InputMaster(aClient) {
 
     }
   });
-  $(document).keyup(function(e){
+
+	$(document).keyup(function(e){
     switch(e.charCode) {
       case 32:
         // SPACE

@@ -1,3 +1,5 @@
+DEBUG_MODE_ON = false;
+
 ///*
 // * JSConstants.java
 // *
@@ -40,9 +42,9 @@
 //    public final static int RESISTANCE_MAX = Integer.MAX_VALUE;//0x7FFFFFFF;
 //    public final static int RESISTANCE_MIN = 0x00000000;
 //  
-//    public enum Jack  {  LEFT, RIGHT };
-//    public enum DigitalPin  { One, Two, Three, Four, Six };
-//    public enum AnalogPin   { Five, Nine  };
+    	var Jack = {  LEFT: 1, RIGHT:2 };
+			var DigitalPin = { One:1, Two:2, Three:3, Four:4, Six:5 };
+			var AnalogPin =  { Five:1, Nine:2  };
 //   
     var TELEVISION_MODE_OFF=0;
     var TELEVISION_MODE_GAME=1;
@@ -61,12 +63,12 @@
 //    protected final static int CLOCKS_PER_FRAME=CLOCKS_PER_LINE_TOTAL * LINES_PER_FRAME_TOTAL; //59,736 clocks/frame
 //    protected final static int CPU_CYCLES_PER_FRAME=CLOCKS_PER_FRAME / CLOCKS_PER_CPU_CYCLE; //19,912 cycles/frame
 //    
-//    protected final static int CLOCKS_PER_PLAYFIELD_BIT=4;
+	var  CLOCKS_PER_PLAYFIELD_BIT=4;
 //  
     var TIA_POKE_REGISTER_COUNT=45; 
 //    
-//    public final static int FRAME_Y_MAX=300;
-//    public final static int FRAME_Y_MIN=100;
+    var FRAME_Y_MAX=300;
+    var FRAME_Y_MIN=100;
 //    
 //    
 //    
@@ -93,84 +95,84 @@
 //    
 //    
 //// ==================== TIA POKE REGISTERS ===========================
-//public final static int VSYNC   = 0x00;   // 0000 00x0   Vertical Sync Set-Clear
-//public final static int VBLANK	= 0x01;   // xx00 00x0   Vertical Blank Set-Clear
-//public final static int WSYNC	= 0x02;   // ---- ----   Wait for Horizontal Blank
-//public final static int RSYNC	= 0x03;   // ---- ----   Reset Horizontal Sync Counter
-//public final static int NUSIZ0	= 0x04;   //  00xx 0xxx   Number-Size player/missle 0
-//public final static int NUSIZ1	= 0x05;   //  00xx 0xxx   Number-Size player/missle 1
-//public final static int COLUP0	= 0x06;   //  xxxx xxx0   Color-Luminance Player 0
-//public final static int COLUP1  = 0x07;   //  //  xxxx xxx0   Color-Luminance Player 1
-//public final static int COLUPF  = 0x08;   //  //  xxxx xxx0   Color-Luminance Playfield
-//public final static int COLUBK  = 0x09;   //  //  xxxx xxx0   Color-Luminance Background
-//public final static int CTRLPF  = 0x0A;   //  00xx 0xxx   Control Playfield, Ball, Collisions
-//public final static int REFP0   = 0x0B;   //  0000 x000   Reflection Player 0
-//public final static int REFP1   = 0x0C;   //  0000 x000   Reflection Player 1
-//public final static int PF0     = 0x0D;   //  xxxx 0000   Playfield Register Byte 0
-//public final static int PF1     = 0x0E;   //  xxxx xxxx   Playfield Register Byte 1
-//public final static int PF2     = 0x0F;   //  xxxx xxxx   Playfield Register Byte 2
-//public final static int RESP0   = 0x10;   // ---- ----   Reset Player 0
-//public final static int RESP1   = 0x11;   //---- ----   Reset Player 1
-//public final static int RESM0   = 0x12;   //---- ----   Reset Missle 0
-//public final static int RESM1   = 0x13;   //---- ----   Reset Missle 1
-//public final static int RESBL   = 0x14;   //---- ----   Reset Ball
-//public final static int AUDC0   = 0x15;   //  0000 xxxx   Audio Control 0
-//public final static int AUDC1   = 0x16;   //  0000 xxxx   Audio Control 1
-//public final static int AUDF0   = 0x17;   // 000x xxxx   Audio Frequency 0
-//public final static int AUDF1   = 0x18;   //000x xxxx   Audio Frequency 1
-//public final static int AUDV0   = 0x19;   //  0000 xxxx   Audio Volume 0
-//public final static int AUDV1   = 0x1A;   //  0000 xxxx   Audio Volume 1
-//public final static int GRP0    = 0x1B;   //  xxxx xxxx   Graphics Register Player 0
-//public final static int GRP1    = 0x1C;   //  xxxx xxxx   Graphics Register Player 1
-//public final static int ENAM0   = 0x1D;   //  0000 00x0   Graphics Enable Missle 0
-//public final static int ENAM1   = 0x1E;   //  0000 00x0   Graphics Enable Missle 1
-//public final static int ENABL   = 0x1F;   //  0000 00x0   Graphics Enable Ball
-//public final static int HMP0    = 0x20;   //  xxxx 0000   Horizontal Motion Player 0
-//public final static int HMP1    = 0x21;   //  xxxx 0000   Horizontal Motion Player 1
-//public final static int HMM0    = 0x22;   //  xxxx 0000   Horizontal Motion Missle 0
-//public final static int HMM1    = 0x23;   //  xxxx 0000   Horizontal Motion Missle 1
-//public final static int HMBL    = 0x24;   //  xxxx 0000   Horizontal Motion Ball
-//public final static int VDELP0  = 0x25;   //0000 000x   Vertical Delay Player 0
-//public final static int VDELP1  = 0x26;   // 0000 000x   Vertical Delay Player 1
-//public final static int VDELBL  = 0x27;   // 0000 000x   Vertical Delay Ball
-//public final static int RESMP0  = 0x28;   // 0000 00x0   Reset Missle 0 to Player 0
-//public final static int RESMP1  = 0x29;   //0000 00x0   Reset Missle 1 to Player 1
-//public final static int HMOVE   = 0x2A;   // ---- ----   Apply Horizontal Motion
-//public final static int HMCLR   = 0x2B;   //---- ----   Clear Horizontal Move Registers
-//public final static int CXCLR   = 0x2C;   //---- ----   Clear Collision Latches
+var VSYNC   = 0x00;   // 0000 00x0   Vertical Sync Set-Clear
+var VBLANK	= 0x01;   // xx00 00x0   Vertical Blank Set-Clear
+var WSYNC	= 0x02;   // ---- ----   Wait for Horizontal Blank
+var RSYNC	= 0x03;   // ---- ----   Reset Horizontal Sync Counter
+var NUSIZ0	= 0x04;   //  00xx 0xxx   Number-Size player/missle 0
+var NUSIZ1	= 0x05;   //  00xx 0xxx   Number-Size player/missle 1
+var COLUP0	= 0x06;   //  xxxx xxx0   Color-Luminance Player 0
+var COLUP1  = 0x07;   //  //  xxxx xxx0   Color-Luminance Player 1
+var COLUPF  = 0x08;   //  //  xxxx xxx0   Color-Luminance Playfield
+var COLUBK  = 0x09;   //  //  xxxx xxx0   Color-Luminance Background
+var CTRLPF  = 0x0A;   //  00xx 0xxx   Control Playfield, Ball, Collisions
+var REFP0   = 0x0B;   //  0000 x000   Reflection Player 0
+var REFP1   = 0x0C;   //  0000 x000   Reflection Player 1
+var PF0     = 0x0D;   //  xxxx 0000   Playfield Register Byte 0
+var PF1     = 0x0E;   //  xxxx xxxx   Playfield Register Byte 1
+var PF2     = 0x0F;   //  xxxx xxxx   Playfield Register Byte 2
+var RESP0   = 0x10;   // ---- ----   Reset Player 0
+var RESP1   = 0x11;   //---- ----   Reset Player 1
+var RESM0   = 0x12;   //---- ----   Reset Missle 0
+var RESM1   = 0x13;   //---- ----   Reset Missle 1
+var RESBL   = 0x14;   //---- ----   Reset Ball
+var AUDC0   = 0x15;   //  0000 xxxx   Audio Control 0
+var AUDC1   = 0x16;   //  0000 xxxx   Audio Control 1
+var AUDF0   = 0x17;   // 000x xxxx   Audio Frequency 0
+var AUDF1   = 0x18;   //000x xxxx   Audio Frequency 1
+var AUDV0   = 0x19;   //  0000 xxxx   Audio Volume 0
+var AUDV1   = 0x1A;   //  0000 xxxx   Audio Volume 1
+var GRP0    = 0x1B;   //  xxxx xxxx   Graphics Register Player 0
+var GRP1    = 0x1C;   //  xxxx xxxx   Graphics Register Player 1
+var ENAM0   = 0x1D;   //  0000 00x0   Graphics Enable Missle 0
+var ENAM1   = 0x1E;   //  0000 00x0   Graphics Enable Missle 1
+var ENABL   = 0x1F;   //  0000 00x0   Graphics Enable Ball
+var HMP0    = 0x20;   //  xxxx 0000   Horizontal Motion Player 0
+var HMP1    = 0x21;   //  xxxx 0000   Horizontal Motion Player 1
+var HMM0    = 0x22;   //  xxxx 0000   Horizontal Motion Missle 0
+var HMM1    = 0x23;   //  xxxx 0000   Horizontal Motion Missle 1
+var HMBL    = 0x24;   //  xxxx 0000   Horizontal Motion Ball
+var VDELP0  = 0x25;   //0000 000x   Vertical Delay Player 0
+var VDELP1  = 0x26;   // 0000 000x   Vertical Delay Player 1
+var VDELBL  = 0x27;   // 0000 000x   Vertical Delay Ball
+var RESMP0  = 0x28;   // 0000 00x0   Reset Missle 0 to Player 0
+var RESMP1  = 0x29;   //0000 00x0   Reset Missle 1 to Player 1
+var HMOVE   = 0x2A;   // ---- ----   Apply Horizontal Motion
+var HMCLR   = 0x2B;   //---- ----   Clear Horizontal Move Registers
+var CXCLR   = 0x2C;   //---- ----   Clear Collision Latches
 //    
 //    
 //// =========================== TIA Peek Registers =========================================
-//public final static int CXM0P = 0x00; //       xx00 0000       Read Collision  M0-P1   M0-P0
-//public final static int CXM1P = 0x01; //       xx00 0000                       M1-P0   M1-P1
-//public final static int CXP0FB = 0x02; //       xx00 0000                       P0-PF   P0-BL
-//public final static int CXP1FB = 0x03; //      xx00 0000                       P1-PF   P1-BL
-//public final static int CXM0FB = 0x04; //       xx00 0000                       M0-PF   M0-BL
-//public final static int CXM1FB = 0x05; //       xx00 0000                       M1-PF   M1-BL
-//public final static int CXBLPF = 0x06; //       x000 0000                       BL-PF   -----
-//public final static int CXPPMM = 0x07; //       xx00 0000                       P0-P1   M0-M1
-//public final static int INPT0 = 0x08; //       x000 0000       Read Pot Port 0
-//public final static int INPT1 = 0x09; //      x000 0000       Read Pot Port 1
-//public final static int INPT2 = 0x0A; //       x000 0000       Read Pot Port 2
-//public final static int INPT3 = 0x0B; //       x000 0000       Read Pot Port 3
-//public final static int INPT4 = 0x0C; //		x000 0000       Read Input (Trigger) 0
-//public final static int INPT5 = 0x0D; //		x000 0000       Read Input (Trigger) 1
+var CXM0P = 0x00; //       xx00 0000       Read Collision  M0-P1   M0-P0
+var CXM1P = 0x01; //       xx00 0000                       M1-P0   M1-P1
+var CXP0FB = 0x02; //       xx00 0000                       P0-PF   P0-BL
+var CXP1FB = 0x03; //      xx00 0000                       P1-PF   P1-BL
+var CXM0FB = 0x04; //       xx00 0000                       M0-PF   M0-BL
+var CXM1FB = 0x05; //       xx00 0000                       M1-PF   M1-BL
+var CXBLPF = 0x06; //       x000 0000                       BL-PF   -----
+var CXPPMM = 0x07; //       xx00 0000                       P0-P1   M0-M1
+var INPT0 = 0x08; //       x000 0000       Read Pot Port 0
+var INPT1 = 0x09; //      x000 0000       Read Pot Port 1
+var INPT2 = 0x0A; //       x000 0000       Read Pot Port 2
+var INPT3 = 0x0B; //       x000 0000       Read Pot Port 3
+var INPT4 = 0x0C; //		x000 0000       Read Input (Trigger) 0
+var INPT5 = 0x0D; //		x000 0000       Read Input (Trigger) 1
 //
 // // ==================== RIOT Registers =============================
 //
-//public final static int SWCHA =  0x280;  //      Port A data register for joysticks: Bits 4-7 for player 1.  Bits 0-3 for player 2.
+var SWCHA =  0x280;  //      Port A data register for joysticks: Bits 4-7 for player 1.  Bits 0-3 for player 2.
 //
-//public final static int SWACNT =  0x281;  //      Port A data direction register (DDR)
-//public final static int SWCHB =  0x282;  //		Port B data (console switches)
-//public final static int SWBCNT =  0x283;  //      Port B DDR
-//public final static int INTIM =  0x284;  //		Timer output
+var SWACNT =  0x281;  //      Port A data direction register (DDR)
+var SWCHB =  0x282;  //		Port B data (console switches)
+var SWBCNT =  0x283;  //      Port B DDR
+var INTIM =  0x284;  //		Timer output
 //
-//public final static int TIMINT  = 0x285;  //	
+var TIMINT  = 0x285;  //	
 //
-//public final static int TIM1T =  0x294;  //	set 1 clock interval
-//public final static int TIM8T =  0x295;  //      set 8 clock interval
-//public final static int TIM64T =  0x296;  //      set 64 clock interval
-//public final static int T1024T =  0x297;  //      set 1024 clock interval
+var TIM1T =  0x294;  //	set 1 clock interval
+var TIM8T =  0x295;  //      set 8 clock interval
+var TIM64T =  0x296;  //      set 64 clock interval
+var T1024T =  0x297;  //      set 1024 clock interval
 //
 //
 //
@@ -185,14 +187,14 @@
 //
 //
 //  //These go with myEnabledObjects etc variable in JSTIA
-//public final static int BIT_P0 = 0x01;         // Bit for Player 0
-//public final static int BIT_M0 = 0x02;         // Bit for Missile 0
-//public final static int BIT_P1 = 0x04;         // Bit for Player 1
-//public final static int BIT_M1 = 0x08;         // Bit for Missile 1
-//public final static int BIT_BL = 0x10;         // Bit for Ball
-//public final static int BIT_PF = 0x20;         // Bit for Playfield
-//public final static int BIT_SCORE = 0x40;        // Bit for Playfield score mode
-//public final static int  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
+var BIT_P0 = 0x01;         // Bit for Player 0
+var BIT_M0 = 0x02;         // Bit for Missile 0
+var BIT_P1 = 0x04;         // Bit for Player 1
+var BIT_M1 = 0x08;         // Bit for Missile 1
+var BIT_BL = 0x10;         // Bit for Ball
+var BIT_PF = 0x20;         // Bit for Playfield
+var BIT_SCORE = 0x40;        // Bit for Playfield score mode
+var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
 //
 //
 //  
@@ -206,107 +208,107 @@
 //    
 //  
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//public final  static int[] POKE_DELAY_TABLE = {
-//    0,  1,  0,  0,  8,  8,  0,  0,  0,  0,  0,  1,  1, -1, -1, -1,
-//    0,  0,  8,  8,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,
-//    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-//    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-//};
+		var POKE_DELAY_TABLE = [
+    0,  1,  0,  0,  8,  8,  0,  0,  0,  0,  0,  1,  1, -1, -1, -1,
+    0,  0,  8,  8,  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  0,  0,
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+	];
 //
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    public final  static boolean[] HMOVE_BLANK_ENABLE_CYCLES= {
-//        true,  true,  true,  true,  true,  true,  true,  true,  true,  true,   // 00
-//        true,  true,  true,  true,  true,  true,  true,  true,  true,  true,   // 10
-//        true,  false, false, false, false, false, false, false, false, false,  // 20
-//        false, false, false, false, false, false, false, false, false, false,  // 30
-//        false, false, false, false, false, false, false, false, false, false,  // 40
-//        false, false, false, false, false, false, false, false, false, false,  // 50
-//        false, false, false, false, false, false, false, false, false, false,  // 60
-//        false, false, false, false, false, true                                // 70
-//    };
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    public final static int[][] COMPLETE_MOTION_TABLE = {
-//        { 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -3, -4, -5, -6, -6,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -3, -4, -5, -5, -5,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -3, -4, -5, -5, -5,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -3, -4, -4, -4, -4,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -3, -3, -3, -3, -3,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -2, -2, -2, -2, -2,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -2, -2, -2, -2, -2, -2,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0, -1, -1, -1, -1, -1, -1, -1,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 1,  1,  1,  1,  1,  1,  1,  1,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 1,  1,  1,  1,  1,  1,  1,  1,  8,  7,  6,  5,  4,  3,  2,  1}, // HBLANK
-//        { 2,  2,  2,  2,  2,  2,  2,  2,  8,  7,  6,  5,  4,  3,  2,  2}, // HBLANK
-//        { 3,  3,  3,  3,  3,  3,  3,  3,  8,  7,  6,  5,  4,  3,  3,  3}, // HBLANK
-//        { 4,  4,  4,  4,  4,  4,  4,  4,  8,  7,  6,  5,  4,  4,  4,  4}, // HBLANK
-//        { 4,  4,  4,  4,  4,  4,  4,  4,  8,  7,  6,  5,  4,  4,  4,  4}, // HBLANK
-//        { 5,  5,  5,  5,  5,  5,  5,  5,  8,  7,  6,  5,  5,  5,  5,  5}, // HBLANK
-//        { 6,  6,  6,  6,  6,  6,  6,  6,  8,  7,  6,  6,  6,  6,  6,  6}, // HBLANK
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0,  0, -1, -2,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0, -1, -2, -3,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0,  0, -1, -2, -3,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0,  0, -1, -2, -3, -4,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0,  0, -1, -2, -3, -4, -5,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0, -1, -2, -3, -4, -5, -6,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0,  0, -1, -2, -3, -4, -5, -6,  0,  0,  0,  0,  0,  0,  0,  0},
-//        { 0, -1, -2, -3, -4, -5, -6, -7,  0,  0,  0,  0,  0,  0,  0,  0},
-//        {-1, -2, -3, -4, -5, -6, -7, -8,  0,  0,  0,  0,  0,  0,  0,  0},
-//        {-2, -3, -4, -5, -6, -7, -8, -9,  0,  0,  0,  0,  0,  0,  0, -1},
-//        {-2, -3, -4, -5, -6, -7, -8, -9,  0,  0,  0,  0,  0,  0,  0, -1},
-//        {-3, -4, -5, -6, -7, -8, -9,-10,  0,  0,  0,  0,  0,  0, -1, -2},
-//        {-4, -5, -6, -7, -8, -9,-10,-11,  0,  0,  0,  0,  0, -1, -2, -3},
-//        {-5, -6, -7, -8, -9,-10,-11,-12,  0,  0,  0,  0, -1, -2, -3, -4},
-//        {-5, -6, -7, -8, -9,-10,-11,-12,  0,  0,  0,  0, -1, -2, -3, -4},
-//        {-6, -7, -8, -9,-10,-11,-12,-13,  0,  0,  0, -1, -2, -3, -4, -5},
-//        {-7, -8, -9,-10,-11,-12,-13,-14,  0,  0, -1, -2, -3, -4, -5, -6},
-//        {-8, -9,-10,-11,-12,-13,-14,-15,  0, -1, -2, -3, -4, -5, -6, -7},
-//        {-8, -9,-10,-11,-12,-13,-14,-15,  0, -1, -2, -3, -4, -5, -6, -7},
-//        { 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1}  // HBLANK
-//    };
+    var HMOVE_BLANK_ENABLE_CYCLES= [
+        true,  true,  true,  true,  true,  true,  true,  true,  true,  true,   // 00
+        true,  true,  true,  true,  true,  true,  true,  true,  true,  true,   // 10
+        true,  false, false, false, false, false, false, false, false, false,  // 20
+        false, false, false, false, false, false, false, false, false, false,  // 30
+        false, false, false, false, false, false, false, false, false, false,  // 40
+        false, false, false, false, false, false, false, false, false, false,  // 50
+        false, false, false, false, false, false, false, false, false, false,  // 60
+        false, false, false, false, false, true                                // 70
+    ];
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    var COMPLETE_MOTION_TABLE = [
+        [ 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -3, -4, -5, -6, -6,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -3, -4, -5, -5, -5,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -3, -4, -5, -5, -5,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -3, -4, -4, -4, -4,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -3, -3, -3, -3, -3,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -2, -2, -2, -2, -2,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -2, -2, -2, -2, -2, -2,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0, -1, -1, -1, -1, -1, -1, -1,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 1,  1,  1,  1,  1,  1,  1,  1,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 1,  1,  1,  1,  1,  1,  1,  1,  8,  7,  6,  5,  4,  3,  2,  1], // HBLANK
+        [ 2,  2,  2,  2,  2,  2,  2,  2,  8,  7,  6,  5,  4,  3,  2,  2], // HBLANK
+        [ 3,  3,  3,  3,  3,  3,  3,  3,  8,  7,  6,  5,  4,  3,  3,  3], // HBLANK
+        [ 4,  4,  4,  4,  4,  4,  4,  4,  8,  7,  6,  5,  4,  4,  4,  4], // HBLANK
+        [ 4,  4,  4,  4,  4,  4,  4,  4,  8,  7,  6,  5,  4,  4,  4,  4], // HBLANK
+        [ 5,  5,  5,  5,  5,  5,  5,  5,  8,  7,  6,  5,  5,  5,  5,  5], // HBLANK
+        [ 6,  6,  6,  6,  6,  6,  6,  6,  8,  7,  6,  6,  6,  6,  6,  6], // HBLANK
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0,  0, -1, -2,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0, -1, -2, -3,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0,  0, -1, -2, -3,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0,  0, -1, -2, -3, -4,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0,  0, -1, -2, -3, -4, -5,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0, -1, -2, -3, -4, -5, -6,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0,  0, -1, -2, -3, -4, -5, -6,  0,  0,  0,  0,  0,  0,  0,  0],
+        [ 0, -1, -2, -3, -4, -5, -6, -7,  0,  0,  0,  0,  0,  0,  0,  0],
+        [-1, -2, -3, -4, -5, -6, -7, -8,  0,  0,  0,  0,  0,  0,  0,  0],
+        [-2, -3, -4, -5, -6, -7, -8, -9,  0,  0,  0,  0,  0,  0,  0, -1],
+        [-2, -3, -4, -5, -6, -7, -8, -9,  0,  0,  0,  0,  0,  0,  0, -1],
+        [-3, -4, -5, -6, -7, -8, -9,-10,  0,  0,  0,  0,  0,  0, -1, -2],
+        [-4, -5, -6, -7, -8, -9,-10,-11,  0,  0,  0,  0,  0, -1, -2, -3],
+        [-5, -6, -7, -8, -9,-10,-11,-12,  0,  0,  0,  0, -1, -2, -3, -4],
+        [-5, -6, -7, -8, -9,-10,-11,-12,  0,  0,  0,  0, -1, -2, -3, -4],
+        [-6, -7, -8, -9,-10,-11,-12,-13,  0,  0,  0, -1, -2, -3, -4, -5],
+        [-7, -8, -9,-10,-11,-12,-13,-14,  0,  0, -1, -2, -3, -4, -5, -6],
+        [-8, -9,-10,-11,-12,-13,-14,-15,  0, -1, -2, -3, -4, -5, -6, -7],
+        [-8, -9,-10,-11,-12,-13,-14,-15,  0, -1, -2, -3, -4, -5, -6, -7],
+        [ 0, -1, -2, -3, -4, -5, -6, -7,  8,  7,  6,  5,  4,  3,  2,  1]  // HBLANK
+    ];
 //    
 //    
 //    
@@ -545,522 +547,527 @@
 //    //by the corresponding compute...() methods, which are called exactly once (statically)
 //    //in the static init method.  Consult the compute method to determine what
 //    //each of the array dimensions means
-//    public final static boolean[][][] BALL_MASK_TABLE=new boolean[4][4][320];
-//    public final static char[] COLLISION_TABLE=new char[64];
-//    public final static int[] DISABLED_MASK_TABLE= new int[640];
-//    public final static boolean[][][][] MISSILE_MASK_TABLE=new boolean[4][8][4][320];
-//    public final static int[][][][] PLAYER_MASK_TABLE=new int[4][2][8][320];
-//    public final static int[][][] PLAYER_POSITION_RESET_WHEN_TABLE=new int[8][160][160];
-//    public final static int[] PLAYER_REFLECT_TABLE=new int[256];
-//    public final static int[][] PLAYFIELD_TABLE=new int[2][160];
-//    public final static int[][] PRIORITY_ENCODER=new int[2][256];
-//    
-//    
-//    
-//    
-//    
-//    static{
-//        //Compute all of the mask tables
-//        for(int i = 0; i < 640; ++i) { DISABLED_MASK_TABLE[i] = 0;}
-//        
-//        computeBallMaskTable();
-//        computeCollisionTable();
-//        computeMissileMaskTable();
-//        computePlayerMaskTable();
-//        computePlayerPositionResetWhenTable();
-//        computePlayerReflectTable();
-//        computePlayfieldMaskTable();
-//        computePriorityEncoder();
-//       // debugDumpArray(PLAYFIELD_TABLE);
-//    }//end : STATIC INIT    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    /** Creates a new instance of JSConstants */
-//    private JSConstants() { }
-//    
-//     /**
-//     * (A method that allowed me to type less when converting C++ to Java. It makes for
-//     * more readable code as well. -JLA)
-//     * @param aValue an integer
-//     * @return the boolean equivalent (in C++) of the integer
-//     */
-//    private static boolean bool(int aValue) {
-//        if (aValue==0) return false;
-//        else return true;
-//    }
-//    
-//    
-//      //======================== STATIC COMPUTE METHODS ==========================
+    var BALL_MASK_TABLE=new Array(4);
+		for(var i=0;i<4;i++)BALL_MASK_TABLE[i] = array2d(4,320);
+    var COLLISION_TABLE=new Array(64);
+    var DISABLED_MASK_TABLE= new Array(640);
+    var MISSILE_MASK_TABLE=array2d(4, 8);
+		for(var i=0;i<4;i++)for(var j=0;j<8;j++)MISSILE_MASK_TABLE[i][j]=array2d(4, 320);
+	//	new boolean[4][8][4][320];
+ 	  var PLAYER_MASK_TABLE=array2d(4, 2);
+		//console.log(PLAYER_MASK_TABLE);
+		for(var i=0;i<4;i++)for(var j=0;j<2;j++)PLAYER_MASK_TABLE[i][j] = array2d(8,320);
+		//new int[4][2][8][320];
+	    var  PLAYER_POSITION_RESET_WHEN_TABLE=[];
+			for(var i =0;i<8;i++)PLAYER_POSITION_RESET_WHEN_TABLE[i] = array2d(160,160);
+
+    var PLAYER_REFLECT_TABLE=new Array(256);
+    var PLAYFIELD_TABLE=array2d(2, 256);
+    var PRIORITY_ENCODER=array2d(2, 256);
+    
+    
+    
+    
+    
+        for(var i = 0; i < 640; ++i) { DISABLED_MASK_TABLE[i] = 0;}
+     /*   
+        computeBallMaskTable();
+        computeCollisionTable();
+        computeMissileMaskTable();
+        computePlayerMaskTable();
+        computePlayerPositionResetWhenTable();
+        computePlayerReflectTable();
+        computePlayfieldMaskTable();
+        computePriorityEncoder();
+       // debugDumpArray(PLAYFIELD_TABLE);
+    }//end : STATIC INIT    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   */ 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /** Creates a new instance of JSConstants */
+    
+     /**
+     * (A method that allowed me to type less when converting C++ to Java. It makes for
+     * more readable code as well. -JLA)
+     * @param aValue an integer
+     * @return the boolean equivalent (in C++) of the integer
+     */
+    this.bool = function(aValue) {
+        if (aValue==0) return false;
+        else return true;
+    }
+    
+    
+      //======================== STATIC COMPUTE METHODS ==========================
 //    private static void computePriorityEncoder() {
-//        for(char x = 0; x < 2; ++x) {
-//            for(char enabled = 0; enabled < 256; ++enabled) {
-//                if((enabled & BIT_PRIORITY)!=0) {
-//                    byte color = 0;
-//                    
-//                    if((enabled & (BIT_P1 | BIT_M1)) != 0)
-//                        color = 3;
-//                    if((enabled & (BIT_P0 | BIT_M0)) != 0)
-//                        color = 2;
-//                    if((enabled & BIT_BL) != 0)
-//                        color = 1;
-//                    if((enabled & BIT_PF) != 0)
-//                        color = 1;  // NOTE: Playfield has priority so BIT_SCORE isn't used
-//                    
-//                    PRIORITY_ENCODER[x][enabled] = color;
-//                } else {
-//                    byte color = 0;
-//                    
-//                    if((enabled & BIT_BL) != 0)
-//                        color = 1;
-//                    if((enabled & BIT_PF) != 0)
-//                        color = (byte)(((enabled & BIT_SCORE)!=0) ? ((x == 0) ? 2 : 3) : 1);
-//                    if((enabled & (BIT_P1 | BIT_M1)) != 0)
-//                        color = (byte)((color != 2) ? 3 : 2);
-//                    if((enabled & (BIT_P0 | BIT_M0)) != 0)
-//                        color = 2;
-//                    
-//                    PRIORITY_ENCODER[x][enabled] = color;
-//                }//end : else
-//            }//end : for enabled loop
-//        }//end : for x loop
-//    }
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        for(var x = 0; x < 2; ++x) {
+            for(var enabled = 0; enabled < 256; ++enabled) {
+                if((enabled & BIT_PRIORITY)!=0) {
+                    var color = 0;
+                    
+                    if((enabled & (BIT_P1 | BIT_M1)) != 0)
+                        color = 3;
+                    if((enabled & (BIT_P0 | BIT_M0)) != 0)
+                        color = 2;
+                    if((enabled & BIT_BL) != 0)
+                        color = 1;
+                    if((enabled & BIT_PF) != 0)
+                        color = 1;  // NOTE: Playfield has priority so BIT_SCORE isn't used
+                    
+                    PRIORITY_ENCODER[x][enabled] = color;
+                } else {
+                    var color = 0;
+                    
+                    if((enabled & BIT_BL) != 0)
+                        color = 1;
+                    if((enabled & BIT_PF) != 0)
+                        color = (((enabled & BIT_SCORE)!=0)? ((x == 0) ? 2 : 3) : 1) & 0xFF;
+                    if((enabled & (BIT_P1 | BIT_M1)) != 0)
+                        color = ((color != 2) ? 3 : 2) & 0xFF;
+                    if((enabled & (BIT_P0 | BIT_M0)) != 0)
+                        color = 2;
+                    
+                    PRIORITY_ENCODER[x][enabled] = color;
+                }//end : else
+            }//end : for enabled loop
+        }//end : for x loop
+  //  }
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    private static void computeBallMaskTable() {
-//        // First, calculate masks for alignment 0
-//        for(int size = 0; size < 4; ++size) {
-//            int x=0;
-//            // Set all of the masks to false to start with
-//            for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x)  { BALL_MASK_TABLE[0][size][x] = false;  }
-//            
-//            // Set the necessary fields true
-//            for(x = 0; x < CLOCKS_PER_LINE_VISIBLE + 8; ++x) {
-//                if((x >= 0) && (x < (1 << size))) {
-//                    BALL_MASK_TABLE[0][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                }//end : x within specified range
-//            }//end : for x loop
-//            // Copy fields into the wrap-around area of the mask
-//            for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x) { BALL_MASK_TABLE[0][size][x + CLOCKS_PER_LINE_VISIBLE] = BALL_MASK_TABLE[0][size][x];    }
-//            
-//        }//end : for size loop
-//        
-//        // Now, copy data for alignments of 1, 2 and 3
-//        for(int align = 1; align < 4; ++align) {
-//            for(int size = 0; size < 4; ++size) {
-//                for(int x = 0; x < 320; ++x) {
-//                    BALL_MASK_TABLE[align][size][x] =
-//                            BALL_MASK_TABLE[0][size][(x + 320 - align) % 320];
-//                }//end : for x loop
-//            }//end : for size loop
-//        }//end : for align loop
-//    }//::
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // First, calculate masks for alignment 0
+        for(var size = 0; size < 4; ++size) {
+            var x=0;
+            // Set all of the masks to false to start with
+            for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x)  { BALL_MASK_TABLE[0][size][x] = false;  }
+            
+            // Set the necessary fields true
+            for(x = 0; x < CLOCKS_PER_LINE_VISIBLE + 8; ++x) {
+                if((x >= 0) && (x < (1 << size))) {
+                    BALL_MASK_TABLE[0][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                }//end : x within specified range
+            }//end : for x loop
+            // Copy fields into the wrap-around area of the mask
+            for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x) { BALL_MASK_TABLE[0][size][x + CLOCKS_PER_LINE_VISIBLE] = BALL_MASK_TABLE[0][size][x];    }
+            
+        }//end : for size loop
+        
+        // Now, copy data for alignments of 1, 2 and 3
+        for(var align = 1; align < 4; ++align) {
+            for(var size = 0; size < 4; ++size) {
+                for(var x = 0; x < 320; ++x) {
+                    BALL_MASK_TABLE[align][size][x] =
+                            BALL_MASK_TABLE[0][size][(x + 320 - align) % 320];
+                }//end : for x loop
+            }//end : for size loop
+        }//end : for align loop
+    //}//::
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    private static  void computeCollisionTable() {
-//        for(char i = 0; i < 64; ++i) {
-//            COLLISION_TABLE[i] = 0;
-//            
-//            if(bool(i & BIT_M0) && bool(i & BIT_P1))    // M0-P1
-//                COLLISION_TABLE[i] |= 0x0001;
-//            
-//            if(bool(i & BIT_M0) && bool(i & BIT_P0))    // M0-P0
-//                COLLISION_TABLE[i] |= 0x0002;
-//            
-//            if(bool(i & BIT_M1) && bool(i & BIT_P0))    // M1-P0
-//                COLLISION_TABLE[i] |= 0x0004;
-//            
-//            if(bool(i & BIT_M1) && bool(i & BIT_P1))    // M1-P1
-//                COLLISION_TABLE[i] |= 0x0008;
-//            
-//            if(bool(i & BIT_P0) && bool(i & BIT_PF))    // P0-PF
-//                COLLISION_TABLE[i] |= 0x0010;
-//            
-//            if(bool(i & BIT_P0) && bool(i & BIT_BL))    // P0-BL
-//                COLLISION_TABLE[i] |= 0x0020;
-//            
-//            if(bool(i & BIT_P1) && bool(i & BIT_PF))    // P1-PF
-//                COLLISION_TABLE[i] |= 0x0040;
-//            
-//            if(bool(i & BIT_P1) && bool(i & BIT_BL))    // P1-BL
-//                COLLISION_TABLE[i] |= 0x0080;
-//            
-//            if(bool(i & BIT_M0) && bool(i & BIT_PF))    // M0-PF
-//                COLLISION_TABLE[i] |= 0x0100;
-//            
-//            if(bool(i & BIT_M0) && bool(i & BIT_BL))    // M0-BL
-//                COLLISION_TABLE[i] |= 0x0200;
-//            
-//            if(bool(i & BIT_M1) && bool(i & BIT_PF))    // M1-PF
-//                COLLISION_TABLE[i] |= 0x0400;
-//            
-//            if(bool(i & BIT_M1) && bool(i & BIT_BL))    // M1-BL
-//                COLLISION_TABLE[i] |= 0x0800;
-//            
-//            if(bool(i & BIT_BL) && bool(i & BIT_PF))    // BL-PF
-//                COLLISION_TABLE[i] |= 0x1000;
-//            
-//            if(bool(i & BIT_P0) && bool(i & BIT_P1))    // P0-P1
-//                COLLISION_TABLE[i] |= 0x2000;
-//            
-//            if(bool(i & BIT_M0) && bool(i & BIT_M1))    // M0-M1
-//                COLLISION_TABLE[i] |= 0x4000;
-//        }//end : for i loop
+        for(var i = 0; i < 64; ++i) {
+            COLLISION_TABLE[i] = 0;
+            
+            if(bool(i & BIT_M0) && bool(i & BIT_P1))    // M0-P1
+                COLLISION_TABLE[i] |= 0x0001;
+            
+            if(bool(i & BIT_M0) && bool(i & BIT_P0))    // M0-P0
+                COLLISION_TABLE[i] |= 0x0002;
+            
+            if(bool(i & BIT_M1) && bool(i & BIT_P0))    // M1-P0
+                COLLISION_TABLE[i] |= 0x0004;
+            
+            if(bool(i & BIT_M1) && bool(i & BIT_P1))    // M1-P1
+                COLLISION_TABLE[i] |= 0x0008;
+            
+            if(bool(i & BIT_P0) && bool(i & BIT_PF))    // P0-PF
+                COLLISION_TABLE[i] |= 0x0010;
+            
+            if(bool(i & BIT_P0) && bool(i & BIT_BL))    // P0-BL
+                COLLISION_TABLE[i] |= 0x0020;
+            
+            if(bool(i & BIT_P1) && bool(i & BIT_PF))    // P1-PF
+                COLLISION_TABLE[i] |= 0x0040;
+            
+            if(bool(i & BIT_P1) && bool(i & BIT_BL))    // P1-BL
+                COLLISION_TABLE[i] |= 0x0080;
+            
+            if(bool(i & BIT_M0) && bool(i & BIT_PF))    // M0-PF
+                COLLISION_TABLE[i] |= 0x0100;
+            
+            if(bool(i & BIT_M0) && bool(i & BIT_BL))    // M0-BL
+                COLLISION_TABLE[i] |= 0x0200;
+            
+            if(bool(i & BIT_M1) && bool(i & BIT_PF))    // M1-PF
+                COLLISION_TABLE[i] |= 0x0400;
+            
+            if(bool(i & BIT_M1) && bool(i & BIT_BL))    // M1-BL
+                COLLISION_TABLE[i] |= 0x0800;
+            
+            if(bool(i & BIT_BL) && bool(i & BIT_PF))    // BL-PF
+                COLLISION_TABLE[i] |= 0x1000;
+            
+            if(bool(i & BIT_P0) && bool(i & BIT_P1))    // P0-P1
+                COLLISION_TABLE[i] |= 0x2000;
+            
+            if(bool(i & BIT_M0) && bool(i & BIT_M1))    // M0-M1
+                COLLISION_TABLE[i] |= 0x4000;
+        }//end : for i loop
 //    }//::
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private static  void computeMissileMaskTable() {
-//        // First, calculate masks for alignment 0
-//        int x, size, number;
-//        
-//        // Clear the missile table to start with
-//        for(number = 0; number < 8; ++number)
-//            for(size = 0; size < 4; ++size)
-//                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x)
-//                    MISSILE_MASK_TABLE[0][number][size][x] = false;
-//        
-//        for(number = 0; number < 8; ++number) {
-//            for(size = 0; size < 4; ++size) {
-//                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE + 72; ++x) {
-//                    // Only one copy of the missile
-//                    if((number == 0x00) || (number == 0x05) || (number == 0x07)) {
-//                        if((x >= 0) && (x < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                    }
-//                    // Two copies - close
-//                    else if(number == 0x01) {
-//                        if((x >= 0) && (x < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                        else if(((x - 16) >= 0) && ((x - 16) < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                    }
-//                    // Two copies - medium
-//                    else if(number == 0x02) {
-//                        if((x >= 0) && (x < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                        else if(((x - 32) >= 0) && ((x - 32) < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                    }
-//                    // Three copies - close
-//                    else if(number == 0x03) {
-//                        if((x >= 0) && (x < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                        else if(((x - 16) >= 0) && ((x - 16) < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                        else if(((x - 32) >= 0) && ((x - 32) < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                    }
-//                    // Two copies - wide
-//                    else if(number == 0x04) {
-//                        if((x >= 0) && (x < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                        else if(((x - 64) >= 0) && ((x - 64) < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                    }
-//                    // Three copies - medium
-//                    else if(number == 0x06) {
-//                        if((x >= 0) && (x < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                        else if(((x - 32) >= 0) && ((x - 32) < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                        else if(((x - 64) >= 0) && ((x - 64) < (1 << size)))
-//                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
-//                    }
-//                }
-//                
-//                // Copy data into wrap-around area
-//                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x)
-//                    MISSILE_MASK_TABLE[0][number][size][x + CLOCKS_PER_LINE_VISIBLE] =
-//                            MISSILE_MASK_TABLE[0][number][size][x];
-//            }
-//        }
-//        
-//        // Now, copy data for alignments of 1, 2 and 3
-//        for(int align = 1; align < 4; ++align) {
-//            for(number = 0; number < 8; ++number) {
-//                for(size = 0; size < 4; ++size) {
-//                    for(x = 0; x < 320; ++x) {
-//                        MISSILE_MASK_TABLE[align][number][size][x] =
-//                                MISSILE_MASK_TABLE[0][number][size][(x + 320 - align) % 320];
-//                    }//end : for x loop
-//                }//end : for size loop
-//            }//end : for number loop
-//        }//end : for align loop
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //  private static  void computeMissileMaskTable() {
+        // First, calculate masks for alignment 0
+        var x, size, number;
+        
+        // Clear the missile table to start with
+        for(number = 0; number < 8; ++number)
+            for(size = 0; size < 4; ++size)
+                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x)
+                    MISSILE_MASK_TABLE[0][number][size][x] = false;
+        
+        for(number = 0; number < 8; ++number) {
+            for(size = 0; size < 4; ++size) {
+                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE + 72; ++x) {
+                    // Only one copy of the missile
+                    if((number == 0x00) || (number == 0x05) || (number == 0x07)) {
+                        if((x >= 0) && (x < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                    }
+                    // Two copies - close
+                    else if(number == 0x01) {
+                        if((x >= 0) && (x < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                        else if(((x - 16) >= 0) && ((x - 16) < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                    }
+                    // Two copies - medium
+                    else if(number == 0x02) {
+                        if((x >= 0) && (x < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                        else if(((x - 32) >= 0) && ((x - 32) < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                    }
+                    // Three copies - close
+                    else if(number == 0x03) {
+                        if((x >= 0) && (x < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                        else if(((x - 16) >= 0) && ((x - 16) < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                        else if(((x - 32) >= 0) && ((x - 32) < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                    }
+                    // Two copies - wide
+                    else if(number == 0x04) {
+                        if((x >= 0) && (x < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                        else if(((x - 64) >= 0) && ((x - 64) < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                    }
+                    // Three copies - medium
+                    else if(number == 0x06) {
+                        if((x >= 0) && (x < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                        else if(((x - 32) >= 0) && ((x - 32) < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                        else if(((x - 64) >= 0) && ((x - 64) < (1 << size)))
+                            MISSILE_MASK_TABLE[0][number][size][x % CLOCKS_PER_LINE_VISIBLE] = true;
+                    }
+                }
+                
+                // Copy data into wrap-around area
+                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x)
+                    MISSILE_MASK_TABLE[0][number][size][x + CLOCKS_PER_LINE_VISIBLE] =
+                            MISSILE_MASK_TABLE[0][number][size][x];
+            }
+        }
+        
+        // Now, copy data for alignments of 1, 2 and 3
+        for(var align = 1; align < 4; ++align) {
+            for(number = 0; number < 8; ++number) {
+                for(size = 0; size < 4; ++size) {
+                    for(x = 0; x < 320; ++x) {
+                        MISSILE_MASK_TABLE[align][number][size][x] =
+                                MISSILE_MASK_TABLE[0][number][size][(x + 320 - align) % 320];
+                    }//end : for x loop
+                }//end : for size loop
+            }//end : for number loop
+        }//end : for align loop
 //    }//::
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private static void computePlayerMaskTable() {
-//        // First, calculate masks for alignment 0
-//        int x, enable, mode;
-//        
-//        // Set the player mask table to all zeros
-//        for(enable = 0; enable < 2; ++enable)
-//            for(mode = 0; mode < 8; ++mode)
-//                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x)
-//                    PLAYER_MASK_TABLE[0][enable][mode][x] = 0x00;
-//        
-//        // Now, compute the player mask table
-//        for(enable = 0; enable < 2; ++enable) {
-//            for(mode = 0; mode < 8; ++mode) {
-//                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE + 72; ++x) {
-//                    if(mode == 0x00) {
-//                        if((enable == 0) && (x >= 0) && (x < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = (char)(0x80 >> x);
-//                    } else if(mode == 0x01) {
-//                        if((enable == 0) && (x >= 0) && (x < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
-//                        else if(((x - 16) >= 0) && ((x - 16) < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 16);
-//                    } else if(mode == 0x02) {
-//                        if((enable == 0) && (x >= 0) && (x < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
-//                        else if(((x - 32) >= 0) && ((x - 32) < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 32);
-//                    } else if(mode == 0x03) {
-//                        if((enable == 0) && (x >= 0) && (x < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
-//                        else if(((x - 16) >= 0) && ((x - 16) < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 16);
-//                        else if(((x - 32) >= 0) && ((x - 32) < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 32);
-//                    } else if(mode == 0x04) {
-//                        if((enable == 0) && (x >= 0) && (x < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
-//                        else if(((x - 64) >= 0) && ((x - 64) < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 64);
-//                    } else if(mode == 0x05) {
-//                        // For some reason in double size mode the player's output
-//                        // is delayed by one pixel thus we use > instead of >=
-//                        if((enable == 0) && (x > 0) && (x <= 16))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> ((x - 1)/2);
-//                    } else if(mode == 0x06) {
-//                        if((enable == 0) && (x >= 0) && (x < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
-//                        else if(((x - 32) >= 0) && ((x - 32) < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 32);
-//                        else if(((x - 64) >= 0) && ((x - 64) < 8))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 64);
-//                    } else if(mode == 0x07) {
-//                        // For some reason in quad size mode the player's output
-//                        // is delayed by one pixel thus we use > instead of >=
-//                        if((enable == 0) && (x > 0) && (x <= 32))
-//                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> ((x - 1)/4);
-//                    }
-//                }
-//                
-//                // Copy data into wrap-around area
-//                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x) {
-//                    PLAYER_MASK_TABLE[0][enable][mode][x + CLOCKS_PER_LINE_VISIBLE] =
-//                            PLAYER_MASK_TABLE[0][enable][mode][x];
-//                }
-//            }
-//        }
-//        
-//        // Now, copy data for alignments of 1, 2 and 3
-//        for(int align = 1; align < 4; ++align) {
-//            for(enable = 0; enable < 2; ++enable) {
-//                for(mode = 0; mode < 8; ++mode) {
-//                    for(x = 0; x < 320; ++x) {
-//                        PLAYER_MASK_TABLE[align][enable][mode][x] =
-//                                PLAYER_MASK_TABLE[0][enable][mode][(x + 320 - align) % 320];
-//                    }
-//                }
-//            }
-//        }
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //  private static void computePlayerMaskTable() {
+        // First, calculate masks for alignment 0
+        var x, enable, mode;
+        
+        // Set the player mask table to all zeros
+        for(enable = 0; enable < 2; ++enable)
+            for(mode = 0; mode < 8; ++mode)
+                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x)
+                    PLAYER_MASK_TABLE[0][enable][mode][x] = 0x00;
+        
+        // Now, compute the player mask table
+        for(enable = 0; enable < 2; ++enable) {
+            for(mode = 0; mode < 8; ++mode) {
+                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE + 72; ++x) {
+                    if(mode == 0x00) {
+                        if((enable == 0) && (x >= 0) && (x < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = (0x80 >> x) & 0xFF;
+                    } else if(mode == 0x01) {
+                        if((enable == 0) && (x >= 0) && (x < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
+                        else if(((x - 16) >= 0) && ((x - 16) < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 16);
+                    } else if(mode == 0x02) {
+                        if((enable == 0) && (x >= 0) && (x < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
+                        else if(((x - 32) >= 0) && ((x - 32) < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 32);
+                    } else if(mode == 0x03) {
+                        if((enable == 0) && (x >= 0) && (x < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
+                        else if(((x - 16) >= 0) && ((x - 16) < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 16);
+                        else if(((x - 32) >= 0) && ((x - 32) < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 32);
+                    } else if(mode == 0x04) {
+                        if((enable == 0) && (x >= 0) && (x < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
+                        else if(((x - 64) >= 0) && ((x - 64) < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 64);
+                    } else if(mode == 0x05) {
+                        // For some reason in double size mode the player's output
+                        // is delayed by one pixel thus we use > instead of >=
+                        if((enable == 0) && (x > 0) && (x <= 16))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> ((x - 1)/2);
+                    } else if(mode == 0x06) {
+                        if((enable == 0) && (x >= 0) && (x < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> x;
+                        else if(((x - 32) >= 0) && ((x - 32) < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 32);
+                        else if(((x - 64) >= 0) && ((x - 64) < 8))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> (x - 64);
+                    } else if(mode == 0x07) {
+                        // For some reason in quad size mode the player's output
+                        // is delayed by one pixel thus we use > instead of >=
+                        if((enable == 0) && (x > 0) && (x <= 32))
+                            PLAYER_MASK_TABLE[0][enable][mode][x % CLOCKS_PER_LINE_VISIBLE] = 0x80 >> ((x - 1)/4);
+                    }
+                }
+                
+                // Copy data into wrap-around area
+                for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x) {
+                    PLAYER_MASK_TABLE[0][enable][mode][x + CLOCKS_PER_LINE_VISIBLE] =
+                            PLAYER_MASK_TABLE[0][enable][mode][x];
+                }
+            }
+        }
+        
+        // Now, copy data for alignments of 1, 2 and 3
+        for(var align = 1; align < 4; ++align) {
+            for(enable = 0; enable < 2; ++enable) {
+                for(mode = 0; mode < 8; ++mode) {
+                    for(x = 0; x < 320; ++x) {
+                        PLAYER_MASK_TABLE[align][enable][mode][x] =
+                                PLAYER_MASK_TABLE[0][enable][mode][(x + 320 - align) % 320];
+                    }
+                }
+            }
+        }
 //    }
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private static void computePlayerPositionResetWhenTable() {
-//        int mode, oldx, newx;
-//        
-//        // Loop through all player modes, all old player positions, and all new
-//        // player positions and determine where the new position is located:
-//        // 1 means the new position is within the display of an old copy of the
-//        // player, -1 means the new position is within the delay portion of an
-//        // old copy of the player, and 0 means it's neither of these two
-//        for(mode = 0; mode < 8; ++mode) {
-//            for(oldx = 0; oldx < CLOCKS_PER_LINE_VISIBLE; ++oldx) {
-//                // Set everything to 0 for non-delay/non-display section
-//                for(newx = 0; newx < CLOCKS_PER_LINE_VISIBLE; ++newx) {
-//                    PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx] = 0;
-//                }
-//                
-//                // Now, we'll set the entries for non-delay/non-display section
-//                for(newx = 0; newx < CLOCKS_PER_LINE_VISIBLE + 72 + 5; ++newx) {
-//                    if(mode == 0x00) {
-//                        if((newx >= oldx) && (newx < (oldx + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        
-//                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                    } else if(mode == 0x01) {
-//                        if((newx >= oldx) && (newx < (oldx + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        else if((newx >= (oldx + 16)) && (newx < (oldx + 16 + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        
-//                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                        else if((newx >= oldx + 16 + 4) && (newx < (oldx + 16 + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                    } else if(mode == 0x02) {
-//                        if((newx >= oldx) && (newx < (oldx + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        else if((newx >= (oldx + 32)) && (newx < (oldx + 32 + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        
-//                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                        else if((newx >= oldx + 32 + 4) && (newx < (oldx + 32 + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                    } else if(mode == 0x03) {
-//                        if((newx >= oldx) && (newx < (oldx + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        else if((newx >= (oldx + 16)) && (newx < (oldx + 16 + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        else if((newx >= (oldx + 32)) && (newx < (oldx + 32 + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        
-//                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                        else if((newx >= oldx + 16 + 4) && (newx < (oldx + 16 + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                        else if((newx >= oldx + 32 + 4) && (newx < (oldx + 32 + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                    } else if(mode == 0x04) {
-//                        if((newx >= oldx) && (newx < (oldx + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        else if((newx >= (oldx + 64)) && (newx < (oldx + 64 + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        
-//                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                        else if((newx >= oldx + 64 + 4) && (newx < (oldx + 64 + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                    } else if(mode == 0x05) {
-//                        if((newx >= oldx) && (newx < (oldx + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        
-//                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 16)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                    } else if(mode == 0x06) {
-//                        if((newx >= oldx) && (newx < (oldx + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        else if((newx >= (oldx + 32)) && (newx < (oldx + 32 + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        else if((newx >= (oldx + 64)) && (newx < (oldx + 64 + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        
-//                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                        else if((newx >= oldx + 32 + 4) && (newx < (oldx + 32 + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                        else if((newx >= oldx + 64 + 4) && (newx < (oldx + 64 + 4 + 8)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                    } else if(mode == 0x07) {
-//                        if((newx >= oldx) && (newx < (oldx + 4)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
-//                        
-//                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 32)))
-//                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
-//                    }
-//                }
-//                
-//                // Let's do a sanity check on our table entries
-//                int s1 = 0, s2 = 0;
-//                for(newx = 0; newx < CLOCKS_PER_LINE_VISIBLE; ++newx) {
-//                    if(PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx] == -1)
-//                        ++s1;
-//                    if(PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx] == 1)
-//                        ++s2;
-//                }
-//                assert((s1 % 4 == 0) && (s2 % 8 == 0));
-//            }
-//        }
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //  private static void computePlayerPositionResetWhenTable() {
+        var mode, oldx, newx;
+        
+        // Loop through all player modes, all old player positions, and all new
+        // player positions and determine where the new position is located:
+        // 1 means the new position is within the display of an old copy of the
+        // player, -1 means the new position is within the delay portion of an
+        // old copy of the player, and 0 means it's neither of these two
+        for(mode = 0; mode < 8; ++mode) {
+            for(oldx = 0; oldx < CLOCKS_PER_LINE_VISIBLE; ++oldx) {
+                // Set everything to 0 for non-delay/non-display section
+                for(newx = 0; newx < CLOCKS_PER_LINE_VISIBLE; ++newx) {
+                    PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx] = 0;
+                }
+                
+                // Now, we'll set the entries for non-delay/non-display section
+                for(newx = 0; newx < CLOCKS_PER_LINE_VISIBLE + 72 + 5; ++newx) {
+                    if(mode == 0x00) {
+                        if((newx >= oldx) && (newx < (oldx + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        
+                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                    } else if(mode == 0x01) {
+                        if((newx >= oldx) && (newx < (oldx + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        else if((newx >= (oldx + 16)) && (newx < (oldx + 16 + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        
+                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                        else if((newx >= oldx + 16 + 4) && (newx < (oldx + 16 + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                    } else if(mode == 0x02) {
+                        if((newx >= oldx) && (newx < (oldx + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        else if((newx >= (oldx + 32)) && (newx < (oldx + 32 + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        
+                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                        else if((newx >= oldx + 32 + 4) && (newx < (oldx + 32 + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                    } else if(mode == 0x03) {
+                        if((newx >= oldx) && (newx < (oldx + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        else if((newx >= (oldx + 16)) && (newx < (oldx + 16 + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        else if((newx >= (oldx + 32)) && (newx < (oldx + 32 + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        
+                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                        else if((newx >= oldx + 16 + 4) && (newx < (oldx + 16 + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                        else if((newx >= oldx + 32 + 4) && (newx < (oldx + 32 + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                    } else if(mode == 0x04) {
+                        if((newx >= oldx) && (newx < (oldx + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        else if((newx >= (oldx + 64)) && (newx < (oldx + 64 + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        
+                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                        else if((newx >= oldx + 64 + 4) && (newx < (oldx + 64 + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                    } else if(mode == 0x05) {
+                        if((newx >= oldx) && (newx < (oldx + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        
+                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 16)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                    } else if(mode == 0x06) {
+                        if((newx >= oldx) && (newx < (oldx + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        else if((newx >= (oldx + 32)) && (newx < (oldx + 32 + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        else if((newx >= (oldx + 64)) && (newx < (oldx + 64 + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        
+                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                        else if((newx >= oldx + 32 + 4) && (newx < (oldx + 32 + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                        else if((newx >= oldx + 64 + 4) && (newx < (oldx + 64 + 4 + 8)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                    } else if(mode == 0x07) {
+                        if((newx >= oldx) && (newx < (oldx + 4)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = -1;
+                        
+                        if((newx >= oldx + 4) && (newx < (oldx + 4 + 32)))
+                            PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx % CLOCKS_PER_LINE_VISIBLE] = 1;
+                    }
+                }
+                
+                // Let's do a sanity check on our table entries
+                var s1 = 0, s2 = 0;
+                for(newx = 0; newx < CLOCKS_PER_LINE_VISIBLE; ++newx) {
+                    if(PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx] == -1)
+                        ++s1;
+                    if(PLAYER_POSITION_RESET_WHEN_TABLE[mode][oldx][newx] == 1)
+                        ++s2;
+                }
+                assert((s1 % 4 == 0) && (s2 % 8 == 0));
+            }
+        }
 //    }
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private static   void computePlayerReflectTable() {
-//        for(char i = 0; i < 256; ++i) {
-//            int r = 0;
-//            
-//            for(char t = 1; t <= 128; t *= 2) {
-//                r = ((r << 1) | (bool(i & t) ? 0x01 : 0x00)&0xFF);
-//            }
-//            
-//            PLAYER_REFLECT_TABLE[i] = r;
-//        }
+    
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // private static   void computePlayerReflectTable() {
+        for(var i = 0; i < 256; ++i) {
+            var r = 0;
+            
+            for(var t = 1; t <= 128; t *= 2) {
+                r = ((r << 1) | (bool(i & t) ? 0x01 : 0x00)&0xFF);
+            }
+            
+            PLAYER_REFLECT_TABLE[i] = r;
+        }
 //    }
-//    
-//    
-//    private static void debugDumpArray(int[][] aArray)
-//    {
-//       int zYCount=aArray[0].length;
-//       int zXCount=aArray.length;
-//       for (int i_x=0; i_x<zXCount; i_x++)
-//       {
-//           for (int i_y=0; i_y<zYCount; i_y++)
-//           {
-//               System.out.println("[" + i_x + "][" + i_y + "] = " + Integer.toBinaryString(aArray[i_x][i_y]));
-//           }
-//       }
-//    }
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    
+  /*  private static void debugDumpArray(int[][] aArray)
+    {
+       int zYCount=aArray[0].length;
+       int zXCount=aArray.length;
+       for (int i_x=0; i_x<zXCount; i_x++)
+       {
+           for (int i_y=0; i_y<zYCount; i_y++)
+           {
+               System.out.println("[" + i_x + "][" + i_y + "] = " + Integer.toBinaryString(aArray[i_x][i_y]));
+           }
+       }
+    }*/
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    private static  void computePlayfieldMaskTable() {
-//        int x;
-//        
-//        // Compute playfield mask table for non-reflected mode
-//        for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x) {
-//            if(x < 16)
-//                PLAYFIELD_TABLE[0][x] = 0x00001 << (x / CLOCKS_PER_PLAYFIELD_BIT); //0-15
-//            else if(x < 48)
-//                PLAYFIELD_TABLE[0][x] = 0x00800 >> ((x - 16) / CLOCKS_PER_PLAYFIELD_BIT); //16-47
-//            else if(x < 80)
-//                PLAYFIELD_TABLE[0][x] = 0x01000 << ((x - 48) / CLOCKS_PER_PLAYFIELD_BIT); //48-79 
-//            else if(x < 96)
-//                PLAYFIELD_TABLE[0][x] = 0x00001 << ((x - 80) / CLOCKS_PER_PLAYFIELD_BIT); //80-95
-//            else if(x < 128)
-//                PLAYFIELD_TABLE[0][x] = 0x00800 >> ((x - 96) / CLOCKS_PER_PLAYFIELD_BIT); //96-127
-//            else if(x < 160)
-//                PLAYFIELD_TABLE[0][x] = 0x01000 << ((x - 128) / CLOCKS_PER_PLAYFIELD_BIT); //128-159
-//        }
-//        
-//        // Compute playfield mask table for reflected mode
-//        for(x = 0; x < 160; ++x) {
-//            if(x < 16)
-//                PLAYFIELD_TABLE[1][x] = 0x00001 << (x / CLOCKS_PER_PLAYFIELD_BIT);
-//            else if(x < 48)
-//                PLAYFIELD_TABLE[1][x] = 0x00800 >> ((x - 16) / CLOCKS_PER_PLAYFIELD_BIT);
-//            else if(x < 80)
-//                PLAYFIELD_TABLE[1][x] = 0x01000 << ((x - 48) / CLOCKS_PER_PLAYFIELD_BIT);
-//            else if(x < 112)
-//                PLAYFIELD_TABLE[1][x] = 0x80000 >> ((x - 80) / CLOCKS_PER_PLAYFIELD_BIT);
-//            else if(x < 144)
-//                PLAYFIELD_TABLE[1][x] = 0x00010 << ((x - 112) / CLOCKS_PER_PLAYFIELD_BIT);
-//            else if(x < 160)
-//                PLAYFIELD_TABLE[1][x] = 0x00008 >> ((x - 144) / CLOCKS_PER_PLAYFIELD_BIT);
-//        }
-//    }
-//    
-//    
-//    
-//    
+        var x;
+        
+        // Compute playfield mask table for non-reflected mode
+        for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x) {
+            if(x < 16)
+                PLAYFIELD_TABLE[0][x] = 0x00001 << (x / CLOCKS_PER_PLAYFIELD_BIT); //0-15
+            else if(x < 48)
+                PLAYFIELD_TABLE[0][x] = 0x00800 >> ((x - 16) / CLOCKS_PER_PLAYFIELD_BIT); //16-47
+            else if(x < 80)
+                PLAYFIELD_TABLE[0][x] = 0x01000 << ((x - 48) / CLOCKS_PER_PLAYFIELD_BIT); //48-79 
+            else if(x < 96)
+                PLAYFIELD_TABLE[0][x] = 0x00001 << ((x - 80) / CLOCKS_PER_PLAYFIELD_BIT); //80-95
+            else if(x < 128)
+                PLAYFIELD_TABLE[0][x] = 0x00800 >> ((x - 96) / CLOCKS_PER_PLAYFIELD_BIT); //96-127
+            else if(x < 160)
+                PLAYFIELD_TABLE[0][x] = 0x01000 << ((x - 128) / CLOCKS_PER_PLAYFIELD_BIT); //128-159
+        }
+        
+        // Compute playfield mask table for reflected mode
+        for(x = 0; x < 160; ++x) {
+            if(x < 16)
+                PLAYFIELD_TABLE[1][x] = 0x00001 << (x / CLOCKS_PER_PLAYFIELD_BIT);
+            else if(x < 48)
+                PLAYFIELD_TABLE[1][x] = 0x00800 >> ((x - 16) / CLOCKS_PER_PLAYFIELD_BIT);
+            else if(x < 80)
+                PLAYFIELD_TABLE[1][x] = 0x01000 << ((x - 48) / CLOCKS_PER_PLAYFIELD_BIT);
+            else if(x < 112)
+                PLAYFIELD_TABLE[1][x] = 0x80000 >> ((x - 80) / CLOCKS_PER_PLAYFIELD_BIT);
+            else if(x < 144)
+                PLAYFIELD_TABLE[1][x] = 0x00010 << ((x - 112) / CLOCKS_PER_PLAYFIELD_BIT);
+            else if(x < 160)
+                PLAYFIELD_TABLE[1][x] = 0x00008 >> ((x - 144) / CLOCKS_PER_PLAYFIELD_BIT);
+        }
+    //}
+    
+    
+    
+    
 //    
 ////#############################################################################
 ////###################  ENUMs                ###################################

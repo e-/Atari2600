@@ -43,7 +43,10 @@
      */
     function ClipRectangle(){
         this.isClear=true;
-        
+				this.x=0;
+				this.y=0;
+				this.width=0;
+				this.height=0;
         
         /**
          * Resets the area of the rectangle.  Should be called every frame.
@@ -112,9 +115,9 @@ function JSVideo(aConsole){
     
     
     
-    this.PALETTE_GRAY_STANDARD = []
+    this.PALETTE_GRAY_STANDARD = [];
    	
-		funciton getRGB(r,g,b){
+		function getRGB(r,g,b){
 			return (r<<16 | g<<8 | b);
 		}
 
@@ -146,14 +149,14 @@ function JSVideo(aConsole){
     
     this.myRedrawTIAIndicator=true;   // Indicates if the TIA area should be redrawn
     this.myUsePhosphor=false;  // Use phosphor effect (aka no flicker on 30Hz screens)
-    this.myPhosphorBlendPercent=DEFAULT_PHOSPHOR_BLEND;   // Amount to blend when using phosphor effect
+    this.myPhosphorBlendPercent=this.DEFAULT_PHOSPHOR_BLEND;   // Amount to blend when using phosphor effect
     
 		this.myClipRect = new ClipRectangle();
 
     //private transient ClipRectangle myClipRect=new ClipRectangle();
 		this.myBackBuffer = null;
     //private transient BufferedImage myBackBuffer=null;//(DEFAULT_WIDTH, DEFAULT_HEIGHT); //new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-    this.myBackBufferData=null; //new byte[0];
+//    this.myBackBufferData=null; //new byte[0];
     
     
     this.myTestPattern=null;
@@ -173,7 +176,7 @@ function JSVideo(aConsole){
    //     BufferedImage zReturn=GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(aWidth, aHeight);
 				
         //System.out.println("debug: image=" + zReturn);
-				zReturn = new Array(aWidth, aHeight);
+				zReturn = new Array(aWidth * aHeight);
         return zReturn;
         
     }
@@ -186,14 +189,14 @@ function JSVideo(aConsole){
     this.initBackBuffer = function(aWidth, aHeight)
     {
         this.myBackBuffer=this.createBackBuffer(aWidth, aHeight);
-        switch(myBackBuffer.getType())
+       /* switch(myBackBuffer.getType())
         {
             case BufferedImage.TYPE_INT_ARGB :
             case BufferedImage.TYPE_INT_ARGB_PRE :
             case BufferedImage.TYPE_INT_RGB :
           
        
-            myBackBufferData=((DataBufferInt)myBackBuffer.getRaster().getDataBuffer()).getData();
+           	 myBackBufferData=((myBackBuffer.getRaster().getDataBuffer()).getData();
             break;
      
             
@@ -203,7 +206,7 @@ function JSVideo(aConsole){
             myBackBufferData=null;
             break;
         }//end : not correct type for optimized buffer handling
-    }
+    }*/
     }//::
     
     /**
@@ -235,15 +238,15 @@ function JSVideo(aConsole){
      * @param out object output stream
      * @throws java.io.IOException thrown if an i/o exception occurs
      */
-    private void writeObject(ObjectOutputStream out) throws IOException {
+/*    private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
-    
+  */  
 
    	this.initPalettes = function()
     {
         myNormalPalette=new Array(256);
-        myBlendedPalette=arry2d(256, 256);
+        myBlendedPalette=array2d(256, 256);
         myGrayPalette=new Array(256);
     }
     
@@ -251,7 +254,7 @@ function JSVideo(aConsole){
      * Clears the buffers.
      */
     this.clearBuffers  = function() {
-        for(var i = 0; i < myCurrentFrameBuffer.length; ++i) {
+        for(var i = 0; i < this.myCurrentFrameBuffer.length; ++i) {
             this.myCurrentFrameBuffer[i] = 0;
             this.myPreviousFrameBuffer[i] = 0;
         }
@@ -262,10 +265,10 @@ function JSVideo(aConsole){
      * This is called once a frame to swap the previous and the current frame buffers.
      * The previous becomes the current, and the former current becomes the previous.
      */
-    this.swapFrameBuffers function() {
-        var tmp = myCurrentFrameBuffer;
-        myCurrentFrameBuffer = myPreviousFrameBuffer;
-        myPreviousFrameBuffer = tmp;
+    this.swapFrameBuffers = function() {
+        var tmp = this.myCurrentFrameBuffer;
+        this.myCurrentFrameBuffer = this.myPreviousFrameBuffer;
+        this.myPreviousFrameBuffer = tmp;
     }
     
     /**
@@ -357,10 +360,10 @@ function JSVideo(aConsole){
      * Erases any images on the back buffer
      */
    	this.clearBackBuffer = function() {
-        Graphics2D z2D=myBackBuffer.createGraphics();
+     /*   Graphics2D z2D=myBackBuffer.createGraphics();
         z2D.setColor(Color.BLACK);
         z2D.fillRect(0,0, myBackBuffer.getWidth(), myBackBuffer.getHeight());
-        z2D.dispose();
+        z2D.dispose(); */
     }
     
     /**
@@ -480,8 +483,8 @@ function JSVideo(aConsole){
                         
                         
                         
-                        if (this.myBackBufferData!=null) this.myBackBufferData[zBufferIndex]=zNewPaintedColor; //a quicker way if available
-                        else setRGB(this.myBackBuffer, x, y, zNewPaintedColor);     // the actual act of drawing
+                  /*      if (this.myBackBufferData!=null) this.myBackBufferData[zBufferIndex]=zNewPaintedColor; //a quicker way if available */
+                       /* else */ setRGB(this.myBackBuffer, x, y, zNewPaintedColor);     // the actual act of drawing
                         
                     }//end : pixel has changed
                 }//end : for x to width loop
@@ -686,7 +689,6 @@ function JSVideo(aConsole){
         var zBlendFactor=aPhosphorBlend/100.0;
         
         var zPhosp=Math.min(aColorComponentA, aColorComponentB) + Math.floor(zBlendFactor * zDifference);
-        
         assert((zPhosp>=0)&&(zPhosp<0x100)); //i.e. between 0 and 256 (a byte value)
         return zPhosp;
     }
@@ -723,9 +725,9 @@ function JSVideo(aConsole){
         
         // Set palette for normal fill
         for(i = 0; i < 256; ++i) {
-            int r = (palette[i] >> 16) & 0xff;
-            int g = (palette[i] >> 8) & 0xff;
-            int b = palette[i] & 0xff;
+            var r = (palette[i] >> 16) & 0xff;
+            var g = (palette[i] >> 8) & 0xff;
+            var b = palette[i] & 0xff;
             
             
             this.myNormalPalette[i] = this.calculateNormalColor(r, g, b);
@@ -744,7 +746,7 @@ function JSVideo(aConsole){
                 
                 var r = this.calculatePhosphorColor(ri, rj, this.myPhosphorBlendPercent);
                 var g =  this.calculatePhosphorColor(gi, gj, this.myPhosphorBlendPercent);
-                var b = this.calculatePhosphorColor(bi, bj, this.myPhosphorBlendPercent);
+         	      var b = this.calculatePhosphorColor(bi, bj, this.myPhosphorBlendPercent);
                 
                 this.myBlendedPalette[i][j] = this.calculateNormalColor(r, g, b);
             }
@@ -840,14 +842,16 @@ function JSVideo(aConsole){
         this.myConsole=aConsole; //Construct
         this.myRedrawTIAIndicator=true;
         this.myUsePhosphor=false;
-        this.myPhosphorBlendPercent=DEFAULT_PHOSPHOR_BLEND;
+        this.myPhosphorBlendPercent=this.DEFAULT_PHOSPHOR_BLEND;
        
         // Allocate buffers for two frame buffers
         this.myCurrentFrameBuffer = new Array(CLOCKS_PER_LINE_VISIBLE * FRAME_Y_MAX); //new int[CLOCKS_PER_LINE_VISIBLE * FRAME_Y_MAX];
         this.myPreviousFrameBuffer = new Array(CLOCKS_PER_LINE_VISIBLE * FRAME_Y_MAX); //new int[CLOCKS_PER_LINE_VISIBLE * FRAME_Y_MAX];
-        this.initBackBuffer(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        this.initBackBuffer(this.DEFAULT_WIDTH, this.DEFAULT_HEIGHT);
+
         this.initPalettes();
         this.loadImages();
+
         this.initialize();
     
 }//CLASS END

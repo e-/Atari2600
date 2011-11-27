@@ -96,7 +96,7 @@ function J6507() {
     this.AddressingMode.AbsoluteX,  this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX, this.AddressingMode.AbsoluteX
   ];
   
-  this.InstructionProcessorCycleTable = [
+  this.ourInstructionProcessorCycleTable = [
     //  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
         7, 6, 2, 8, 3, 3, 5, 5, 3, 2, 2, 2, 4, 4, 6, 6,  // 0
         2, 5, 2, 8, 4, 4, 6, 6, 2, 4, 2, 7, 4, 4, 7, 7,  // 1
@@ -115,7 +115,7 @@ function J6507() {
         2, 6, 2, 8, 3, 3, 5, 5, 2, 2, 2, 2, 4, 4, 6, 6,  // e
         2, 5, 2, 8, 4, 4, 6, 6, 2, 4, 2, 7, 4, 4, 7, 7   // f
   ];
-  this.InstructionPageCrossDelay = [
+  this.ourInstructionPageCrossDelay = [
     //  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // 0
         2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,  // 1
@@ -221,13 +221,13 @@ function J6507() {
   }
   this.getFlags = function() {
     var ps = 0x20;
-    if (N) ps |= 0x80;
-    if (V) ps |= 0x40;
-    if (B) ps |= 0x10;
-    if (D) ps |= 0x08;
-    if (I) ps |= 0x04;
-    if (!notZ) ps |= 0x02;
-    if (C) ps |= 0x01;
+    if (this.N) ps |= 0x80;
+    if (this.V) ps |= 0x40;
+    if (this.B) ps |= 0x10;
+    if (this.D) ps |= 0x08;
+    if (this.I) ps |= 0x04;
+    if (!this.notZ) ps |= 0x02;
+    if (this.C) ps |= 0x01;
 
     return ps;
   }
@@ -321,7 +321,7 @@ function J6507() {
   }
   this.SPdec = function() {
     var oldSP = this.SP;
-    this.SP = ((SP-1)&0xFF);
+    this.SP = ((this.SP-1)&0xFF);
     return oldSP;
   }
   this.SPinc = function() {
@@ -356,7 +356,7 @@ function J6507() {
     if (aRepeats === undefined || aRepeats === null) Repeats = aRepeats;
     
     var zContinue = true;
-    this.myExecutionStatus &= FatalErrorBit;
+    this.myExecutionStatus &= this.FatalErrorBit;
     var zCounter = 0;
 
     while (zContinue) {
@@ -735,12 +735,12 @@ function J6507() {
           alert("Instruction not recognized");
           // TODO : Throw Exception
       }
-      var zCycles = this.calcultaeCycles(this.IR) - this.myCyclesSignaled;
+      var zCycles = this.calculateCycles(this.IR) - this.myCyclesSignaled;
       if (zCycles > 0) {
         var zDebug = 20;
       }
       assert(zCycles>=0);
-      this.myCurrentSystem.processorCycles(zCycles); // TODO : Processor class is undefined!
+      this.myCurrentSystem.processorCycle(zCycles); // TODO : Processor class is undefined!
       this.myCyclesSignaled = 0;
 
       if (((this.myExecutionStatus & this.MaskabaleInsterruptBit) != 0) || (this.myExecutionStatus & this.NonmaskableInterruptBit) != 0) {
@@ -776,12 +776,12 @@ function J6507() {
     this.setPC(this.myCurrentSystem.getResetPC());
   }
   this.peek = function(aAddress, aSignalCycle) {
-    if (aSignalCycle === undefined || aSignalCycle == null) return this.peek(Address, true);
+    if (aSignalCycle === undefined || aSignalCycle == null) return this.peek(aAddress, true);
     assert(aAddress>=0);
     this.myReadLast = true;
     this.myLastOperandAddress = aAddress;
     if (aSignalCycle == true) this.signalCycle();
-    return this.myCurrentSsytem.peek(aAddress);
+    return this.myCurrentSystem.peek(aAddress);
   }
   this.peekImmediate = function() {
     var zReturn = this.peek(this.PC);
@@ -892,7 +892,7 @@ function J6507() {
   this.poke = function(aAddress, aByteValue) {
     assert((aByteValue<0x100)&&(aByteValue)>=0x00);
     if (aAddress >= 0) {
-      this.myCurrentSystem.poke(aAdress, aByteValue);
+      this.myCurrentSystem.poke(aAddress, aByteValue);
     }
     this.myReadLast = false;
   }

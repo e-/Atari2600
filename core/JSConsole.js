@@ -175,15 +175,13 @@ function JSConsole (aConsoleClient) {
 //    
 //   
 //    
-//    public int getDisplayWidth() { return myDisplayWidth; }
-//    public int getDisplayHeight() { return myDisplayHeight; }
-//    public int getYStart() {    return myYStart; }
+	    this.getDisplayWidth = function() { return this.myDisplayWidth; }	
+	   	this.getDisplayHeight = function() { return this.myDisplayHeight; }
+	    this.getYStart = function() {    return this.myYStart; }
 //    
     	this.setConsoleClient = function(aConsoleClient) { myConsoleClient=aConsoleClient; }
-//    public IfcConsoleClient getConsoleClient() { return myConsoleClient;}
-//    
-//    
-//    public JSController getController(Jack jack) {return (jack == Jack.LEFT) ? myControllers[0] : myControllers[1];}
+			this.getConsoleClient = function() { return this.myConsoleClient;}
+    	this.getController = function(jack) {return (jack == Jack.LEFT) ? this.myControllers[0] : this.myControllers[1];}
 //    
 			this.getTIA = function() { return this.myTIA; }
 			this.getVideo = function() {    return this.myVideo;  }
@@ -203,11 +201,11 @@ function JSConsole (aConsoleClient) {
 //                
 //    }
 //    
-//    public void setNominalFrameRate(int aFrameRate)
-//    {
-//        myFrameRate=aFrameRate;
-//        getAudio().setNominalDisplayFrameRate(aFrameRate);
-//    }
+    this.setNominalFrameRate = function( aFrameRate)
+    {
+        this.myFrameRate=aFrameRate;
+  //      getAudio().setNominalDisplayFrameRate(aFrameRate);
+    }
 //    
 //    
   	this.getDisplayFormat = function()
@@ -215,16 +213,13 @@ function JSConsole (aConsoleClient) {
       return this.myDisplayFormat;
   }
 //    
-//  private   void setDisplayFormat(DisplayFormat aDisplayFormat) {
-//        myDisplayFormat=aDisplayFormat;
-//        setNominalFrameRate(aDisplayFormat.getDisplayRate());
-//        getVideo().setTIAPalette(aDisplayFormat.getDisplayPalette());
-//      
-//         mySystem.reset();
-//  
-//        
-//       
-//    }
+  	this.setDisplayFormat = function(aDisplayFormat) {
+        this.myDisplayFormat=aDisplayFormat;
+        this.setNominalFrameRate(aDisplayFormat.getDisplayRate());
+        this.getVideo().setTIAPalette(aDisplayFormat.getDisplayPalette());
+      
+        this.mySystem.reset();
+    }
 //
 //   private void reinstallCore()
 //   {
@@ -574,8 +569,9 @@ function JSConsole (aConsoleClient) {
         this.flipSwitch(ConsoleSwitch.SWITCH_DIFFICULTY_P0, false); //amateur setting
         this.flipSwitch(ConsoleSwitch.SWITCH_DIFFICULTY_P1, false); //amateur setting
         
-        /*myControllers[0] = new JSController(Jack.LEFT);
-        myControllers[1] = new JSController(Jack.RIGHT); */
+				this.myControllers = [];
+        this.myControllers[0] = new JSController(Jack.LEFT);
+        this.myControllers[1] = new JSController(Jack.RIGHT); 
         
         this.mySystem = new JSSystem(this);
         this.myRiot = new JSRiot(this);

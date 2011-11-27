@@ -25,8 +25,8 @@
 		
 			function array2d(x, y){
 				var t = new Array(x);
-				for(var i=0;i<y;i++)
-					t.push([]);
+				for(var i=0;i<x;i++)
+					t[i] = new Array(y);
 				return t;
 			}
 
@@ -56,14 +56,20 @@
 			$(function(){
 				canvas = document.getElementById("cv");
 				context = canvas.getContext("2d");
+
 			});
+
 		</script>
 		<script src="./roms/Pacman.js" type="text/javascript"></script>
 
 		<script src="./cart/Cartridge.js" type="text/javascript"></script>
 		<script src="./cart/Cartridge4K.js" type="text/javascript"></script>
 
+		<script src="./runner/JStellaCanvas.js" type="text/javascript"></script>
+		<script src="./runner/InputMaster.js" type="text/javascript"></script>
 		<script src="./j6507/J6507.js" type="text/javascript"></script>
+		<script src="./core/JSController.js" type="text/javascript"></script>
+		<script src="./core/JSVideo.js" type="text/javascript"></script>
 		<script src="./core/JSTIA.js" type="text/javascript"></script>
 		<script src="./core/JSRiot.js" type="text/javascript"></script>
 		<script src="./core/NullDevice.js" type="text/javascript"></script>

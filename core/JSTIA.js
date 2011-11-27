@@ -422,11 +422,11 @@ function JSTIA(aConsole) {
         
         // Reasonable values to start and stop the current frame drawing
         this.myClockWhenFrameStarted = this.mySystem.getCycles() * CLOCKS_PER_CPU_CYCLE; //now
-        this.myClockStartDisplay = this.myClockWhenFrameStarted + (CLOCKS_PER_LINE_TOTAL * getYStart()); //what the clock will be when the visible part of the frame starts
-        this.myClockStopDisplay = this.myClockWhenFrameStarted +  (CLOCKS_PER_LINE_TOTAL * (getYStart() + getDisplayHeight())); //when the visible part of the frame stops
+        this.myClockStartDisplay = this.myClockWhenFrameStarted + (CLOCKS_PER_LINE_TOTAL * this.getYStart()); //what the clock will be when the visible part of the frame starts
+        this.myClockStopDisplay = this.myClockWhenFrameStarted +  (CLOCKS_PER_LINE_TOTAL * (this.getYStart() + this.getDisplayHeight())); //when the visible part of the frame stops
         this.myClockAtLastUpdate = this.myClockWhenFrameStarted;  
         this.myClocksToEndOfScanLine = CLOCKS_PER_LINE_TOTAL;  //currently at beginning of a line
-        this.myVSYNCFinishClock = Integer.MAX_VALUE; //0x7FFFFFFF;
+        this.myVSYNCFinishClock = 0x7FFFFFFF;
         this.myScanlineCountForLastFrame = 0;
         this.myCurrentScanline = 0; //currently on the first line
         
@@ -571,7 +571,7 @@ function JSTIA(aConsole) {
      * @param aValue an integer
      * @return the boolean equivalent (in C++) of the integer
      */
-    var bool = function(aValue) {
+    this.bool = function(aValue) {
         if (aValue==0) return false;
         else return true;
     }
@@ -599,8 +599,8 @@ function JSTIA(aConsole) {
         
         
         //this.myClockWhenFrameStarted=0;
-        this.myClockStartDisplay = this.myClockWhenFrameStarted + (CLOCKS_PER_LINE_TOTAL * getYStart());
-        this.myClockStopDisplay = this.myClockWhenFrameStarted + (CLOCKS_PER_LINE_TOTAL * (getYStart() + getDisplayHeight())); //myStopDisplayOffset;
+        this.myClockStartDisplay = this.myClockWhenFrameStarted + (CLOCKS_PER_LINE_TOTAL * this.getYStart());
+        this.myClockStopDisplay = this.myClockWhenFrameStarted + (CLOCKS_PER_LINE_TOTAL * (this.getYStart() + this.getDisplayHeight())); //myStopDisplayOffset;
         this.myClockAtLastUpdate = this.myClockStartDisplay;
         this.myClocksToEndOfScanLine = CLOCKS_PER_LINE_TOTAL;
         
@@ -1332,7 +1332,7 @@ function JSTIA(aConsole) {
     
     
     this.waitHorizontalSync = function() {
-        var cyclesToEndOfLine = 76 - ((this.mySystem.this.getCycles() -
+        var cyclesToEndOfLine = 76 - ((this.mySystem.getCycles() -
                 (this.myClockWhenFrameStarted / CLOCKS_PER_CPU_CYCLE)) % 76);
         
         if(cyclesToEndOfLine < 76) {
@@ -1564,7 +1564,7 @@ function JSTIA(aConsole) {
                 if (((aByteValue & BIT1) != 0) &&((zPreviousValue & BIT1)==0))
                 {
                     
-                    this.myVSyncOn=scanlines();
+                    this.myVSyncOn=this.scanlines();
                    // System.out.println("Debug : VSYNC ON, value=" + aByteValue + ", scanlines()==" + scanlines()); 
                 }//end : turned VBlank ON
                
@@ -1578,7 +1578,7 @@ function JSTIA(aConsole) {
                     this.myVSYNCFinishClock = clock + CLOCKS_PER_LINE_TOTAL;
                 } else if(!this.bool(this.myTIAPokeRegister[VSYNC] & BIT1) && (clock >= this.myVSYNCFinishClock)) {
                     // We're no longer interested in this.myVSYNCFinishClock
-                    this.myVSYNCFinishClock = Integer.MAX_VALUE; //0x7FFFFFFF;
+                    this.myVSYNCFinishClock = 0x7FFFFFFF;
                     
                     // Since we're finished with the frame tell the processor to halt
                     this.mySystem.stopCPU();
@@ -1594,7 +1594,7 @@ function JSTIA(aConsole) {
                 if (((aByteValue & BIT1) != 0) &&((zPreviousValue & BIT1)==0)) //AUTO DETECT FRAME HEIGHT
                 {
                     //TODO : have this done only when in detection mode
-                    this.myVBlankOn=scanlines();
+                    this.myVBlankOn=this.scanlines();
                     
                     var zHeight=this.myVBlankOn - this.myVBlankOff;
                     if (zHeight < 0) zHeight += this.myVSyncOn;
@@ -1907,7 +1907,7 @@ function JSTIA(aConsole) {
             case AUDF1:    // Audio frequency 1
             case AUDV0:    // Audio volume 0
             case AUDV1:    // Audio volume 1
-                this.getAudio().pokeAudioRegister(addr, aByteValue, this.mySystem.getCycles()); //outsource to JSAudio
+//                this.getAudio().pokeAudioRegister(addr, aByteValue, this.mySystem.getCycles()); //outsource to JSAudio
                 break;
                 
                 
@@ -1953,11 +1953,11 @@ function JSTIA(aConsole) {
                 this.myDENABL = this.bool(this.myTIAPokeRegister[ENABL] & BIT1);
                 
                 // Get the "current" data for GRP0 base on delay register
-                var grp0 = bool(this.myTIAPokeRegister[VDELP0] & BIT0) ? this.myDGRP0 : this.myTIAPokeRegister[GRP0];
+                var grp0 = this.bool(this.myTIAPokeRegister[VDELP0] & BIT0) ? this.myDGRP0 : this.myTIAPokeRegister[GRP0];
                 this.myCurrentGRP0 = this.bool(this.myTIAPokeRegister[REFP0] & BIT3) ? PLAYER_REFLECT_TABLE[grp0] : grp0;
                 
                 // Get the "current" data for GRP1 base on delay register
-                var grp1 = bool(this.myTIAPokeRegister[VDELP1] & BIT0) ? this.myDGRP1 : this.myTIAPokeRegister[GRP1];
+                var grp1 = this.bool(this.myTIAPokeRegister[VDELP1] & BIT0) ? this.myDGRP1 : this.myTIAPokeRegister[GRP1];
                 this.myCurrentGRP1 = this.bool(this.myTIAPokeRegister[REFP1] & BIT3) ? PLAYER_REFLECT_TABLE[grp1] : grp1;
                 
                 // Set enabled object bits
@@ -2080,7 +2080,7 @@ function JSTIA(aConsole) {
             {
               //  this.myVDELBL = bool(aByteValue & 0x01);
                 
-                if(this.bool(this.myTIAPokeRegister[VDELBL] & BIT0) ? this.myDENABL : bool(this.myTIAPokeRegister[ENABL] & BIT1))
+                if(this.bool(this.myTIAPokeRegister[VDELBL] & BIT0) ? this.myDENABL : this.bool(this.myTIAPokeRegister[ENABL] & BIT1))
                     this.myEnabledObjects |= BIT_BL;
                 else
                     this.myEnabledObjects &= ~BIT_BL;
@@ -2253,7 +2253,7 @@ function JSTIA(aConsole) {
     //------- DEBUG START ------------
     
     
-    var debugRenderTypes= []; // boolean 256
+    this.debugRenderTypes= []; // boolean 256
     
     this.debugStraightPoke=false;
     this.debugLockP0Mask=false;
@@ -2261,7 +2261,7 @@ function JSTIA(aConsole) {
     
     
     
-    var debugRegLocked= []; // boolean 0x2c
+    this.debugRegLocked= []; // boolean 0x2c
     
     
     this.debugResetRenderTypes = function () {this.debugRenderTypes= [];}

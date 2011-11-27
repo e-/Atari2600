@@ -165,17 +165,17 @@ function JSRiot(console) {
         
         if((addr & 0x07) == 0x00)         // Port A I/O Register (Joystick)
         {
-            var a = value & myDDRA;
+            var a = value & this.myDDRA;
             
-            this.myConsole.getController(Jack.LEFT).write(DigitalPin.One, bool(a & 0x10));
-            this.myConsole.getController(Jack.LEFT).write(DigitalPin.Two, bool(a & 0x20));
-            this.myConsole.getController(Jack.LEFT).write(DigitalPin.Three, bool(a & 0x40));
-            this.myConsole.getController(Jack.LEFT).write(DigitalPin.Four, bool(a & 0x80));
+            this.myConsole.getController(Jack.LEFT).write(DigitalPin.One, this.bool(a & 0x10));
+            this.myConsole.getController(Jack.LEFT).write(DigitalPin.Two, this.bool(a & 0x20));
+            this.myConsole.getController(Jack.LEFT).write(DigitalPin.Three, this.bool(a & 0x40));
+            this.myConsole.getController(Jack.LEFT).write(DigitalPin.Four, this.bool(a & 0x80));
             
-            this.myConsole.getController(Jack.RIGHT).write(DigitalPin.One, bool(a & 0x01));
-            this.myConsole.getController(Jack.RIGHT).write(DigitalPin.Two, bool(a & 0x02));
-            this.myConsole.getController(Jack.RIGHT).write(DigitalPin.Three, bool(a & 0x04));
-            this.myConsole.getController(Jack.RIGHT).write(DigitalPin.Four, bool(a & 0x08));
+            this.myConsole.getController(Jack.RIGHT).write(DigitalPin.One, this.bool(a & 0x01));
+            this.myConsole.getController(Jack.RIGHT).write(DigitalPin.Two, this.bool(a & 0x02));
+            this.myConsole.getController(Jack.RIGHT).write(DigitalPin.Three, this.bool(a & 0x04));
+            this.myConsole.getController(Jack.RIGHT).write(DigitalPin.Four, this.bool(a & 0x08));
         } else if((addr & 0x07) == 0x01)    // Port A Data Direction Register
         {
             this.myDDRA = value;
