@@ -1553,7 +1553,7 @@ function JSTIA(aConsole) {
       {
        
         var zPreviousValue=this.myTIAPokeRegister[addr]; //remember what the previous value was, just in case someone below wants to know
-        
+       //ASDF 
         this.myTIAPokeRegister[addr]=aByteValue;  //SETS THE NEW VALUE!
              
         switch(addr) {
@@ -1590,7 +1590,7 @@ function JSTIA(aConsole) {
             case VBLANK:    // VBLANK (vertical blank set/clear)
             {
                 // Is the dump to ground path being set for I0, I1, I2, and I3?
-                
+                 
                 if (((aByteValue & BIT1) != 0) &&((zPreviousValue & BIT1)==0)) //AUTO DETECT FRAME HEIGHT
                 {
                     //TODO : have this done only when in detection mode
@@ -1608,7 +1608,6 @@ function JSTIA(aConsole) {
                 }//end : turned VBlank ON
                 else if (((aByteValue & BIT1) == 0) && ((zPreviousValue & BIT1)!=0)) 
                 {
-                    
                     this.myVBlankOff=this.scanlines();
                     
                   // System.out.println("Debug : VBLANK OFF, value=" + aByteValue + ", scanlines()==" + scanlines()); 
