@@ -1,4 +1,4 @@
-function j6507() {
+function J6507() {
   this.AddressingMode = {
     Absolute: "Absolute",
     AbsoluteX: "AbsoluteX",
