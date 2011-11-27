@@ -25,13 +25,13 @@
 //    
 //    
 //    //Sep 7 2007 (JLA) : I think the following are concerned with the page size as far as PageAccess is concerned...but does the CPU consider a page size to be 256 bytes?             
-//    public final static int LOG_MEMSIZE=13;
-//    public final static int LOG_PAGESIZE=6; 
-//    public final static int ADDRESS_MASK=((1<<LOG_MEMSIZE)-1);
-//    public final static int PAGE_MASK=((1 << LOG_PAGESIZE) - 1);
-//    public final static int PAGE_SIZE=(1 << LOG_PAGESIZE);
-//    public final static int PAGE_SHIFT=LOG_PAGESIZE;
-//    public final static int PAGE_COUNT=(1 << (LOG_MEMSIZE - LOG_PAGESIZE));
+    var LOG_MEMSIZE=13;
+    var LOG_PAGESIZE=6; 
+    var ADDRESS_MASK=((1<<LOG_MEMSIZE)-1);
+    var PAGE_MASK=((1 << LOG_PAGESIZE) - 1);
+    var PAGE_SIZE=(1 << LOG_PAGESIZE);
+    var PAGE_SHIFT=LOG_PAGESIZE;
+    var PAGE_COUNT=(1 << (LOG_MEMSIZE - LOG_PAGESIZE));
 //  
 //    private final static String DIRECTORY_RESOURCES="/jstella/resources/";
 //    public final static String RESOURCE_IMAGE_TEST_PATTERN=DIRECTORY_RESOURCES + "testpattern.gif";
