@@ -1,32 +1,5 @@
 DEBUG_MODE_ON = false;
 
-///*
-// * JSConstants.java
-// *
-// * Created on August 11, 2007, 5:45 PM
-// *
-// * To change this template, choose Tools | Template Manager
-// * and open the template in the editor.
-// */
-//
-//package jstella.core;
-//
-///**
-// *
-// * @author J.L. Allen
-// */
-//public class JSConstants {
-//    
-//    
-//    //Centralized constants for use in GUI elements
-//    public final static double JSTELLA_VERSION_NUMBER=0.80;
-//    public final static String JSTELLA_VERSION="" + JSTELLA_VERSION_NUMBER + " (beta)"; 
-//    public final static String JSTELLA_LONGTITLE="JStella - Atari 2600 Emulator";
-//    public final static String JSTELLA_BYLINE="By Bradford Mott and the Stella/JStella teams";
-//    public final static String JSTELLA_HTTP="http://jstella.sourceforge.net";
-//    
-//    
-//    //Sep 7 2007 (JLA) : I think the following are concerned with the page size as far as PageAccess is concerned...but does the CPU consider a page size to be 256 bytes?             
     var LOG_MEMSIZE=13;
     var LOG_PAGESIZE=6; 
     var ADDRESS_MASK=((1<<LOG_MEMSIZE)-1);
@@ -34,11 +7,6 @@ DEBUG_MODE_ON = false;
     var PAGE_SIZE=(1 << LOG_PAGESIZE);
     var PAGE_SHIFT=LOG_PAGESIZE;
     var PAGE_COUNT=(1 << (LOG_MEMSIZE - LOG_PAGESIZE));
-//  
-//    private final static String DIRECTORY_RESOURCES="/jstella/resources/";
-//    public final static String RESOURCE_IMAGE_TEST_PATTERN=DIRECTORY_RESOURCES + "testpattern.gif";
-//    
-//    
     var RESISTANCE_MAX = 0x7FFFFFFF;
 		var RESISTANCE_MIN = 0x00000000;
 //  
@@ -59,10 +27,6 @@ DEBUG_MODE_ON = false;
     var CLOCKS_PER_LINE_TOTAL=CLOCKS_PER_LINE_BLANK + CLOCKS_PER_LINE_VISIBLE; //228 clocks/line
 //      
     	var  LINES_PER_FRAME_TOTAL=262;
-//    
-//    protected final static int CLOCKS_PER_FRAME=CLOCKS_PER_LINE_TOTAL * LINES_PER_FRAME_TOTAL; //59,736 clocks/frame
-//    protected final static int CPU_CYCLES_PER_FRAME=CLOCKS_PER_FRAME / CLOCKS_PER_CPU_CYCLE; //19,912 cycles/frame
-//    
 	var  CLOCKS_PER_PLAYFIELD_BIT=4;
 //  
     var TIA_POKE_REGISTER_COUNT=45; 
@@ -80,20 +44,6 @@ DEBUG_MODE_ON = false;
     var BIT5=0x20;
     var BIT6=0x40;
     var BIT7=0x80;
-//    
-//    public final static double PIXEL_WIDTH_HEIGHT_RATIO=1.6;
-//    
-//    
-//    
-//    
-//    
-////#############################################################################
-////###################  TIA/RIOT Registers   ###################################
-////#############################################################################   
-//   
-//    //Comments were cut-and-pasted from DASM
-//    
-//    
 //// ==================== TIA POKE REGISTERS ===========================
 var VSYNC   = 0x00;   // 0000 00x0   Vertical Sync Set-Clear
 var VBLANK	= 0x01;   // xx00 00x0   Vertical Blank Set-Clear
@@ -382,166 +332,6 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
         0x000000, 0, 0x2b2b2b, 0, 0x525252, 0, 0x767676, 0,
         0x979797, 0, 0xb6b6b6, 0, 0xd2d2d2, 0, 0xececec, 0
     ];
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    public final static int[] PALETTE_NTSC_11 = {
-//        0x000000, 0, 0x393939, 0, 0x797979, 0, 0xababab, 0,
-//        0xcdcdcd, 0, 0xe6e6e6, 0, 0xf2f2f2, 0, 0xffffff, 0,
-//        0x391701, 0, 0x833008, 0, 0xc85f24, 0, 0xff911d, 0,
-//        0xffc51d, 0, 0xffd84c, 0, 0xfff456, 0, 0xffff98, 0,
-//        0x451904, 0, 0x9f241e, 0, 0xc85122, 0, 0xff811e, 0,
-//        0xff982c, 0, 0xffc545, 0, 0xffc66d, 0, 0xffe4a1, 0,
-//        0x4a1704, 0, 0xb21d17, 0, 0xdf251c, 0, 0xfa5255, 0,
-//        0xff706e, 0, 0xff8f8f, 0, 0xffabad, 0, 0xffc7ce, 0,
-//        0x050568, 0, 0x712272, 0, 0xa532a6, 0, 0xcd3ecf, 0,
-//        0xea51eb, 0, 0xfe6dff, 0, 0xff87fb, 0, 0xffa4ff, 0,
-//        0x280479, 0, 0x590f90, 0, 0x8839aa, 0, 0xc04adc, 0,
-//        0xe05eff, 0, 0xf27cff, 0, 0xff98ff, 0, 0xfeabff, 0,
-//        0x35088a, 0, 0x500cd0, 0, 0x7945d0, 0, 0xa251d9, 0,
-//        0xbe60ff, 0, 0xcc77ff, 0, 0xd790ff, 0, 0xdfaaff, 0,
-//        0x051e81, 0, 0x082fca, 0, 0x444cde, 0, 0x5a68ff, 0,
-//        0x7183ff, 0, 0x90a0ff, 0, 0x9fb2ff, 0, 0xc0cbff, 0,
-//        0x0c048b, 0, 0x382db5, 0, 0x584fda, 0, 0x6b64ff, 0,
-//        0x8a84ff, 0, 0x9998ff, 0, 0xb1aeff, 0, 0xc0c2ff, 0,
-//        0x1d295a, 0, 0x1d4892, 0, 0x1c71c6, 0, 0x489bd9, 0,
-//        0x55b6ff, 0, 0x8cd8ff, 0, 0x9bdfff, 0, 0xc3e9ff, 0,
-//        0x2f4302, 0, 0x446103, 0, 0x3e9421, 0, 0x57ab3b, 0,
-//        0x61d070, 0, 0x72f584, 0, 0x87ff97, 0, 0xadffb6, 0,
-//        0x0a4108, 0, 0x10680d, 0, 0x169212, 0, 0x1cb917, 0,
-//        0x21d91b, 0, 0x6ef040, 0, 0x83ff5b, 0, 0xb2ff9a, 0,
-//        0x04410b, 0, 0x066611, 0, 0x088817, 0, 0x0baf1d, 0,
-//        0x86d922, 0, 0x99f927, 0, 0xb7ff5b, 0, 0xdcff81, 0,
-//        0x02350f, 0, 0x0c4a1c, 0, 0x4f7420, 0, 0x649228, 0,
-//        0xa1b034, 0, 0xb2d241, 0, 0xd6e149, 0, 0xf2ff53, 0,
-//        0x263001, 0, 0x234005, 0, 0x806931, 0, 0xaf993a, 0,
-//        0xd5b543, 0, 0xe1cb38, 0, 0xe3e534, 0, 0xfbff7d, 0,
-//        0x401a02, 0, 0x702408, 0, 0xab511f, 0, 0xbf7730, 0,
-//        0xe19344, 0, 0xf9ad58, 0, 0xffc160, 0, 0xffcb83, 0
-//    };
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    public final static   int[] PALETTE_PAL_11 = {
-//        0x000000, 0, 0x242424, 0, 0x484848, 0, 0x6d6d6d, 0,
-//        0x919191, 0, 0xb6b6b6, 0, 0xdadada, 0, 0xffffff, 0,
-//        0x000000, 0, 0x242424, 0, 0x484848, 0, 0x6d6d6d, 0,
-//        0x919191, 0, 0xb6b6b6, 0, 0xdadada, 0, 0xffffff, 0,
-//        0x4a3700, 0, 0x705813, 0, 0x8c732a, 0, 0xa68d46, 0,
-//        0xbea767, 0, 0xd4c18b, 0, 0xeadcb3, 0, 0xfff6de, 0,
-//        0x284a00, 0, 0x44700f, 0, 0x5c8c21, 0, 0x74a638, 0,
-//        0x8cbe51, 0, 0xa6d46e, 0, 0xc0ea8e, 0, 0xdbffb0, 0,
-//        0x4a1300, 0, 0x70280f, 0, 0x8c3d21, 0, 0xa65438, 0,
-//        0xbe6d51, 0, 0xd4886e, 0, 0xeaa58e, 0, 0xffc4b0, 0,
-//        0x004a22, 0, 0x0f703b, 0, 0x218c52, 0, 0x38a66a, 0,
-//        0x51be83, 0, 0x6ed49d, 0, 0x8eeab8, 0, 0xb0ffd4, 0,
-//        0x4a0028, 0, 0x700f44, 0, 0x8c215c, 0, 0xa63874, 0,
-//        0xbe518c, 0, 0xd46ea6, 0, 0xea8ec0, 0, 0xffb0db, 0,
-//        0x00404a, 0, 0x0f6370, 0, 0x217e8c, 0, 0x3897a6, 0,
-//        0x51afbe, 0, 0x6ec7d4, 0, 0x8edeea, 0, 0xb0f4ff, 0,
-//        0x43002c, 0, 0x650f4b, 0, 0x7e2165, 0, 0x953880, 0,
-//        0xa6519a, 0, 0xbf6eb7, 0, 0xd38ed3, 0, 0xe5b0f1, 0,
-//        0x001d4a, 0, 0x0f3870, 0, 0x21538c, 0, 0x386ea6, 0,
-//        0x518dbe, 0, 0x6ea8d4, 0, 0x8ec8ea, 0, 0xb0e9ff, 0,
-//        0x37004a, 0, 0x570f70, 0, 0x70218c, 0, 0x8938a6, 0,
-//        0xa151be, 0, 0xba6ed4, 0, 0xd28eea, 0, 0xeab0ff, 0,
-//        0x00184a, 0, 0x0f2e70, 0, 0x21448c, 0, 0x385ba6, 0,
-//        0x5174be, 0, 0x6e8fd4, 0, 0x8eabea, 0, 0xb0c9ff, 0,
-//        0x13004a, 0, 0x280f70, 0, 0x3d218c, 0, 0x5438a6, 0,
-//        0x6d51be, 0, 0x886ed4, 0, 0xa58eea, 0, 0xc4b0ff, 0,
-//        0x00014a, 0, 0x0f1170, 0, 0x21248c, 0, 0x383aa6, 0,
-//        0x5153be, 0, 0x6e70d4, 0, 0x8e8fea, 0, 0xb0b2ff, 0,
-//        0x000000, 0, 0x242424, 0, 0x484848, 0, 0x6d6d6d, 0,
-//        0x919191, 0, 0xb6b6b6, 0, 0xdadada, 0, 0xffffff, 0,
-//        0x000000, 0, 0x242424, 0, 0x484848, 0, 0x6d6d6d, 0,
-//        0x919191, 0, 0xb6b6b6, 0, 0xdadada, 0, 0xffffff, 0
-//    };
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    public final static   int[] PALETTE_NTSC_Z26 = {
-//        0x000000, 0, 0x505050, 0, 0x646464, 0, 0x787878, 0,
-//        0x8c8c8c, 0, 0xa0a0a0, 0, 0xb4b4b4, 0, 0xc8c8c8, 0,
-//        0x445400, 0, 0x586800, 0, 0x6c7c00, 0, 0x809000, 0,
-//        0x94a414, 0, 0xa8b828, 0, 0xbccc3c, 0, 0xd0e050, 0,
-//        0x673900, 0, 0x7b4d00, 0, 0x8f6100, 0, 0xa37513, 0,
-//        0xb78927, 0, 0xcb9d3b, 0, 0xdfb14f, 0, 0xf3c563, 0,
-//        0x7b2504, 0, 0x8f3918, 0, 0xa34d2c, 0, 0xb76140, 0,
-//        0xcb7554, 0, 0xdf8968, 0, 0xf39d7c, 0, 0xffb190, 0,
-//        0x7d122c, 0, 0x912640, 0, 0xa53a54, 0, 0xb94e68, 0,
-//        0xcd627c, 0, 0xe17690, 0, 0xf58aa4, 0, 0xff9eb8, 0,
-//        0x730871, 0, 0x871c85, 0, 0x9b3099, 0, 0xaf44ad, 0,
-//        0xc358c1, 0, 0xd76cd5, 0, 0xeb80e9, 0, 0xff94fd, 0,
-//        0x5d0b92, 0, 0x711fa6, 0, 0x8533ba, 0, 0x9947ce, 0,
-//        0xad5be2, 0, 0xc16ff6, 0, 0xd583ff, 0, 0xe997ff, 0,
-//        0x401599, 0, 0x5429ad, 0, 0x683dc1, 0, 0x7c51d5, 0,
-//        0x9065e9, 0, 0xa479fd, 0, 0xb88dff, 0, 0xcca1ff, 0,
-//        0x252593, 0, 0x3939a7, 0, 0x4d4dbb, 0, 0x6161cf, 0,
-//        0x7575e3, 0, 0x8989f7, 0, 0x9d9dff, 0, 0xb1b1ff, 0,
-//        0x0f3480, 0, 0x234894, 0, 0x375ca8, 0, 0x4b70bc, 0,
-//        0x5f84d0, 0, 0x7398e4, 0, 0x87acf8, 0, 0x9bc0ff, 0,
-//        0x04425a, 0, 0x18566e, 0, 0x2c6a82, 0, 0x407e96, 0,
-//        0x5492aa, 0, 0x68a6be, 0, 0x7cbad2, 0, 0x90cee6, 0,
-//        0x044f30, 0, 0x186344, 0, 0x2c7758, 0, 0x408b6c, 0,
-//        0x549f80, 0, 0x68b394, 0, 0x7cc7a8, 0, 0x90dbbc, 0,
-//        0x0f550a, 0, 0x23691e, 0, 0x377d32, 0, 0x4b9146, 0,
-//        0x5fa55a, 0, 0x73b96e, 0, 0x87cd82, 0, 0x9be196, 0,
-//        0x1f5100, 0, 0x336505, 0, 0x477919, 0, 0x5b8d2d, 0,
-//        0x6fa141, 0, 0x83b555, 0, 0x97c969, 0, 0xabdd7d, 0,
-//        0x344600, 0, 0x485a00, 0, 0x5c6e14, 0, 0x708228, 0,
-//        0x84963c, 0, 0x98aa50, 0, 0xacbe64, 0, 0xc0d278, 0,
-//        0x463e00, 0, 0x5a5205, 0, 0x6e6619, 0, 0x827a2d, 0,
-//        0x968e41, 0, 0xaaa255, 0, 0xbeb669, 0, 0xd2ca7d, 0
-//    };
-//    
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    public final static  int[] PALETTE_PAL_Z26 = {
-//        0x000000, 0, 0x4c4c4c, 0, 0x606060, 0, 0x747474, 0,
-//        0x888888, 0, 0x9c9c9c, 0, 0xb0b0b0, 0, 0xc4c4c4, 0,
-//        0x000000, 0, 0x4c4c4c, 0, 0x606060, 0, 0x747474, 0,
-//        0x888888, 0, 0x9c9c9c, 0, 0xb0b0b0, 0, 0xc4c4c4, 0,
-//        0x533a00, 0, 0x674e00, 0, 0x7b6203, 0, 0x8f7617, 0,
-//        0xa38a2b, 0, 0xb79e3f, 0, 0xcbb253, 0, 0xdfc667, 0,
-//        0x1b5800, 0, 0x2f6c00, 0, 0x438001, 0, 0x579415, 0,
-//        0x6ba829, 0, 0x7fbc3d, 0, 0x93d051, 0, 0xa7e465, 0,
-//        0x6a2900, 0, 0x7e3d12, 0, 0x925126, 0, 0xa6653a, 0,
-//        0xba794e, 0, 0xce8d62, 0, 0xe2a176, 0, 0xf6b58a, 0,
-//        0x075b00, 0, 0x1b6f11, 0, 0x2f8325, 0, 0x439739, 0,
-//        0x57ab4d, 0, 0x6bbf61, 0, 0x7fd375, 0, 0x93e789, 0,
-//        0x741b2f, 0, 0x882f43, 0, 0x9c4357, 0, 0xb0576b, 0,
-//        0xc46b7f, 0, 0xd87f93, 0, 0xec93a7, 0, 0xffa7bb, 0,
-//        0x00572e, 0, 0x106b42, 0, 0x247f56, 0, 0x38936a, 0,
-//        0x4ca77e, 0, 0x60bb92, 0, 0x74cfa6, 0, 0x88e3ba, 0,
-//        0x6d165f, 0, 0x812a73, 0, 0x953e87, 0, 0xa9529b, 0,
-//        0xbd66af, 0, 0xd17ac3, 0, 0xe58ed7, 0, 0xf9a2eb, 0,
-//        0x014c5e, 0, 0x156072, 0, 0x297486, 0, 0x3d889a, 0,
-//        0x519cae, 0, 0x65b0c2, 0, 0x79c4d6, 0, 0x8dd8ea, 0,
-//        0x5f1588, 0, 0x73299c, 0, 0x873db0, 0, 0x9b51c4, 0,
-//        0xaf65d8, 0, 0xc379ec, 0, 0xd78dff, 0, 0xeba1ff, 0,
-//        0x123b87, 0, 0x264f9b, 0, 0x3a63af, 0, 0x4e77c3, 0,
-//        0x628bd7, 0, 0x769feb, 0, 0x8ab3ff, 0, 0x9ec7ff, 0,
-//        0x451e9d, 0, 0x5932b1, 0, 0x6d46c5, 0, 0x815ad9, 0,
-//        0x956eed, 0, 0xa982ff, 0, 0xbd96ff, 0, 0xd1aaff, 0,
-//        0x2a2b9e, 0, 0x3e3fb2, 0, 0x5253c6, 0, 0x6667da, 0,
-//        0x7a7bee, 0, 0x8e8fff, 0, 0xa2a3ff, 0, 0xb6b7ff, 0,
-//        0x000000, 0, 0x4c4c4c, 0, 0x606060, 0, 0x747474, 0,
-//        0x888888, 0, 0x9c9c9c, 0, 0xb0b0b0, 0, 0xc4c4c4, 0,
-//        0x000000, 0, 0x4c4c4c, 0, 0x606060, 0, 0x747474, 0,
-//        0x888888, 0, 0x9c9c9c, 0, 0xb0b0b0, 0, 0xc4c4c4, 0
-//    };
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
 //// ========================== TIA Tables ==================================    
 //  //These are the mask tables, and they are used in computing what to draw.  They are filled
 //    //by the corresponding compute...() methods, which are called exactly once (statically)
@@ -570,17 +360,7 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
     
     
         for(var i = 0; i < 640; ++i) { DISABLED_MASK_TABLE[i] = 0;}
-     /*   
-        computeBallMaskTable();
-        computeCollisionTable();
-        computeMissileMaskTable();
-        computePlayerMaskTable();
-        computePlayerPositionResetWhenTable();
-        computePlayerReflectTable();
-        computePlayfieldMaskTable();
-        computePriorityEncoder();
-       // debugDumpArray(PLAYFIELD_TABLE);
-    }//end : STATIC INIT    
+     
     
     
     
@@ -589,33 +369,13 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
     
     
     
-    
-   */ 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /** Creates a new instance of JSConstants */
-    
-     /**
-     * (A method that allowed me to type less when converting C++ to Java. It makes for
-     * more readable code as well. -JLA)
-     * @param aValue an integer
-     * @return the boolean equivalent (in C++) of the integer
-     */
-    this.bool = function(aValue) {
+       this.bool = function(aValue) {
         if (aValue==0) return false;
         else return true;
     }
     
     
       //======================== STATIC COMPUTE METHODS ==========================
-//    private static void computePriorityEncoder() {
         for(var x = 0; x < 2; ++x) {
             for(var enabled = 0; enabled < 256; ++enabled) {
                 if((enabled & BIT_PRIORITY)!=0) {
@@ -650,7 +410,6 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
   //  }
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private static void computeBallMaskTable() {
         // First, calculate masks for alignment 0
         for(var size = 0; size < 4; ++size) {
             var x=0;
@@ -680,7 +439,6 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
     //}//::
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private static  void computeCollisionTable() {
         for(var i = 0; i < 64; ++i) {
             COLLISION_TABLE[i] = 0;
             
@@ -732,7 +490,6 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
 //    }//::
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //  private static  void computeMissileMaskTable() {
         // First, calculate masks for alignment 0
         var x, size, number;
         
@@ -812,7 +569,6 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
 //    }//::
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //  private static void computePlayerMaskTable() {
         // First, calculate masks for alignment 0
         var x, enable, mode;
         
@@ -893,7 +649,6 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
 //    }
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //  private static void computePlayerPositionResetWhenTable() {
         var mode, oldx, newx;
         
         // Loop through all player modes, all old player positions, and all new
@@ -1003,7 +758,6 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
 //    }
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   // private static   void computePlayerReflectTable() {
         for(var i = 0; i < 256; ++i) {
             var r = 0;
             
@@ -1015,22 +769,7 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
         }
 //    }
     
-    
-  /*  private static void debugDumpArray(int[][] aArray)
-    {
-       int zYCount=aArray[0].length;
-       int zXCount=aArray.length;
-       for (int i_x=0; i_x<zXCount; i_x++)
-       {
-           for (int i_y=0; i_y<zYCount; i_y++)
-           {
-               System.out.println("[" + i_x + "][" + i_y + "] = " + Integer.toBinaryString(aArray[i_x][i_y]));
-           }
-       }
-    }*/
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private static  void computePlayfieldMaskTable() {
-        var x;
+           var x;
         
         // Compute playfield mask table for non-reflected mode
         for(x = 0; x < CLOCKS_PER_LINE_VISIBLE; ++x) {
@@ -1092,22 +831,7 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
 			SWITCH_DIFFICULTY_P0 :  csm(3, BIT6),
 			SWITCH_DIFFICULTY_P1  : csm(4, BIT7)
 		};
-		/*
-       SWITCH_RESET(0, BIT0), 
-       SWITCH_SELECT(1, BIT1),
-       SWITCH_BW(2, BIT3),
-       SWITCH_DIFFICULTY_P0(3, BIT6),
-       SWITCH_DIFFICULTY_P1(4, BIT7);
-       
-      private final int myIndex;
-      private final int myBitMask;
-      private ConsoleSwitch(int aIndex, int aBitMask) 
-      {  myIndex=aIndex;
-         myBitMask=aBitMask;}
-      public int getIndex() {return myIndex; }   
-      public int getBitMask() {return myBitMask;}
-    };*/
-//    
+		//    
 //    
 //  
 		function dfm(a, b){
@@ -1122,25 +846,6 @@ var  BIT_PRIORITY = 0x080;     // Bit for Playfield priority
 			PAL : dfm(50, PALETTE_PAL),
 			PAL60 : dfm(60, PALETTE_PAL)
 		};
-/*
-      NTSC(60, PALETTE_NTSC),
-      PAL(50, PALETTE_PAL),
-      PAL60 (60, PALETTE_PAL);
-      
-      private final int myDisplayRate;
-      private final int[] myDisplayPalette;
-      private DisplayFormat(int aDisplayRate, int[] aDisplayPalette) 
-      { 
-          myDisplayRate=aDisplayRate; 
-          myDisplayPalette=aDisplayPalette;
-      }
-      public int getDisplayRate() { return myDisplayRate; }
-      public int[] getDisplayPalette() { return myDisplayPalette; }
-        
-    };*/
-  //   public final static String PROP_DISPLAY_PAL="PAL";   
-  //  public final static String PROP_DISPLAY_PAL60="PAL60";
-   // public final static String PROP_DISPLAY_NTSC="NTSC";
 //    
 //    
 //    

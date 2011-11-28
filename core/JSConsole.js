@@ -30,64 +30,6 @@ function JSConsole (aConsoleClient) {
 
   this.myTelevisionMode = TELEVISION_MODE_OFF;
 
- // this.JSConsole = function (aConsoleClient) {
-//    this.setConsoleClient(aConsoleClient);
-//    this.initializeAudio();
-//    this.initializeVideo();
-    // ... 
-  //}
-
-
-    /**
-     *
-     * @param in This is a method called by the JVM system whenever this object
-     * is deserialized.  It serves as sort of an alternate constructor,
-     * one that is used in place of the normal one.
-    * @throws java.io.IOException
-     * @throws java.lang.ClassNotFoundException
-     */
-//    private void readObject(java.io.ObjectInputStream in)  throws IOException, ClassNotFoundException {
-//        double zVersion=in.readDouble(); //Read the manually written JStella version number from stream
-//       //TODO : make sure version being read is not GREATER than version being used
-//        in.defaultReadObject();
-//        
-//        Object zAudioArrayObj=in.readUnshared();
-//       
-//        
-//        initializeAudio(); //myAudio is transient, so this must create a new one when it loads
-//         if (zAudioArrayObj instanceof int[])
-//         {
-//            int[] zAudioRegisters=(int[])zAudioArrayObj;
-//            myAudio.setAudioRegisterData(zAudioRegisters);
-//           // System.out.println("debug : reading audio data- " + zAudioRegisters[1] + ", " + zAudioRegisters[3] + "," + zAudioRegisters[5] );
-//     
-//         }//end : is int[]
-//        adjustBackBuffer();
-//    }
-//    
-//     private void writeObject(ObjectOutputStream out) throws IOException
-//    {
-//      out.writeDouble(JSConstants.JSTELLA_VERSION_NUMBER);   //First, manually write JStella version number to stream
-//      out.defaultWriteObject();
-//      int[] zAudioRegisters=myAudio.getAudioRegisterData();
-//      out.writeUnshared(zAudioRegisters);
-//    //  System.out.println("debug : writing audio data- " + zAudioRegisters[1] + ", " + zAudioRegisters[3] + "," + zAudioRegisters[5] );
-//     } 
-//    
-//    
-//    
-//    
-//    /**
-//     * The console should (must) be destroyed right before the object is no longer used,
-//     * e.g. when loading a serialized console from a stream.  Destroying the console
-//     * will free up the audio resources that the audio object has reserved.
-//     */
-//    public void destroy() {
-//        if (myAudio!=null) {
-//            myAudio.close();
-//            myAudio=null;
-//        }//end : not null
-//    }
 //    
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -115,7 +57,6 @@ function JSConsole (aConsoleClient) {
         }//end : less than the min
         
         this.myYStart=this.myTIA.getDetectedYStart();
-       // System.out.println("Detected display dimensions: yStart=" + myYStart + ", display height=" + myDisplayHeight);
         
         
         if ((this.myDisplayFormat == DisplayFormat.PAL) && (this.myDisplayHeight ==210)) this.myDisplayHeight=250;
@@ -142,7 +83,6 @@ function JSConsole (aConsoleClient) {
         for (var i=0; i<30; i++)
         {           
             this.myTIA.processFrame();
-           //  System.out.println("Debug : scan lines=" + myTIA.scanlines());
             if(this.myTIA.scanlines() > 285) 
             {
                 ++zPalCount;
@@ -157,27 +97,6 @@ function JSConsole (aConsoleClient) {
        console.log("Display format = " + this.myDisplayFormat + ", display height=" + this.myDisplayHeight);
         
     }
-//    
-//    public void changeYStart(int aNewYStart)
-//    {
-//       if (aNewYStart!=myYStart)
-//       {
-//           myYStart=aNewYStart;
-//           myTIA.frameReset();
-//       }//end : new value
-//    }
-//    
-//    public void changeDisplayHeight(int aNewHeight)
-//    {
-//         if (aNewHeight!=myDisplayHeight)
-//       {
-//           myDisplayHeight=aNewHeight;
-//           adjustBackBuffer();
-//           myVideo.refresh();
-//           myTIA.frameReset();
-//       }//end : new value
-//    }
-//    
 			this.adjustBackBuffer = function()
     {
 				var t = this.getVideo();
@@ -196,26 +115,9 @@ function JSConsole (aConsoleClient) {
 //    
 			this.getTIA = function() { return this.myTIA; }
 			this.getVideo = function() {    return this.myVideo;  }
-//    public JSAudio getAudio()   {   return myAudio;  }
-//    public jstella.core.JSSystem getSystem()  { return mySystem; }
-//    public Cartridge getCartridge()  { return myCart; }
-//    public JSRiot getRiot() { return myRiot; }
-//    
-//    public   int getNominalFrameRate() {
-//        // Set the correct framerate based on the format of the ROM
-//        // This can be overridden by changing the framerate in the
-//        // VideoDialog box or on the commandline, but it can't be saved
-//        // (ie, framerate is now solely determined based on ROM format).
-//        // int framerate = myOSystem.settings().getInt("framerate");
-//        // if(framerate == -1) {
-//        return myFrameRate;
-//                
-//    }
-//    
     this.setNominalFrameRate = function( aFrameRate)
     {
         this.myFrameRate=aFrameRate;
-  //      getAudio().setNominalDisplayFrameRate(aFrameRate);
     }
 //    
 //    
@@ -246,14 +148,6 @@ function JSConsole (aConsoleClient) {
       }
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    private  void initializeAudio() {
-//        if (myAudio==null) myAudio = new JSAudio(this);
-//        else myAudio.close(); //Closes any open audio resources
-//        
-//        getAudio().setNominalDisplayFrameRate(getNominalFrameRate());
-//        getAudio().initialize();
-//    }
-//    
 //    
 //    
 //    
@@ -307,10 +201,8 @@ function JSConsole (aConsoleClient) {
 
     this.createCartridge = function(aInputStream, aCartridgeType) {
         var zCart=null;
-				//try
 				{
             if (aInputStream!=null) {
-                //zROMData = readByteArrayFromStream(aInputStream);
 								zROMData = aInputStream;
 
                 if (zROMData!=null) {
@@ -331,17 +223,10 @@ function JSConsole (aConsoleClient) {
                 console.log("JSTELLA ERROR : attempting to read from a null stream");
             }//end : stream is null
         }//end : try
-//        catch (e) {
-//            console.log("Could not load ROM");
-//        }
         
 			  return zCart;
     }
     
-    /*public static Cartridge createCartridge(java.io.InputStream aInputStream) throws JSException {
-       return createCartridge(aInputStream, null);
-        
-    }*/
 //    
 //    
 //// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -350,29 +235,10 @@ function JSConsole (aConsoleClient) {
 //    
 //    
 //    
-//    private static byte[] readByteArrayFromStream(java.io.InputStream aStream) throws IOException {
-//        byte[] zReturn=null;
-//        java.io.ByteArrayOutputStream zBAOS=new java.io.ByteArrayOutputStream();
-//        int zInt=0;
-//        while ((zInt = aStream.read()) != -1) {
-//            zBAOS.write(zInt);
-//        }//end : while loop
-//        zBAOS.close();
-//        zReturn=zBAOS.toByteArray();
-//        return zReturn;
-//    }//::
-//    
 //    
 //    // ====================== MAIN METHOD ========================
 //    
 //    
-//    /**
-//     * This is the main method of the class.  This method should be called
-//     * by the "outside" GUI object for every intended frame...that is,
-//     * the runner object should call this 50-60 times/sec, depending on
-//     * what the designated frame rate is.
-//     * @throws jstella.core.JSException
-//     */
     this.doFrame = function(){
         //profiling note - Sep 3 2007 - it seems that a lot of times, whenever doFrame() lasts long (e.g. 59 milliseconds), that 
         //  the processFrame is taking up most of the time
@@ -386,7 +252,6 @@ function JSConsole (aConsoleClient) {
             {
             this.myTIA.processFrame();    
             this.myVideo.doFrameVideo();
-//            myAudio.doFrameAudio(mySystem.getCycles(), getNominalFrameRate());
             }//end : cartridge loaded
 						else
 							console.log("no cartridege in doFrame JSConsole")
@@ -408,16 +273,6 @@ function JSConsole (aConsoleClient) {
         
     }
 //    
-//    public synchronized void updateVideoFrame()
-//    {
-//        if (myVideo!=null)
-//        {
-//            myVideo.updateVideoFrame();  
-//            
-//        }
-//        
-//    }
-//   
 //    
 //    
 //    
@@ -436,21 +291,6 @@ function JSConsole (aConsoleClient) {
 //    
 //    
 //    
-//    /**
-//     * Flips a console switch.
-//     * Switch down is equivalent to setting the bit to zero.
-//     * See the SWITCH constants in the JSConsole class.
-//     * <p>
-//     * RESET - down to reset
-//     * SELECT - down to select
-//     * BW - down to change into black and white mode
-//     * DIFFICULTY P0 - down to set player 0 to easy
-//     * DIFFICULTY P1 - down to set player 1 to easy
-//     *
-//     * </p>
-//     * @param aSwitchType what switch to flip (see SWITCH constants in JSConstants)
-//     * @param aSwitchDown true if the switch should be down (see method description for details)
-//     */
     this.flipSwitch = function(aSwitchType, aSwitchDown) {
         if (aSwitchDown) this.mySwitches &= ~aSwitchType.getBitMask();
         else this.mySwitches |= aSwitchType.getBitMask();
@@ -463,114 +303,15 @@ function JSConsole (aConsoleClient) {
 //    
 //    
 //    
-//    //================ GUI Options ==================================================
-//    
-//    public void setPhosphorEnabled(boolean aEnable)
-//    {
-//        getVideo().setPhosphorEnabled(aEnable);
-//    }
-//    
-//    public boolean isPhosphorEnabled()
-//    {
-//        return getVideo().getPhosphorEnabled();
-//    }
-//    
-//    public void setStereoSound(boolean aEnable)
-//    {
-//        if (aEnable==true) getAudio().setChannelNumber(2);
-//        else getAudio().setChannelNumber(1);
-//        
-//    }
-//    
-//    public boolean isStereoSound()
-//    {
-//        return (getAudio().getChannelNumber()==2);
-//    }
-//    
-//    public void setSoundEnabled(boolean aEnabled)
-//    {
-//        getAudio().setSoundEnabled(aEnabled);
-//    }
-//    
-//    public boolean isSoundEnabled()
-//    {
-//        return getAudio().isSoundEnabled();
-//    }
-//    
-//    public void grayCurrentFrame()
-//    {
-//        getVideo().grayCurrentFrame();
-//    }
-//    
-//    public void pauseAudio() { getAudio().pauseAudio(); }
-//    
-//    
-// 
-//    
-//    //Misc tasks
-//    
-//    //TODO : Figure out if this setup (using java.util.Timer) is thread safe
-//    //TODO : Fix letter box mode...junk keeps appearing on margins (Sep 7 2007)
-//    
-//   //TODO : find out what causes the processFrame() to occasionally last about 60 ms (seen during slowdown)
-//                     //Update : possibly the processFrame() is blocking when accessing the back buffer because of draw
-//    
-//    //TODO : Make Berenstein bears work, assuming the flaw is with the emulator
-//    //TODO : Fix flaws in emulator that cause AIR-RAID to act funny
-//    
-//    
-//    //Misc bugs
-//  
-//    
-//    
-//    
-//    
-//    
-//    public void debugDoFrame()
-//    {
-//        try{
-//        doFrame();
-//        }//end : try
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }        
-//    }
-//    
-//    public void debugProcessFrame()
-//    {
-//        try{
-//        myTIA.processFrame();
-//        }//end : try
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }        
-//    }
-//    
-//     public void debugDoFrameVideo()
-//    {
-//        try{
-//        myVideo.doFrameVideo();//.processFrame();
-//        }//end : try
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }        
-//    }
-//     
-//     
 //     //========================================================================
 //    
 //     
 //    
 //   
         this.setConsoleClient(aConsoleClient);
-        //   myUserPaletteDefined=false;
         
         
         
-       // this.initializeAudio();
 
         this.initializeVideo();
         this.flipSwitch(ConsoleSwitch.SWITCH_RESET, false);

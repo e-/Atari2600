@@ -1,49 +1,3 @@
-//============================================================================
-//
-// MM     MM  6666  555555  0000   2222
-// MMMM MMMM 66  66 55     00  00 22  22
-// MM MMM MM 66     55     00  00     22
-// MM  M  MM 66666  55555  00  00  22222  --  "A 6502 Microprocessor Emulator"
-// MM     MM 66  66     55 00  00 22
-// MM     MM 66  66 55  55 00  00 22
-// MM     MM  6666   5555   0000  222222
-//
-// Copyright (c) 1995-2007 by Bradford W. Mott and the Stella team
-//
-// See the file "license" for information on usage and redistribution of
-// this file, and for a DISCLAIMER OF ALL WARRANTIES.
-//
-// $Id: JSSystem.java,v 1.8 2007/09/08 05:47:50 mauvila Exp $
-//============================================================================
-
-/**
- * This class is the intermediary between the CPU (J6507) and the rest of the
- * emulator - it is the "CPU's secretary".  Unlike the J6507 class, this class is specifically tailored for
- * the JStella system.
- * <p> 
- * This class implements the IfcSystem interface in the J6507 package, which enables
- * a J6507 object (the CPU) to interact with it.  Each instruction cycle goes roughly like
- * this: <br>
- * The CPU, when it is executed, will ask the JSSystem object for the next instruction.  The
- * JSSystem will forward that request to the ROM (game).  So the ROM returns the instruction,
- * and based on what that instruction was, the CPU may do various things...if that instruction
- * was to change the sound a note, the CPU sends the JSSystem a poke() (a write command)...
- * the JSSystem matches the given address up and sees that the TIA is the intended target, and thus
- * forwards it to that object.  Or if the instruction was to see if the joystick is pointing left,
- * the CPU sends a peek() (a read command) to the JSSystem, which forwards that peek to the RIOT
- * object.
- *     
- * </p>
- * <p>
- *     The JSSystem knows which object to forward a peek/poke to by looking at the address.
- *     Each possible recipient ("device") has previously specified ranges of addresses which it looks
- *     at ("maps to"), and the JSSystem object keeps a list of what device covers what address. (See
- *     the IfcDevice interface.)  If you are curious about what device maps to what range of addresses,
- *     consult the Internet for a memory map for the Atari 2600.
- * </p>
- * @author Bradford W. Mott and the Stella team (original)
- * J.L. Allen (Java translation)
- */
 function JSSystem(aConsole){
     this.serialVersionUID = "258470027807684384L";
     
@@ -78,13 +32,6 @@ function JSSystem(aConsole){
     
     
     
-    //public void lockDataBus() { myDataBusLocked = true; }
-    //public void unlockDataBus() { myDataBusLocked = false;  }
-    /**
-     * This does the same exact thing as processorCycle().<br>
-     * (I'm can't remember why there are two different methods... JLA Sep 7 2007)
-     * @param amount The number of cycles to add to the growing count
-     */
     this.incrementCycles = function( amount)  {   this.myCycles += amount;    }
     /**
      * This method is called by the CPU to tell the system that a specified number of cycles have
@@ -99,11 +46,6 @@ function JSSystem(aConsole){
      * @return the number of processor cycles that have elapsed
      */
     this.getCycles = function()    {  return this.myCycles;    }
-
-    /**
-     * (Sep 7 2007 - JLA: I don't know what this does...originally from Stella code)
-     * @return ?
-     */
     this.getDataBusState = function() { return this.myDataBusState; }
     /**
      * Returns the CPU object (although it's probably better for objects to go
@@ -175,11 +117,6 @@ function JSSystem(aConsole){
         //try{
             zReturn=this.myCPU.execute(aInstructionCount);
         //}//end : try
-        /*catch (J6507Exception e) {
-            if (e.myExceptionType==J6507Exception.ExceptionType.INSTRUCTION_NOT_RECOGNIZED) {
-                throw new JSException(JSException.ExceptionType.INSTRUCTION_NOT_RECOGNIZED, e.myMessage);
-            }//end : inst not recog
-        }*///end : catch
         return zReturn; 
     }
   
@@ -208,7 +145,6 @@ function JSSystem(aConsole){
 				}
 				if(!flag)
 					this.myDeviceList.push(aDevice);
-   //     if (this.myDeviceList.contains(aDevice)==false) myDeviceList.add(aDevice);   // Add device to my collection of devices
         aDevice.install(this);// Ask the device to install itself
 				}
     }
@@ -246,18 +182,7 @@ function JSSystem(aConsole){
     }
     
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    /**
-     * This sets the CPU object that the system will use.  There should be no reason
-     * for outside classes to call this method... (but it will remain public for the time
-     * being).
-     * @param a6507 the CPU
-     */
-   	//this.attach= function(a6507) {
-    //   }
-    
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   
     /**
      * This resets the cycle count that the JSSystem object maintains...it is generally 
      * called by the TIA at the start of a new visual frame.
